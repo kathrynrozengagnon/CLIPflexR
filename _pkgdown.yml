@@ -1,0 +1,65 @@
+pandoc: 2.3.1
+pkgdown: 1.5.1
+pkgdown_sha: ~
+
+template:
+  params:
+    bootswatch: cosmo
+    
+reference:
+  - title: "CTK"
+    desc: >
+        CTK wrapper functions.
+    contents:
+      - install_ctk 
+      - ctk_cits
+      - ctk_getMutationType
+      - ctk_fastqFilter
+      - ctk_fastq2collapse
+      - ctk_stripBarcode
+      - ctk_parseAlignment
+      - ctk_tag2collapse
+      - ctk_bed2rgb
+      - ctk_tag2profile
+      - ctk_cims
+      - ctk_joinWrapper
+      - ctk_tag2peak
+  - title: "Alignment"
+    desc: >
+      Alignment functions.
+    contents:
+      - bowtie2_index
+      - bowtie_align
+  - title: "Homer"
+    desc: >
+      Homer wrapper functions.
+    contents:
+      - homer_peaks
+  - title: "FastX"
+    desc: >
+      FastX toolkit wrapper functions.
+    contents:
+      - fastx_quality_stats
+      - fastx_collapser
+      - fastx_barcode_splitter
+      - fastq_quality_filter
+      - fastx_clipper
+      - fastq_quality_trimmer
+  - title: "Compress/Decompress"
+    desc: >
+      Compress/Decompress utility functions.
+    contents:      
+      - decompress
+      - compress
+      - bzip2
+  - title: "R utility functions"
+    desc: >
+      Useful R functions for CliP processing/analysos.
+    contents:      
+      - bamtobed
+      - annotatePeaksWithPatterns
+      - fetchSequencesForClIP
+
+
+
+
