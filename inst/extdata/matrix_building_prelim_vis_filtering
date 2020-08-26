@@ -1,0 +1,157 @@
+###here is an example of how I applied the scripts Tom wrote in a recent dataset - again, happy to provide my input files
+###one open question is how to filter to get differentially bound peaks, as of now I filter on replicates and log2FC that I calculate, but these decisions are somewhat arbitrary
+#load packages 
+library(BiocManager)
+library(rtracklayer)
+library(GenomicFeatures)
+library(GenomicRanges)
+library(ggplot2)
+library(DESeq2)
+library(tidyr)
+library(ChIPseeker)
+library(gplots)
+library(RColorBrewer)
+library(data.table)
+library(dplyr)
+library(stringr)
+library(BSgenome)
+
+#define gff or gtf for ann and generate custom TxDB
+gtffile <- "/Users/kathryn/Aedes-aegypti-LVP_AGWG_BASEFEATURES_AaegL5.1.gtf"
+TxDb <- makeTxDbFromGFF(gtffile)
+
+#load peakfiles to get true/false matrix
+peakDir <- "/Users/kathryn/030619_BrdU_CHIKV_CHIKVGFP_Aag2_CLIP/AaegL5_mapped/Collapse_PCR_dups"
+peakToCall <- dir(peakDir,pattern="*coll.txt",full.names = TRUE)
+print(peakToCall)
+require(GenomicRanges)
+
+sfsf <- lapply(peakToCall,function(x)read.delim(x,sep="\t",comment.char = "#",h=FALSE))
+sfsf <- lapply(sfsf,
+               function(x)GRanges(x$V2,IRanges(x$V3,x$V4),strand = x$V5))
+names(sfsf) <- basename(peakToCall)
+sfsf <- GRangesList(sfsf)
+rSet <- unlist(sfsf)
+nrSet <- reduce(rSet)
+mat <- do.call(cbind,lapply(sfsf,
+                            function(x)
+                              nrSet %over% x))
+mcols(nrSet) <- mat
+
+#load bedfiles to get read counts in peaks and bind with true/false mat
+Beds <- dir(peakDir,pattern="*.bed.coll",full.names = TRUE)
+countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=TRUE){
+  require(rtracklayer)
+  require(GenomicRanges)
+  require(GenomicAlignments)
+  reads <- import.bed(Bed)
+  fk <- summarizeOverlaps(GR,reads,ignore.strand = notStranded,inter.feature=interFeature)
+  assay(fk)
+}
+
+kks <- lapply(Beds,countFromBed,GR=nrSet,notStranded=FALSE)
+# will get warnings here that bedfile containes sequence levels not in peak file, which is to be expected - as long as there are still sequence levels in common it's ok 
+
+kksMat <- do.call(cbind,kks)
+colnames(kksMat) <- basename(Beds)
+mcols(nrSet) <- cbind(as.data.frame(mcols(nrSet)),kksMat)
+
+#annotate matrix using CHIPseeker
+nrSetAnnotate <- annotatePeak(nrSet,
+                              TxDb=TxDb,
+                              sameStrand=FALSE,
+                              genomicAnnotationPriority = c("3UTR", "5UTR", "Exon",
+                                                            "Intron", "Downstream", "Intergenic", "Promoter"),
+                              overlap = "all")
+                              
+#unfiltered annotation
+upsetplot(nrSetAnnotate)
+plotAnnoPie(nrSetAnnotate)    
+
+#convert annotated peak/countmatrix to dataframe forgenerating count matrix for PCA/heatmap/nrc and filtering
+peaksDF <- as.data.frame(nrSetAnnotate)
+#rename columns
+print(colnames(peaksDF))
+col.names <- gsub("KRG.030619_S1_L001_R1_001_collapse_", "", colnames(peaksDF))
+col.names <- gsub("_rm3.bed.coll", "_counts", col.names)
+col.names <- gsub("_rm3.coll.txt", "_peaks", col.names)
+peaksDF <- setNames(peaksDF, col.names)
+#make unique peakID 
+peaksDF$peakID <- paste0(peaksDF$seqnames,":",peaksDF$start,"_",peaksDF$end, "_", peaksDF$strand)
+
+
+#convert to count matrix, make into a new datafrome so original peakset is unchanged
+x <- peaksDF
+x <- x[,c(33,15:23)]
+row.names(x) <- x[,1]
+x <- x[,c(2:10)]
+
+#prepare count matrix for PCA; check first seperation on unfiltered
+samples <- data.frame(row.names=c(colnames(x)), condition=as.factor(c(rep("CHIKV",3),rep("CHIKVGFP",3), rep("mock", 3))))
+dds <- DESeqDataSetFromMatrix(countData = x, colData = samples, design = ~ condition)
+rld <- rlog(dds)
+plotPCA(rld, ntop = 500, returnData=FALSE) 
+
+#now heatmap on unfiltered
+topVarGenes <- head( order( rowVars( assay(rld) ), decreasing=TRUE ), 500 )
+test <- order( rowVars( assay(rld) ), decreasing=TRUE ) 
+p <- heatmap.2( assay(rld)[ topVarGenes, ],distfun =function(x)as.dist(1-cor(t(x))), scale="row",
+           trace="none", dendrogram="column", margins=c(10,10),
+           col = colorRampPalette( rev(brewer.pal(9, "RdBu")) )(255))
+
+#and check reproducibility - can visualize normalized read counts and get cor by samples, can change the aesthetics of ggplot within the function as needed
+myfunc <- function(dds,sample1,sample2){
+  lons <- DESeq2::normTransform(dds) %>% assay %>% as.data.frame %>% tibble::rownames_to_column(var="ID") %>% tidyr::gather(key = Sample,value=log2NormCounts,-ID)
+ lons %>% 
+    dplyr::filter(Sample %in% c(sample1,sample2)) %>% 
+    spread(key = "Sample",value="log2NormCounts") %>% select(-ID) %>% cor %>% print
+ lons %>% 
+  dplyr::filter(Sample %in% c(sample1,sample2)) %>% 
+  spread(key = "Sample",value="log2NormCounts") %>% 
+  ggplot(aes_string(x=sample1,y=sample2))+geom_point()+theme_bw() 
+
+}
+myfunc(dds,"CHIKVB_counts","CHIKVC_counts")
+
+#now filter; keep peaks present in 2 of 3 reps 
+peaksDF <- peaksDF[rowSums(peaksDF[,c(6:8)]) >= 2 | rowSums(peaksDF[,c(9:11)]) >= 2 | rowSums(peaksDF[,c(12:14)]) >= 2 ,]
+
+#cat reads from a condition and calculate log2FC 
+peaksDF$cat_CHIKV <- rowSums(peaksDF[,c(15:17)])
+peaksDF$cat_CHIKVGFP <- rowSums(peaksDF[,c(18:20)])
+peaksDF$cat_mock <- rowSums(peaksDF[,c(21:23)])
+x<- peaksDF[,34:36] + 1
+#scale to mappedreads, could also scale to colSums if want to normalize only to reads in peaks 
+mapped_reads <- c(1392247, 1069731, 1138275) 
+x <- scale(x,center = FALSE, scale = mapped_reads)
+#multiply by 1E6
+x <- x[, 1:3] * 1000000
+x <- as.data.frame(x)
+col.names <- gsub("cat_", "cat_norm_", colnames(x))
+x <- setNames(x, col.names)
+peaksDF <- cbind(peaksDF, x)
+peaksDF$CHIKVlog2FC <- log2(peaksDF$cat_norm_CHIKV) - log2(peaksDF$cat_norm_mock)
+peaksDF$CHIKVGFPlog2FC <- log2(peaksDF$cat_norm_CHIKVGFP) - log2(peaksDF$cat_norm_mock)
+peaksDF$LRvsGFPlog2FC <- log2(peaksDF$cat_norm_CHIKV) - log2(peaksDF$cat_norm_CHIKVGFP)
+
+#further filter on replicates to get differential peaks between conditions 
+viruspeaks <- peaksDF[rowSums(peaksDF[,c(6:11)]) >= 4 & rowSums(peaksDF[,c(12:14)]) <= 1,] 
+mockpeaks <- peaksDF[rowSums(peaksDF[,c(6:11)]) <= 2 & rowSums(peaksDF[,c(12:14)]) >= 2,] 
+diff_virus <- mockpeaks[rowSums(mockpeaks[,c(6:8)]) <= 1 & rowSums(mockpeaks[,c(9:11)]) >= 2 | rowSums(mockpeaks[,c(6:8)]) >= 2 & rowSums(mockpeaks[,c(9:11)])  <= 1,]
+
+#add key to original dataframe based on replicate filtering between different conditiond and add log2FC thresholds
+peaksDF$virushi <- peaksDF$peakID %in% viruspeaks$peakID
+peaksDF$mockhi <- peaksDF$peakID %in% mockpeaks$peakID
+peaksDF$diff_virus <- peaksDF$peakID %in% diff_virus$peakID
+#select where virus are both 5fold up and virushi=True
+virushi <- subset(peaksDF, peaksDF$CHIKVlog2FC >2 & peaksDF$CHIKVGFPlog2FC > 2 & peaksDF$virushi=="TRUE")
+mockhi <- subset(peaksDF, peaksDF$CHIKVlog2FC < -2 & peaksDF$CHIKVGFPlog2FC < -2 & peaksDF$mockhi=="TRUE")
+virusdiff <- subset(peaksDF, peaksDF$LRvsGFPlog2FC < -2  & peaksDF$diff_virus=="TRUE" | peaksDF$LRvsGFPlog2FC > 2 & peaksDF$diff_virus=="TRUE") 
+peaksDF$virushi <- peaksDF$peakID %in% virushi$peakID
+peaksDF$mockhi <- peaksDF$peakID %in% mockhi$peakID
+peaksDF$diff_virus <- peaksDF$peakID %in% virusdiff$peakID
+
+#add annotation key for graphing, could add other features if interested using similar methods
+peaksDF$annkey <- NA 
+peaksDF$annkey[peaksDF$annotation=="3' UTR"] <- "1"
+peaksDF$annkey[str_match(peaksDF$annotation, "Exon")=="Exon"] <- "2"
