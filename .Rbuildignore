@@ -1,0 +1,8 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.github$
+^README.Rmd$
+^docs$
+^_pkgdown.yml$
+^.*_stderr$
+^.*_stdout$
