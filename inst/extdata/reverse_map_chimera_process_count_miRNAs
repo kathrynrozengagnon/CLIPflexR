@@ -1,0 +1,147 @@
+#do reverse mapping to known miRNAs
+bowtie_index <- function(genomeFasta,
+                         outFasta=gsub("\\.fa","",genomeFasta)
+) {
+  require(Rbowtie2)
+  if(!dir.exists(outFasta)){
+    bowtie2_build(references=genomeFasta, 
+                  bt2Index=outFasta)
+  }
+  
+}
+
+#R command to create index for all cat fasta files:
+Dir <- "/Users/kathryn/KRG_112317_MiSeq/redo_QF/chimera_Ago1"
+fasta <- dir(Dir,pattern="*.fa$",full.names = TRUE)
+for (i in fasta) {
+  bowtie_index(i, i)
+}
+
+#align miRNA refseq to reads
+bowtie_align <- function(fq,index,sam=gsub("\\.fq|\\.fastq|\\.rm|\\.fa",".sam",index)
+) {
+  require(Rbowtie2)
+  if(!dir.exists(sam)){
+    bowtie2(bt2Index = index,
+            samOutput = sam,
+            seq1 = fq,"--threads 4 -f -L 18 -k 1000000")
+    Rsamtools::asBam(sam,gsub("\\.sam","",sam))
+  }
+  
+}
+
+#R command to align:
+Dir <- "/Users/kathryn/KRG_112317_MiSeq/redo_QF/chimera_Ago1"
+ref <- dir(Dir,pattern=".fa$",full.names = TRUE)
+for (i in ref) {
+  bowtie_align("/Users/kathryn/KRG_112317_MiSeq/redo_QF/chimera_Ago1/aae_miRNAs_mature.fasta", i)
+}
+
+#convert bams to beds 
+function(file,filtDup=FALSE){
+  require(GenomicAlignments)
+  require(rtracklayer)
+  temp <- readGAlignments(file,
+                          param=ScanBamParam(what = "qname"))
+  names(temp) <- mcols(temp)$qname
+  temp <- granges(temp)
+  
+  if(filtDup) temp <- temp[!duplicated(temp),]
+  export.bed(temp,
+             con = gsub("\\.bam",".bed",file))
+}
+
+bam <- dir(Dir,pattern="*.bam$",full.names = TRUE)
+for (file in bam){
+  bamtobed(file)}
+  
+#read fasta and bedfiles and join read sequence to bed by read name 
+fasta <- dir(Dir, pattern="*rm3.fa",full.names = TRUE)
+fasta <- readDNAStringSet(fasta, format = "fasta", nrec = -1L)
+fastaDF <- as.data.frame(fasta)
+fastaDF <- setDT(fastaDF, keep.rownames = TRUE)[]
+
+beds <- dir(Dir, pattern="*.bed$",full.names = TRUE)
+test <- lapply(beds, read.delim, header = FALSE, sep = "")
+col.names <- c("rn", "start", "stop", "name", "score", "strand")
+test <- lapply(test, setNames, col.names)
+test <- lapply(test, merge, fastaDF, by = "rn")
+names(test) <- beds
+
+#example of getting bed counts before moving on to chimera processing, could apply similar code to chimera counts either unmapped or remapped to genome 
+m <- lapply(test, "[", "name")
+m <- lapply(m, function(x) x %>% group_by(name) %>% summarize(count=n()))
+t <- Reduce(function(x, y) merge(x, y, by = "name", all = TRUE), m)
+t[is.na(t)] <- 0
+col.names <- names(m)
+col.names <- gsub("/Users/kathryn/KRG_Ago1vs2_STDvsD/redo_QF/chimera/", "", col.names)
+col.names <- gsub(".bed", "_rev_map", col.names)
+col.names <- c("miRNA", col.names)
+t <- setNames(t, col.names)
+
+#write files with joined read sequences for chimera inputs 
+for (x in names(test)) {
+  write.table(test[[x]], file=paste0(x,".txt"), sep="\t")}
+write.table(test, file=".txt", sep="\t")
+
+#chimera process; according to mike/troels paper; essentially, get only sense mapped miRNAs, then get downstream sequence and write to table
+
+chimeraProcess <- function(input) {
+  
+  BR1 <- read.delim(input, header=T)
+  BR1<- BR1[BR1$strand=="+",]
+  BR1 <- BR1[duplicated(BR1$rn)==F,]
+  BR1$length <- sapply(as.character(BR1$x), nchar)
+  BR1$ups.seq <- mapply(substr, x=BR1$x, start=0, stop=BR1$start)
+  BR1$dns.seq <- mapply(substr, x=BR1$x, start=BR1$stop, stop=BR1$length)
+  outname = paste(input, sep = "")
+  outname = gsub(".txt", ".chimera.txt", outname)
+  write.table(BR1, outname, quote=F, sep="\t")
+}
+
+files <- dir(Dir, pattern="*.txt$",full.names = TRUE)
+for (i in 1:length(files)) {
+  chimeraProcess(files[i])
+}
+
+#reformat chimera.txt table into fasta to remap, taking only downstream sequences 18nt or longer
+reformat <- function(input) {
+  BR1 <- read.delim(input, header=T)
+  BR1$V8 <- paste(BR1$rn, BR1$name, sep = "_")
+  BR1 <- BR1[c(11,10 )]
+  BR1$dns.seq <- as.character(BR1$dns.seq)
+  BR1$length <- nchar(BR1$dns.seq)
+  BR1 <- BR1[BR1$length >= 18,]
+  BR1 <- BR1[1:2]
+  outname = paste(input, '.fa', sep = "")
+  BR2 <- DNAStringSet(BR1$dns.seq, use.names = TRUE)
+  names(BR2) <- BR1$V8
+  writeXStringSet(BR2, outname, format ="fasta")  
+}
+
+files <- dir(Dir, pattern="*.chimera.txt",full.names = TRUE)
+for (i in 1:length(files)) {
+  reformat(files[i])
+}
+
+#remap back to genome 
+bowtie_align <- function(fq,index,sam=gsub("\\.fq|\\.fastq|\\.rm|\\.fa",".sam",fq)) {
+  require(Rbowtie2)
+  if(!dir.exists(sam)){
+    bowtie2(bt2Index = index,
+            samOutput = sam,
+            seq1 = fq,"--threads 4 -f -N 1 -L 18")
+    Rsamtools::asBam(sam,gsub("\\.sam","",sam))
+  }
+  
+}
+
+fa <- dir(Dir,pattern="*.chimera.txt.fa",full.names = TRUE)
+for (file in fa) {
+  bowtie_align(file, "/Users/kathryn/Bowtie_indices/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5")  
+}
+
+bam <- dir(Dir,pattern="*.bam$",full.names = TRUE)
+
+for (file in bam){
+  bamtobed(file)}
