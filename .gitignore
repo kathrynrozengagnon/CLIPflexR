@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.DS_Store
+hg19Small.fa
+inst/doc
+SRAmetadb.sqlite
+*.gz
