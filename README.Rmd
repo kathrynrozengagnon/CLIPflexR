@@ -1,0 +1,40 @@
+---
+title: "Untitled"
+output: md_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- badges: start -->
+  [![R build status](https://github.com/ThomasCarroll/clipr/workflows/R-CMD-check/badge.svg)](https://github.com/ThomasCarroll/clipr/actions)
+<!-- badges: end -->
+
+
+## Readme
+
+**clipR** is a R wrapper for the [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) and additional functions to call other external libraries into an R environment.
+
+**clipR** makes use of the **CondaSysReqs** library to install conda dependencies to your machine within a conda environment using the reticulate libraries.
+
+The [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) is installed as part of the **clipR** **install_ctk()** function.
+
+### How to install clipR
+```{r,echo=TRUE,eval=FALSE}
+install.packages("devtools")
+devtools::install_github("RockefellerUniversity/clipR")
+devtools::install_github("RockefellerUniversity/CondaSysReqs")
+CondaSysReqs::install_CondaSysReqs("clipR")
+clipR::install_ctk()
+```
+
+## Path to Conda tools and Ctk/czplib
+
+```{r,echo=TRUE,eval=TRUE}
+library(clipR)
+getOption("clipr.condaEnv")
+getOption("clipr.ctk")
+getOption("clipr.czplib")
+```
+

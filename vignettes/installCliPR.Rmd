@@ -1,0 +1,146 @@
+---
+title: "Using and installing the CTK pipeline using ClipR"
+author: "Kathryn Rozen-Gagnon, Ji-Dung Luo and Thomas Carroll"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{install_clipR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+baseDir <- "/Users/thomascarroll/Desktop/Projects/brc/clipRUTest/"
+```
+
+## ClipR
+
+
+The ClipR package provides a set of its functions for the processing and analysis of differing forms of ClIP data for use within the R framework.
+
+For more information on the processing of data using ClipR you can see our [quickstart](StandardandBrdU_Processing_CTK_small.html) and full [vignettes](StandardandBrdU_Processing_CTK.html).
+
+
+## Installation
+
+
+### Set GITHUB PAT ... not needed in future
+
+As clipr is not public yet you will need add a GITHUB_PAT to your environment to install. 
+
+You can do this by visiting the settings -> Developer Settings ->  Personal access tokens and creating a personal access token. Copy the long string of your personal access token to below where **MYGITHUBPAT** is.
+
+```{r setGH,echo=TRUE,eval=FALSE}
+Sys.setenv(GITHUB_PAT="MYGITHUBPAT")
+```
+
+### Installing ClipR
+
+We can install ClipR package from Github using the devtools package
+
+```{r installClipR,echo=TRUE,eval=FALSE}
+install.packages("devtools")
+devtools::install_github("RockefellerUniversity/clipr")
+```
+
+### Installing rfastp... will be stable dependency once ClipR is released.
+We also can install the rfastp package which may use to pre-process FastQ/FastA and de-duplicate BAM files as an alternative to the standard CTK workflow.
+
+```{r installrfastp,echo=TRUE,eval=FALSE}
+devtools::install_github("RockefellerUniversity/rfastp")
+```
+
+### Installing CTK software requirements.
+
+The CTK toolkit requires many external softwares to be available on the system path for use within their pipeline scripts. 
+
+Once solution to the meet these system requirements is to create a Conda environment containing all the required software. 
+
+The CondaSysReq package provides a simple workflow to install self-contained Conda environments associated to packages using the Reticulate library. 
+
+This approach also allows us to capture the current Conda environment using the same tools we capture R library versions by means of the Renv package.
+
+First we need to install the CondaSysReqs package.
+
+```{r installCondaSysReqs,echo=TRUE,eval=FALSE}
+library(devtools)
+install_github("RockefellerUniversity/CondaSysReqs")
+```
+
+
+We can now use the CondaSysReqs package to create the required Conda environment and requirments for the clipr package.
+
+The below code will install the required external software to a Conda environment within the default location (same path as the Reticulate package's Conda environments). 
+
+The path to the Conda executable and the name of the Conda environment 
+```{r installConda_Reqs,echo=TRUE,eval=FALSE}
+library(CondaSysReqs)
+CondaInfo <- install_CondaSysReqs("clipr")
+CondaInfo$pathToConda
+CondaInfo$environment
+```
+
+The installed Conda environment may be accessed out of R just as with a standard environment.
+
+Executables can be found the environment's bin directory. Here we check the directory contains the fastx and homer executable.
+
+```{r lookAtEnv,echo=FALSE,eval=FALSE,engine='bash'}
+ls /Users/thomascarroll/Library/r-miniconda/envs/clipr*/bin/ \
+| grep -E -- 'fastx|homer' | head -n 20
+```
+
+```{r lookAtEnv2,echo=FALSE,eval=FALSE}
+dir("/Users/thomascarroll/Library/r-miniconda/envs/clipR_0.1.17/bin/",pattern="fastx|homer")
+```
+
+### Installing CTK software.
+
+The [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) is installed as part of the **clipR** **install_ctk()** function.
+
+
+```{r installCTK,echo=TRUE,eval=FALSE}
+clipR::install_ctk()
+```
+
+This function installs CTK and it's perl library dependencies to a user specified directory or if a Conda environment has been created with CondaSysReqs to within the same Conda Environment associated to the package. 
+
+
+```{r lookAtEnv3,echo=FALSE,eval=FALSE}
+dir("/Users/thomascarroll/Library/r-miniconda/envs/clipR_0.1.17/bin/ctk",pattern="")
+```
+
+
+### Using the CTK pipeline in clipr.
+
+Once we have installed the requirements for CTK we can make use of the tools within clipr very easily.
+
+First we load the clipR package and review the loading messages informing us of any established conda paths.
+
+```{r CheckPaths,echo=TRUE,eval=TRUE}
+library(clipR)
+```
+
+We can also list the important paths from the environmental options set by clipr.
+
+
+```{r CheckPaths2,echo=TRUE,eval=TRUE}
+getOption("clipr.condaEnv")
+getOption("clipr.ctk")
+getOption("clipr.czplib")
+```
+
+
+Now that these are installed, all functions with the clipr package will use these by default without further configuration of paths or environmental variables.
+
+
+
+
+
+```{r testa,echo=TRUE,eval=TRUE}
+require(clipR)
+Fox3_Std <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+Fox3_Std_filtered <- ctk_fastqFilter(Fox3_Std,
+                                     outFile = "SRR1107535_Test.fastq",
+                                     qsFilter="mean:0-29:20",verbose=TRUE)
+
+```
