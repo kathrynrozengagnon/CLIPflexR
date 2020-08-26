@@ -1,0 +1,10 @@
+extdataclipper_stats_stderr
+extdataclipper_stats_stdout
+extdatafastq_collapse_stderr
+extdatafastq_collapse_stdout
+extdatafastq_quality_filter_stderr
+extdatafastq_quality_filter_stdout
+extdatahomer_stats_stderr
+extdatahomer_stats_stdout
+extdatastripBarcode_stderr
+extdatastripBarcode_stdout
