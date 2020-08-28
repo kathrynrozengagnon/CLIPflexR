@@ -17,7 +17,7 @@ env:
       
 jobs:
   R-CMD-check:
-    runs-on: [self-hosted]
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@master
@@ -39,8 +39,8 @@ jobs:
       - name: Install CondaSys dependencies
         run: |
           devtools::install_github("RockefellerUniversity/CondaSysReqs",upgrade = "never")
-          devtools::install_github("RockefellerUniversity/clipR")
-          CondaSysReqs::install_CondaSysReqs("clipR")
+          devtools::install_github("kathrynrozengagnon/CLIPflexR")
+          CondaSysReqs::install_CondaSysReqs("CLIPflexR")
           clipR::install_ctk()
         shell: Rscript {0}
       - name: Check
