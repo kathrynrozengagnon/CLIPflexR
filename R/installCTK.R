@@ -21,10 +21,14 @@ install_ctk <- function(path=NULL){
   tempdir <- tempdir()
   miniCondaPath <- miniconda_path()
   miniCondaPathExists <- miniconda_exists(miniCondaPath)
-  clipr <- file.path(miniCondaPath,"envs",paste0("clipR","_",packageVersion("clipR")))
+  clipr <- file.path(miniCondaPath,"envs",paste0("CLIPflexR
+","_",packageVersion("CLIPflexR
+")))
   if(dir.exists(clipr)) path <- clipr
-  if(is.null(path) & !is.null(getOption("clipr.condaEnv"))) path <- clipr
-  if(is.null(path) & is.null(getOption("clipr.condaEnv"))) path <- getwd()
+  if(is.null(path) & !is.null(getOption("CLIPflexR
+.condaEnv"))) path <- clipr
+  if(is.null(path) & is.null(getOption("CLIPflexR
+.condaEnv"))) path <- getwd()
   download.file(url = "https://github.com/chaolinzhanglab/czplib/archive/master.zip",
                 destfile = file.path(tempdir,"czplib-master.zip"))
   download.file(url = "https://github.com/chaolinzhanglab/ctk/archive/master.zip",
