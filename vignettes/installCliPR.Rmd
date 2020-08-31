@@ -40,7 +40,7 @@ We can install ClipR package from Github using the devtools package
 
 ```{r installClipR,echo=TRUE,eval=FALSE}
 install.packages("devtools")
-devtools::install_github("RockefellerUniversity/clipr")
+devtools::install_github("kathrynrozengagnon/CLIPflexR")
 ```
 
 ### Installing rfastp... will be stable dependency once ClipR is released.
@@ -75,7 +75,7 @@ The below code will install the required external software to a Conda environmen
 The path to the Conda executable and the name of the Conda environment 
 ```{r installConda_Reqs,echo=TRUE,eval=FALSE}
 library(CondaSysReqs)
-CondaInfo <- install_CondaSysReqs("clipr")
+CondaInfo <- install_CondaSysReqs("CLIPflexR")
 CondaInfo$pathToConda
 CondaInfo$environment
 ```
@@ -99,7 +99,7 @@ The [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documenta
 
 
 ```{r installCTK,echo=TRUE,eval=FALSE}
-clipR::install_ctk()
+CLIPflexR::install_ctk()
 ```
 
 This function installs CTK and it's perl library dependencies to a user specified directory or if a Conda environment has been created with CondaSysReqs to within the same Conda Environment associated to the package. 
