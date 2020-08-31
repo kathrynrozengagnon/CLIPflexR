@@ -1,4 +1,4 @@
-Package: clipR
+Package: CLIPflexR
 Type: Package
 Title: CliP tools and wrappers in R
 Version: 0.1.18
