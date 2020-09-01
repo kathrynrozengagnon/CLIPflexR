@@ -73,7 +73,7 @@ chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,v
   if(verbose) message("Mapping miRNAs to unmapped reads..",appendLF = FALSE)
   newBams <- bplapply(indicies,
                       function(x,knownMiRNAs){
-                        bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"))
+                        bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"),maxMismatches=1,seedSubString=18,report_k=1000000)
                       },knownMiRNAs=knownMiRNAs,BPPARAM=bpparam)
   if(verbose) message("done")
   if(verbose) message("Converting BAMs to BEDs..",appendLF = FALSE)
