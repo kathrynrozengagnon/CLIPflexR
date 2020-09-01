@@ -24,3 +24,4 @@ countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
   fk <- summarizeOverlaps(GR,reads,ignore.strand = notStranded,inter.feature=interFeature)
   assay(fk)
 }
+
