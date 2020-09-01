@@ -9,10 +9,10 @@
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param bed Bed file
-#' @param GR GR need add description
-#' @param notStranded Stranded or not stranded
-#' @param interFeature interfeature # need add description
+#' @param bed mapped reads, bed files.
+#' @param GR count reads over these genomic ranges. 
+#' @param notStranded Stranded or not stranded TRUE or FALSE.
+#' @param interFeature Count reads mapping to multiple features TRUE or FALSE.
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
 #' bowtie2_index(testFasta)
@@ -20,10 +20,8 @@
 #' @return counting matrix
 #' @export
 countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
-  # require(rtracklayer)
-  # require(GenomicRanges)
-  # require(GenomicAlignments)
   reads <- import.bed(Bed)
   fk <- summarizeOverlaps(GR,reads,ignore.strand = notStranded,inter.feature=interFeature)
   assay(fk)
 }
+

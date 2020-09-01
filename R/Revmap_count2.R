@@ -44,55 +44,21 @@ revmap_process <- function(input, linkers = NULL, length_max = NULL, length_min 
     fa2 <- fa2@NAMES
   fa <- fa[!names(fa) %in% fa2]  }
   outname = paste(input, sep = "")
-  outname = gsub(".fa", "_processed.fa", outname)
+  outname = gsub(".fa$", "_processed.fa", outname)
   writeXStringSet(fa, outname)
   return(outname)
    }
   
   
-  #' Merge read sequence with bedfile
+  
+  #' Reverse map small RNAs to processed reads
   #'
   #'Merge read sequence with bedfile
   #'
   #'
   #' @docType methods
-  #' @name chimera_joinread
-  #' @rdname chimera_joinread
-  #'
-  #' @author Kathryn Rozen-Gagnon
-  #'
-  #' @param file File to process.
-  #' @param outFile Name of output file.
-  #' @param filtDup Output index name
-  #' @examples
-  #' bams <- system.file("extdata/example_bams/hg19Small.fa",package="CLIPflexR")
-  #' genomeIndex <- bowtie2_index(system.file("extdata/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.fa",package="CLIPflexR"))
-  #' knownMiRNAs <- system.file("extdata/aae_miRNAs_mature_fixed.fa",package="CLIPflexR")
-  #' exclude <- decompress(testFQ,overwrite=TRUE)
-  #' FqFile_QF <- fastq_quality_filter(FqFile)
-  #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
-  #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
-  #' FqFile_QFColStpClipped <- fastx_clipper(FqFile_QFColStripped)
-  #' bam <- bowtie_align(FqFile_QFColStpClipped,myIndex)
-  #' bamtobed(bam)
-  #' @return Path 
-  #' @import GenomicAlignments
-  #' @importMethodsFrom rtracklayer export.bed export.bw mcols
-  #' @export
-  #' 
-  
-  
-  
-  
-  
-  #' Merge read sequence with bedfile
-  #'
-  #'Merge read sequence with bedfile
-  #'
-  #'
-  #' @docType methods
-  #' @name chimera_process
-  #' @rdname chimera_process
+  #' @name revmap_count
+  #' @rdname revmap_count
   #'
   #' @author Kathryn Rozen-Gagnon
   #'
@@ -105,22 +71,25 @@ revmap_process <- function(input, linkers = NULL, length_max = NULL, length_min 
   #' @export
   revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=TRUE, linkers = NULL, length_max = NULL, length_min = NULL, removedups =FALSE){
     if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
-    if(verbose) message("Processing fastas..",appendLF = FALSE)
+    if(!is.null(linkers) | !is.null(length_max) | !is.null(length_min)) { 
+       if (verbose) message("Processing fastas..",appendLF = FALSE)
+        if (!is.null(linkers)) message("removing linkers... ", linkers)
+        if (!is.null(length_max)) message ("getting sequences shorter than ", as.character(length_max), " nt")
+        if (!is.null(length_min)) message ("getting sequences longer than ", as.character(length_min), " nt")
     pro_fastas <- vector("list",length = length(fastas)) 
     for (i in 1:length(fastas)) {
       pro_fastas[[i]] <- revmap_process(fastas[[i]], length_max = length_max, linkers =  linkers, length_min = length_min)
+    }} else {
+      pro_fastas <-  fastas
     }
-    if (verbose) {
-    if (!is.null(linkers)) message("removing linkers... ", linkers)
-    if (!is.null(length_max)) message ("getting sequences shorter than ", as.character(length_max), " nt")
-    if (!is.null(length_min)) message ("getting sequences longer than ", as.character(length_min), " nt")  }
     if(verbose) message("Creating indices from FASTA files..",appendLF = FALSE)
+    require(BiocParallel)
     indicies <- bplapply(pro_fastas,bowtie2_index,BPPARAM=bpparam)
     if(verbose) message("done")
     if(verbose) message("Mapping miRNAs to processed reads..",appendLF = FALSE)
     revBams <- bplapply(indicies,
                         function(x,knownMiRNAs){
-                          bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"))
+                          bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"), maxMismatches = 0, report_k = 1000000)
                         },knownMiRNAs=knownMiRNAs,BPPARAM=bpparam)
     if(verbose) message("done")
     if(verbose) message("Converting BAMs to BEDs..",appendLF = FALSE)
@@ -128,6 +97,7 @@ revmap_process <- function(input, linkers = NULL, length_max = NULL, length_min 
   if (removedups) { message("deduplicating...") 
       dedup <- lapply(beds,read.delim,  header = F)
       for (i in 1:length(dedup)) {
+        require(stringr)
       dedup[[i]]$miRNAnum  <- ifelse(!grepl("miR|let|iab", dedup[[i]]$V4), str_sub(dedup[[i]]$V4, 2, 7), NA)
       dedup[[i]]$miRNAnum <- ifelse(grepl("miR|let|iab", dedup[[i]]$V4), as.numeric(apply(dedup[[i]],1,function(x) regmatches(x["name"],regexpr("[0-9]+",x["name"])))), paste(dedup[[i]]$miRNAnum))
       dedup[[i]] <- dedup[[i]][order(dedup[[i]]$V1, dedup[[i]]$V2, dedup[[i]]$miRNAnum,dedup[[i]]$V4),]

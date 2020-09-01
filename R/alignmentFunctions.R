@@ -75,15 +75,15 @@ bowtie_align <- function(fq,index,
                                        paste0("Sorted_",basename(fq),".bam")),
                          format="fasta",maxMismatches=1,seedSubString=18,threads=1,report_k=NULL
 ) {
-
-    if(format == "fasta"){
-      optionFormat <- "-f"
-    }else{
-      optionFormat <- ""
-    }
+  
+  if(format == "fasta"){
+    optionFormat <- "-f"
+  }else{
+    optionFormat <- ""
+  }
   
   if(file_ext(fq) == "gz"){
-      R.utils::gunzip(fq,
+    R.utils::gunzip(fq,
                     destname=gsub("\\.gz$","",fq))
     fq <- gsub("\\.gz$","",fq)
     
@@ -103,10 +103,10 @@ bowtie_align <- function(fq,index,
       }
   if(!file.exists(bam)){
     suppressMessages(bowtie2(bt2Index = index,
-            samOutput = gsub("\\.bam$",".sam",
-                             bam),
-            seq1 = fq,
-            bowtieArgs))
+                             samOutput = gsub("\\.bam$",".sam",
+                                              bam),
+                             seq1 = fq,
+                             bowtieArgs))
     asBam(gsub("\\.bam$",".sam",
                bam),
           gsub("\\.bam$",".temp",
@@ -123,3 +123,4 @@ bowtie_align <- function(fq,index,
   return(bam)
   
 }
+

@@ -56,8 +56,10 @@ unbam <- function(bam,outfa=NULL){
 #'
 #' @param bams BAM files to process.
 #' @param knownMiRNAs knownMiRNAs FASTA file.
-#' @param genomeIndex Full genome index
-#' @param exclude contaminating sequences to remove 
+#' @param genomeIndex Full genome index.
+#' @param exclude Names of miRNAs or sequences to remove, character vector. 
+#' @param length_min minimum length required during fasta processing, integer.
+#' @param length_max maximum length required during fasta processing, integer. 
 #' @return Path 
 #' @import GenomicAlignments BiocParallel purrr stringr
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
@@ -73,7 +75,7 @@ chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,v
   if(verbose) message("Mapping miRNAs to unmapped reads..",appendLF = FALSE)
   newBams <- bplapply(indicies,
                       function(x,knownMiRNAs){
-                        bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"),maxMismatches=1,seedSubString=18,report_k=1000000)
+                        bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"),maxMismatches=0,seedSubString=18,report_k=1000000)
                       },knownMiRNAs=knownMiRNAs,BPPARAM=bpparam)
   if(verbose) message("done")
   if(verbose) message("Converting BAMs to BEDs..",appendLF = FALSE)
@@ -98,7 +100,7 @@ chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,v
   idx <- which(checkreads > 0)
   if (verbose & isTRUE(length(idx)==0)) message("read names ok") else message(paste0("Warning, the following sample(s) have duplicate read names! \n", names(idx)))
   #merge together read sequence and bed by rowname (read name)
-  chimera <- map2(fasta,chimera, ~merge(.x,.y, by = "rowname"))
+  chimera <- purrr::map2(fasta,chimera, ~merge(.x,.y, by = "rowname"))
   
   #write files to chimera inputs: bed with read name, start, stop, srand, read name, and read sequence
   # setwd(Dir)
@@ -133,9 +135,9 @@ chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,v
 
 chimeraProcess <- function(input, exclude) {
   BR1 <- read.delim(input, header=T)
-  BR1 <- BR1[!BR1$name %in% exclude,] #this was high frequency in my libraries removed
+  BR1 <- BR1[!BR1$name %in% exclude,] 
   BR1<- BR1[BR1$strand=="+",]
-    BR1$miRNAnum <- ifelse(!grepl("miR|let|iab", BR1$name), str_sub(BR1$name, 2, 7), NA)
+    BR1$miRNAnum <- ifelse(!grepl("miR|let|iab", BR1$name), stringr::str_sub(BR1$name, 2, 7), NA)
     BR1$miRNAnum <- ifelse(grepl("miR|let|iab", BR1$name), as.numeric(apply(BR1,1,function(x) regmatches(x["name"],regexpr("[0-9]+",x["name"])))), paste(BR1$miRNAnum))
     BR1 <- BR1[order(BR1$rowname, BR1$start, BR1$miRNAnum, BR1$name),]
     BR1 <- BR1[!duplicated(BR1$rowname),] 

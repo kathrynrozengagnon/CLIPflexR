@@ -8,13 +8,14 @@
 countFromBed(Bed, GR, notStranded = TRUE, interFeature = FALSE)
 }
 \arguments{
-\item{GR}{GR need add description}
+\item{GR}{count reads over these genomic ranges.}
 
-\item{notStranded}{Stranded or not stranded}
+\item{notStranded}{Stranded or not stranded TRUE or FALSE.}
 
-\item{interFeature}{interfeature # need add description}
+\item{interFeature}{Count reads mapping to multiple features TRUE or FALSE.}
 
-\item{bed}{Bed file}
+\item{bed}{mapped reads, bed files.}
+
 }
 \value{
 counting matrix
