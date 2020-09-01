@@ -18,7 +18,7 @@ ctk_stripBarcode(
   barcodeEndWith = NULL,
   stderr = paste0(getwd(), "stripBarcode_stderr"),
   stdout = paste0(getwd(), "stripBarcode_stdout"),
-  useClipRConda = ifelse(is.null(getOption("clipr.condaEnv")), FALSE, TRUE),
+  useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
 )

@@ -53,6 +53,7 @@ bowtie2_index <- function(genomeFasta,
 #' @param maxMismatches max mismatches
 #' @param seedSubString length of seed substrings
 #' @param threads Number of threads to use
+#' @param report_k number of 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -92,13 +93,14 @@ bowtie_align <- function(fq,index,
                          " -N ",maxMismatches,
                          " -L ",seedSubString,
                          " --threads ",threads)
-  }else{
-    bowtieArgs <- paste0(optionFormat,
-                         " -N ",maxMismatches,
-                         " -L ",seedSubString,
-                         " --threads ",threads,
-                         " -k ",report_k)
-  }
+    }else{
+      report_k = as.integer(report_k)
+      bowtieArgs <- paste0(optionFormat,
+                           " -N ",maxMismatches,
+                           " -L ",seedSubString,
+                           " --threads ",threads,
+                           " -k ",report_k)
+      }
   if(!file.exists(bam)){
     suppressMessages(bowtie2(bt2Index = index,
                              samOutput = gsub("\\.bam$",".sam",

@@ -40,38 +40,6 @@ unbam <- function(bam,outfa=NULL){
 }
 
 
-#' Merge read sequence with bedfile
-#'
-#'Merge read sequence with bedfile
-#'
-#'
-#' @docType methods
-#' @name chimera_joinread
-#' @rdname chimera_joinread
-#'
-#' @author Kathryn Rozen-Gagnon
-#'
-#' @param file File to process.
-#' @param outFile Name of output file.
-#' @param filtDup Output index name
-#' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
-#' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
-#' FqFile <- decompress(testFQ,overwrite=TRUE)
-#' FqFile_QF <- fastq_quality_filter(FqFile)
-#' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
-#' FqFile_QFColStpClipped <- fastx_clipper(FqFile_QFColStripped)
-#' bam <- bowtie_align(FqFile_QFColStpClipped,myIndex)
-#' bamtobed(bam)
-#' @return Path 
-#' @import GenomicAlignments
-#' @importMethodsFrom rtracklayer export.bed export.bw mcols
-#' @export
-#' 
-
-
 
 
 
@@ -105,15 +73,10 @@ chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,v
   indicies <- bplapply(fastas,bowtie2_index,BPPARAM=bpparam)
   if(verbose) message("done")
   if(verbose) message("Mapping miRNAs to unmapped reads..",appendLF = FALSE)
- # newBams <- bplapply(indicies,
- #                      function(x,knownMiRNAs){
- #                        bowtie_align2(knownMiRNAs,index=x, sam = paste0(x, ".bam"))
- #                     },knownMiRNAs=knownMiRNAs,BPPARAM=bpparam)
- newBams <- bplapply(indicies,
- function(x,knownMiRNAs){
-   bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"), maxMismatches = 0, report_k = 1000000)
- },knownMiRNAs=knownMiRNAs,BPPARAM=bpparam)
-  
+  newBams <- bplapply(indicies,
+                      function(x,knownMiRNAs){
+                        bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"),maxMismatches=0,seedSubString=18,report_k=1000000)
+                      },knownMiRNAs=knownMiRNAs,BPPARAM=bpparam)
   if(verbose) message("done")
   if(verbose) message("Converting BAMs to BEDs..",appendLF = FALSE)
   beds <- bplapply(newBams, bamtobed,BPPARAM=bpparam)

@@ -44,20 +44,20 @@ miniconda_exists <- function (path = miniconda_path()) {
   miniCondaPathExists <- miniconda_exists(miniCondaPath)
   clipr <- file.path(miniCondaPath,"envs",paste0(pkgname,"_",packageVersion(pkgname)))
   op <- options()
-  op.clipr <- list(
-    clipr.condaEnv = NULL,
-    clipr.ctk = NULL,
-    clipr.czplib = NULL
+  op.CLIPflexR <- list(
+    CLIPflexR.condaEnv = NULL,
+    CLIPflexR.ctk = NULL,
+    CLIPflexR.czplib = NULL
   )
 
   
 
   if(dir.exists(clipr)){
     packageStartupMessage(basename(clipr)," conda env found at ",clipr)
-    op.clipr$clipr.condaEnv <- clipr
+    op.CLIPflexR$CLIPflexR.condaEnv <- clipr
   }else{
     packageStartupMessage(basename(clipr)," conda env was not found found at ",clipr)
-    packageStartupMessage("For more information on setting up conda environments for clipr, see the CondaSysReqs package")
+    packageStartupMessage("For more information on setting up conda environments for CLIPflexR, see the CondaSysReqs package")
   }
   ctk <- file.path(clipr,"bin","ctk")
   czplib <- file.path(clipr,"lib","czplib")
@@ -66,14 +66,14 @@ miniconda_exists <- function (path = miniconda_path()) {
   if(ctkInstalled & czplibInstalled){
     packageStartupMessage("ctk found  at ",ctk)
     packageStartupMessage("czplib found  at ",czplib)
-    op.clipr$clipr.ctk <- ctk
-    op.clipr$clipr.czplib <- czplib
+    op.CLIPflexR$CLIPflexR.ctk <- ctk
+    op.CLIPflexR$CLIPflexR.czplib <- czplib
   }else{
     packageStartupMessage("ctk not found at ",ctk)
     packageStartupMessage("czplib not found at ",czplib)
   }
 
-  toset <- !(names(op.clipr) %in% names(op))
-  if(any(toset)) options(op.clipr[toset])
+  toset <- !(names(op.CLIPflexR) %in% names(op))
+  if(any(toset)) options(op.CLIPflexR[toset])
   invisible()
 }

@@ -15,6 +15,7 @@ countFromBed(Bed, GR, notStranded = TRUE, interFeature = FALSE)
 \item{interFeature}{Count reads mapping to multiple features TRUE or FALSE.}
 
 \item{bed}{mapped reads, bed files.}
+
 }
 \value{
 counting matrix

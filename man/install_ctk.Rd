@@ -15,9 +15,9 @@ Install ctk pipeline
 }
 \examples{
 install_ctk()
-getOption("clipr.condaEnv")
-getOption("clipr.ctk")
-getOption("clipr.czplib")
+getOption("CLIPflexR.condaEnv")
+getOption("CLIPflexR.ctk")
+getOption("CLIPflexR.czplib")
 }
 \author{
 Kathryn Rozen-Gagnon Thomas Carroll Ji-Dung Luo

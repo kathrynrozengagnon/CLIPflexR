@@ -13,9 +13,9 @@
 #' @import utils
 #' @examples 
 #' install_ctk()
-#' getOption("clipr.condaEnv")
-#' getOption("clipr.ctk")
-#' getOption("clipr.czplib")
+#' getOption("CLIPflexR.condaEnv")
+#' getOption("CLIPflexR.ctk")
+#' getOption("CLIPflexR.czplib")
 #' @export
 install_ctk <- function(path=NULL){
   tempdir <- tempdir()
