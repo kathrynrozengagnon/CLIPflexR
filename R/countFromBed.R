@@ -16,7 +16,7 @@
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
 #' bowtie2_index(testFasta)
-#' @importFrom rtracklayer GenomicRanges GenomicAlignments
+#' @import rtracklayer GenomicRanges GenomicAlignments
 #' @return counting matrix
 #' @export
 countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
