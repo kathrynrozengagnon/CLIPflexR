@@ -30,12 +30,12 @@ bzip2 <- function(fileToBzip2,bzip2="Bzip2",
                   blockSize=1,
                   stderr=paste0(getwd(),"gunzip_stderr"),
                   stdout=paste0(getwd(),"gunzip_stdout"),
-                  useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                  useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                   additionalArgumements=NULL,
                   verbose=FALSE){
   cmd <- bzip2
   
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
   if(!file.exists(fileToBzip2))stop("File does not exist")
 
   fileWithoutExtension <- file_path_sans_ext(fileToBzip2)
@@ -100,7 +100,7 @@ fastq_quality_filter <- function(fileTofqf,
                                  minimumPercentOfRead=80,
                                  stderr=paste0(getwd(),"fastq_quality_filter_stderr"),
                                  stdout=paste0(getwd(),"fastq_quality_filter_stdout"),
-                                 useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                                 useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                  additionalArgumements=NULL,
                                  verbose=FALSE){
 
@@ -115,7 +115,7 @@ fastq_quality_filter <- function(fileTofqf,
   # If [-o] is not specified (and outp
                             
   cmd <- fqf
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
   if(!file.exists(fileTofqf))stop("File does not exist")
 
   file_fqf <- outFile
@@ -181,7 +181,7 @@ fastq_quality_trimmer <- function(fileTofqf,
                                  minimumLength=20,
                                  stderr=paste0(getwd(),"fastq_quality_filter_stderr"),
                                  stdout=paste0(getwd(),"fastq_quality_filter_stdout"),
-                                 useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                                 useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                  additionalArgumements=NULL,
                                  verbose=FALSE){
   
@@ -196,7 +196,7 @@ fastq_quality_trimmer <- function(fileTofqf,
   # If [-o] is not specified (and outp
   
   cmd <- fqf
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
   if(!file.exists(fileTofqf))stop("File does not exist")
   
   file_fqf <- outFile
@@ -261,12 +261,12 @@ fastx_quality_stats <- function(fileTofqs,
                                 fqs="fastx_quality_stats",qEncoding=33,
                                 stderr=paste0(getwd(),"fastq_quality_stats_stderr"),
                                 stdout=paste0(getwd(),"fastq_quality_stats_stdout"),
-                                useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                                useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                 additionalArgumements=NULL,verbose=FALSE){
 
 
   cmd <- fqs
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
 
   if(!file.exists(fileTofqs))stop("File does not exist")
 
@@ -325,12 +325,12 @@ fastx_collapser <- function(fileTofxc,
                             fxc="fastx_collapser",qEncoding=33,
                             stderr=paste0(getwd(),"fastq_collapse_stderr"),
                             stdout=paste0(getwd(),"fastq_collapse_stdout"),
-                            useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                            useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                             additionalArgumements=NULL,verbose=FALSE){
   
   
   cmd <- fxc
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
   
   if(!file.exists(fileTofxc))stop("File does not exist")
   
@@ -385,13 +385,13 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
                                    fbs="fastx_barcode_splitter.pl",
                                    stderr=paste0(getwd(),"fastx_barcode_splitter_stderr"),
                                    stdout=paste0(getwd(),"fastx_barcode_splitter_stdout"),
-                                   useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                                   useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                    additionalArgumements=NULL,verbose=FALSE){
                                    
 
 
   cmd <- fbs
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
 
   if(!file.exists(fileTofxc))stop("File does not exist")
 
@@ -458,12 +458,12 @@ fastx_clipper <- function(fileTofqs,
                           adaptor="GTGTCAGTCACTTCCAGCGG",
                           stderr=paste0(getwd(),"clipper_stats_stderr"),
                           stdout=paste0(getwd(),"clipper_stats_stdout"),
-                          useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                          useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                           additionalArgumements=NULL,verbose=FALSE){
 
 
   cmd <- fqc
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
 
   if(!file.exists(fileTofqs))stop("File does not exist")
 

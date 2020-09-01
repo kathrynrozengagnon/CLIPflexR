@@ -22,7 +22,7 @@ Description: Functions to handle the analysis of CliP and wrapper function for C
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: Rsamtools, rappdirs, dplyr, ShortRead, Rsubread, Rbowtie2, rtracklayer, GenomicAlignments, R.utils, tools, reticulate, Biostrings, magrittr, GenomicRanges, GenomicFeatures, TxDb.Mmusculus.UCSC.mm10.knownGene,  purrr, stringr, BiocParallel
+Imports: Rsamtools, rappdirs, dplyr, ShortRead, Rsubread, Rbowtie2, rtracklayer, GenomicAlignments, R.utils, tools, reticulate, Biostrings, magrittr, GenomicRanges, GenomicFeatures, TxDb.Mmusculus.UCSC.mm10.knownGene,  purrr, stringr, BiocParallel, Rhisat2
 SystemRequirements: CondaSysReq:{"main":{"channels":["bioconda"],"packages":["samtools","fastx_toolkit","homer","cutadapt","perl","perl-math-cdf","perl-bioperl"]}}
 RoxygenNote: 7.1.0
 biocViews: ChiP-Seq

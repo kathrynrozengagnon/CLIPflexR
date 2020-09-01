@@ -13,7 +13,7 @@ fastx_collapser(
   qEncoding = 33,
   stderr = paste0(getwd(), "fastq_collapse_stderr"),
   stdout = paste0(getwd(), "fastq_collapse_stdout"),
-  useClipRConda = ifelse(is.null(getOption("clipr.condaEnv")), FALSE, TRUE),
+  useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
 )

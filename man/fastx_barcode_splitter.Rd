@@ -12,7 +12,7 @@ fastx_barcode_splitter(
   fbs = "fastx_barcode_splitter.pl",
   stderr = paste0(getwd(), "fastx_barcode_splitter_stderr"),
   stdout = paste0(getwd(), "fastx_barcode_splitter_stdout"),
-  useClipRConda = ifelse(is.null(getOption("clipr.condaEnv")), FALSE, TRUE),
+  useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
 )

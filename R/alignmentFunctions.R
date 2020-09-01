@@ -53,6 +53,7 @@ bowtie2_index <- function(genomeFasta,
 #' @param maxMismatches max mismatches
 #' @param seedSubString length of seed substrings
 #' @param threads Number of threads to use
+#' @param report_k number of 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -72,7 +73,7 @@ bowtie2_index <- function(genomeFasta,
 bowtie_align <- function(fq,index,
                          bam=file.path(dirname(fq),
                                        paste0("Sorted_",basename(fq),".bam")),
-                         format="fasta",maxMismatches=1,seedSubString=18,threads=1
+                         format="fasta",maxMismatches=1,seedSubString=18,threads=1,report_k=NULL
 ) {
 
     if(format == "fasta"){
@@ -87,9 +88,19 @@ bowtie_align <- function(fq,index,
     fq <- gsub("\\.gz$","",fq)
     
   }
-
-  bowtieArgs <- paste0(optionFormat," -N ",maxMismatches," -L ",seedSubString," --threads ",threads)
-    
+  if(is.null(report_k)){
+    bowtieArgs <- paste0(optionFormat,
+                         " -N ",maxMismatches,
+                         " -L ",seedSubString,
+                         " --threads ",threads)
+    }else{
+      report_k = as.integer(report_k)
+      bowtieArgs <- paste0(optionFormat,
+                           " -N ",maxMismatches,
+                           " -L ",seedSubString,
+                           " --threads ",threads,
+                           " -k ",report_k)
+      }
   if(!file.exists(bam)){
     suppressMessages(bowtie2(bt2Index = index,
             samOutput = gsub("\\.bam$",".sam",
@@ -104,6 +115,8 @@ bowtie_align <- function(fq,index,
                  bam),
             destination = gsub("\\.bam$","",
                                bam))
+    unlink(gsub("\\.bam$",".temp.bam",
+                bam)) # remove temp.bam
     indexBam(bam)
     
   }
