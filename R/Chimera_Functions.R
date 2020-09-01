@@ -40,38 +40,6 @@ unbam <- function(bam,outfa=NULL){
 }
 
 
-#' Merge read sequence with bedfile
-#'
-#'Merge read sequence with bedfile
-#'
-#'
-#' @docType methods
-#' @name chimera_joinread
-#' @rdname chimera_joinread
-#'
-#' @author Kathryn Rozen-Gagnon
-#'
-#' @param file File to process.
-#' @param outFile Name of output file.
-#' @param filtDup Output index name
-#' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
-#' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
-#' FqFile <- decompress(testFQ,overwrite=TRUE)
-#' FqFile_QF <- fastq_quality_filter(FqFile)
-#' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
-#' FqFile_QFColStpClipped <- fastx_clipper(FqFile_QFColStripped)
-#' bam <- bowtie_align(FqFile_QFColStpClipped,myIndex)
-#' bamtobed(bam)
-#' @return Path 
-#' @import GenomicAlignments
-#' @importMethodsFrom rtracklayer export.bed export.bw mcols
-#' @export
-#' 
-
-
 
 
 

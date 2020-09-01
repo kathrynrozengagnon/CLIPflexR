@@ -46,7 +46,7 @@ ctk_stripBarcode <- function(filesToRun,
                              barcodeEndWith=NULL,
                              stderr=paste0(getwd(),"stripBarcode_stderr"),
                              stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                              additionalArgumements=NULL,verbose=FALSE){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
@@ -54,15 +54,15 @@ ctk_stripBarcode <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1]
   
@@ -177,7 +177,7 @@ ctk_cims <- function(filesToRun,
                                              "_cache",paste(sample(letters,10),collapse="")),
                              stderr=paste0(getwd(),"stripBarcode_stderr"),
                              stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                              additionalArgumements=NULL,verbose=FALSE){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
@@ -185,14 +185,14 @@ ctk_cims <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1]
   
@@ -303,15 +303,15 @@ ctk_cits <- function(filesToRun,
                                      "_cache",paste(sample(letters,10),collapse="")),
                      stderr=paste0(getwd(),"stripBarcode_stderr"),
                      stdout=paste0(getwd(),"stripBarcode_stdout"),
-                     useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                     useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                      additionalArgumements=NULL,verbose=FALSE){
   
   
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
   cmd <- sb
-  if(useClipRConda) perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(useClipRConda) perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1]
   
@@ -405,15 +405,15 @@ ctk_getMutationType <- function(filesToRun,
                      summaryStat=FALSE,
                      stderr=paste0(getwd(),"stripBarcode_stderr"),
                      stdout=paste0(getwd(),"stripBarcode_stdout"),
-                     useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                     useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                      additionalArgumements=NULL,verbose=FALSE){
   
   
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
   cmd <- sb
-  if(useClipRConda) perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(useClipRConda) perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1]
   
@@ -508,7 +508,7 @@ ctk_fastqFilter <- function(filesToRun,
                              outputFormat="fastq",
                              stderr=paste0(getwd(),"stripBarcode_stderr"),
                              stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                              additionalArgumements=NULL,verbose=FALSE){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
@@ -516,15 +516,15 @@ ctk_fastqFilter <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1]
   
@@ -619,7 +619,7 @@ ctk_fastq2collapse <- function(filesToRun,
                             PATHTOPERLLIB=NULL,
                             stderr=paste0(getwd(),"stripBarcode_stderr"),
                             stdout=paste0(getwd(),"stripBarcode_stdout"),
-                            useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                            useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                             additionalArgumements=NULL,verbose=FALSE){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
@@ -627,15 +627,15 @@ ctk_fastq2collapse <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1]
   
@@ -747,7 +747,7 @@ ctk_parseAlignment <- function(filesToRun,
                                indelInScore=FALSE,
                                stderr=paste0(getwd(),"stripBarcode_stderr"),
                                stdout=paste0(getwd(),"stripBarcode_stdout"),
-                               useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                               useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                additionalArgumements=NULL,verbose=FALSE){
   # args <- c(cmd,
   #           ifelse(!is.null(mutationFile),paste0("--mutation-file ",mutationFile),""),
@@ -764,15 +764,15 @@ ctk_parseAlignment <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1] 
   
@@ -892,7 +892,7 @@ ctk_tag2collapse <- function(filesToRun,
                                em=NULL,
                                stderr=paste0(getwd(),"stripBarcode_stderr"),
                                stdout=paste0(getwd(),"stripBarcode_stdout"),
-                               useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                               useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                additionalArgumements=NULL,verbose=FALSE){
   # args <- c(cmd,
   #           ifelse(keepMaxScore,paste0("--keep-max-score ",keepMaxScore),""),
@@ -911,15 +911,15 @@ ctk_tag2collapse <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1] 
   
@@ -1055,7 +1055,7 @@ ctk_joinWrapper <- function(file1,
                              python="python",
                              stderr=paste0(getwd(),"stripBarcode_stderr"),
                              stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                              additionalArgumements=NULL,verbose=FALSE){
   # args <- c(cmd,
   #           ifelse(keepMaxScore,paste0("--keep-max-score ",keepMaxScore),""),
@@ -1074,14 +1074,14 @@ ctk_joinWrapper <- function(file1,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    python <- file.path(getOption("clipr.condaEnv"),"bin",python)
+    python <- file.path(getOption("CLIPflexR.condaEnv"),"bin",python)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(system.file("extdata/",package="clipR"),cmd),sep = " ")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(system.file("extdata/",package="clipR"),cmd),sep = " ")
 
   fileToRun <- file1
   
@@ -1175,7 +1175,7 @@ ctk_bed2rgb <- function(filesToRun,
                              col="blue",
                              stderr=paste0(getwd(),"stripBarcode_stderr"),
                              stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                              additionalArgumements=NULL,verbose=FALSE){
   # args <- c(cmd,
   #           ifelse(keepMaxScore,paste0("--keep-max-score ",keepMaxScore),""),
@@ -1194,15 +1194,15 @@ ctk_bed2rgb <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1] 
   
@@ -1333,7 +1333,7 @@ ctk_tag2profile <- function(filesToRun,
                         normalization="none",
                         stderr=paste0(getwd(),"stripBarcode_stderr"),
                         stdout=paste0(getwd(),"stripBarcode_stdout"),
-                        useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                        useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                         additionalArgumements=NULL,verbose=FALSE){
   # args <- c(cmd,
   #           ifelse(bigFile,"-big ",""),
@@ -1359,15 +1359,15 @@ ctk_tag2profile <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1] 
   
@@ -1512,7 +1512,7 @@ ctk_tag2peak <- function(filesToRun,
                            peakPrefix="Peak",
                            stderr=paste0(getwd(),"stripBarcode_stderr"),
                           stdout=paste0(getwd(),"stripBarcode_stdout"),
-                          useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                          useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                           additionalArgumements=NULL,verbose=FALSE){
 
   
@@ -1521,15 +1521,15 @@ ctk_tag2peak <- function(filesToRun,
   cmd <- sb
   
   if(useClipRConda){
-    path <- paste(file.path(getOption("clipr.condaEnv"),"bin"),
+    path <- paste(file.path(getOption("CLIPflexR.condaEnv"),"bin"),
                   ifelse(!is.na(pathOld),pathOld,""), 
                   collapse = .Platform$path.sep,sep=.Platform$path.sep)
     Sys.setenv("PATH"= path)
-    perl <- file.path(getOption("clipr.condaEnv"),"bin",perl)
+    perl <- file.path(getOption("CLIPflexR.condaEnv"),"bin",perl)
   }
   
-  if(!is.null(getOption("clipr.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("clipr.ctk"),cmd),sep = " ")
-  if(is.null(PATHTOPERLLIB) & !is.null(getOption("clipr.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("clipr.czplib")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(getOption("CLIPflexR.ctk"),cmd),sep = " ")
+  if(is.null(PATHTOPERLLIB) & !is.null(getOption("CLIPflexR.czplib")) & useClipRConda) PATHTOPERLLIB <- getOption("CLIPflexR.czplib")
   
   fileToRun <- filesToRun[1] 
   

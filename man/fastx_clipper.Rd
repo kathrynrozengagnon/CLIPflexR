@@ -13,7 +13,7 @@ fastx_clipper(
   adaptor = "GTGTCAGTCACTTCCAGCGG",
   stderr = paste0(getwd(), "clipper_stats_stderr"),
   stdout = paste0(getwd(), "clipper_stats_stdout"),
-  useClipRConda = ifelse(is.null(getOption("clipr.condaEnv")), FALSE, TRUE),
+  useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
 )

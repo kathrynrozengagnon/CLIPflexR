@@ -14,7 +14,7 @@ bzip2(
   blockSize = 1,
   stderr = paste0(getwd(), "gunzip_stderr"),
   stdout = paste0(getwd(), "gunzip_stdout"),
-  useClipRConda = ifelse(is.null(getOption("clipr.condaEnv")), FALSE, TRUE),
+  useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
 )

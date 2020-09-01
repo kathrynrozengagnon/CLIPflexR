@@ -22,7 +22,7 @@ homer_peaks(
   fragLength = 10,
   stderr = paste0(getwd(), "homer_stats_stderr"),
   stdout = paste0(getwd(), "homer_stats_stdout"),
-  useClipRConda = ifelse(is.null(getOption("clipr.condaEnv")), FALSE, TRUE),
+  useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
 )

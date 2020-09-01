@@ -56,10 +56,10 @@ homer_peaks <- function(fileTofqs,maketagdir="makeTagDirectory",
                         fragLength=10,
                         stderr=paste0(getwd(),"homer_stats_stderr"),
                         stdout=paste0(getwd(),"homer_stats_stdout"),
-                        useClipRConda=ifelse(is.null(getOption("clipr.condaEnv")),FALSE,TRUE),
+                        useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                         additionalArgumements=NULL,verbose=FALSE){
   cmd <- maketagdir
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
   
   if(!file.exists(fileTofqs))stop("File does not exist")
   baseNAME <- make.names(basename(fileTofqs))
@@ -89,7 +89,7 @@ homer_peaks <- function(fileTofqs,maketagdir="makeTagDirectory",
   }
   
   cmd <- findpeaks
-  if(useClipRConda) cmd <- file.path(getOption("clipr.condaEnv"),"bin",cmd)
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
   
   if(dir.exists(tagDir) & !file.exists(file.path(tagDir,"peaks.txt"))){
     
