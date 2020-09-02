@@ -13,23 +13,23 @@ decompress(
 )
 }
 \arguments{
-\item{fileToDecompress}{File to bzip.}
+\item{fileToDecompress}{File to bzip}
 
 \item{outDir}{Output directory}
 
-\item{keep}{keep (don't delete) input files.}
+\item{keep}{keep (don't delete) input files}
 
-\item{overwrite}{overwrite existing output files.}
+\item{overwrite}{overwrite existing output files}
 }
 \value{
-Path to unzipped file.
+Path to unzipped file
 }
 \description{
 Wrapper function for bzip2
 }
 \examples{
  
-testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 decompress(testFQ,overwrite=TRUE)
 }
 \author{

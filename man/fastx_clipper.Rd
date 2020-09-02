@@ -46,7 +46,7 @@ Path to unzipped file
 Wrapper function for fastx_clipper
 }
 \examples{
-testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 FqFile_clipped <- fastx_clipper(FqFile,length=20)

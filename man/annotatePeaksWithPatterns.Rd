@@ -19,19 +19,19 @@ annotatePeaksWithPatterns(
 )
 }
 \arguments{
-\item{peaks}{ClIP peaks to process.}
+\item{peaks}{CLIP peaks to process}
 
-\item{fasta}{Genome fasta file.}
+\item{fasta}{Genome fasta file}
 
-\item{patterns}{Patterns to scan in ClIP peaks.}
+\item{patterns}{Patterns to scan in CLIP peaks}
 
-\item{resize}{Size of window in bp for resizing around peak center.}
+\item{resize}{Size of window in bp for resizing around peak center}
 
-\item{add5}{Bp to add to 5' of resized peak.}
+\item{add5}{Bp to add to 5' of resized peak}
 
-\item{add3}{Bp to add to 3' of resized peak.}
+\item{add3}{Bp to add to 3' of resized peak}
 
-\item{verbose}{Print messages.}
+\item{verbose}{Print messages, TRUE (default) or FALSE}
 
 \item{checkReverse}{Check the reverse strand for pattern.}
 
@@ -46,7 +46,7 @@ Path
 Convert Bam to Bed
 }
 \examples{
-testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 }
 \author{
 Kathryn Rozen-Gagnon

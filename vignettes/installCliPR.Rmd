@@ -1,9 +1,9 @@
 ---
-title: "Using and installing the CTK pipeline using ClipR"
+title: "Using and installing the CTK pipeline using CLIPflexR"
 author: "Kathryn Rozen-Gagnon, Ji-Dung Luo and Thomas Carroll"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{install_clipR}
+  %\VignetteIndexEntry{install_CLIPflexR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -13,12 +13,12 @@ knitr::opts_chunk$set(echo = TRUE)
 baseDir <- "/Users/thomascarroll/Desktop/Projects/brc/clipRUTest/"
 ```
 
-## ClipR
+## CLIPflexR
 
 
-The ClipR package provides a set of its functions for the processing and analysis of differing forms of ClIP data for use within the R framework.
+The CLIPflexR package provides a set of its functions for the processing and analysis of differing forms of ClIP data for use within the R framework.
 
-For more information on the processing of data using ClipR you can see our [quickstart](StandardandBrdU_Processing_CTK_small.html) and full [vignettes](StandardandBrdU_Processing_CTK.html).
+For more information on the processing of data using CLIPflexR you can see our [quickstart](StandardandBrdU_Processing_CTK_small.html) and full [vignettes](StandardandBrdU_Processing_CTK.html).
 
 
 ## Installation
@@ -26,7 +26,7 @@ For more information on the processing of data using ClipR you can see our [quic
 
 ### Set GITHUB PAT ... not needed in future
 
-As clipr is not public yet you will need add a GITHUB_PAT to your environment to install. 
+As CLIPflexR is not public yet you will need add a GITHUB_PAT to your environment to install. 
 
 You can do this by visiting the settings -> Developer Settings ->  Personal access tokens and creating a personal access token. Copy the long string of your personal access token to below where **MYGITHUBPAT** is.
 
@@ -34,16 +34,16 @@ You can do this by visiting the settings -> Developer Settings ->  Personal acce
 Sys.setenv(GITHUB_PAT="MYGITHUBPAT")
 ```
 
-### Installing ClipR
+### Installing CLIPflexR
 
-We can install ClipR package from Github using the devtools package
+We can install CLIPflexR package from Github using the devtools package
 
-```{r installClipR,echo=TRUE,eval=FALSE}
+```{r installCLIPflexR,echo=TRUE,eval=FALSE}
 install.packages("devtools")
 devtools::install_github("kathrynrozengagnon/CLIPflexR")
 ```
 
-### Installing rfastp... will be stable dependency once ClipR is released.
+### Installing rfastp... will be stable dependency once CLIPflexR is released.
 We also can install the rfastp package which may use to pre-process FastQ/FastA and de-duplicate BAM files as an alternative to the standard CTK workflow.
 
 ```{r installrfastp,echo=TRUE,eval=FALSE}
@@ -68,7 +68,7 @@ install_github("RockefellerUniversity/CondaSysReqs")
 ```
 
 
-We can now use the CondaSysReqs package to create the required Conda environment and requirments for the clipr package.
+We can now use the CondaSysReqs package to create the required Conda environment and requirments for the CLIPflexR package.
 
 The below code will install the required external software to a Conda environment within the default location (same path as the Reticulate package's Conda environments). 
 
@@ -95,7 +95,7 @@ dir("/Users/thomascarroll/Library/r-miniconda/envs/clipR_0.1.17/bin/",pattern="f
 
 ### Installing CTK software.
 
-The [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) is installed as part of the **clipR** **install_ctk()** function.
+The [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) is installed as part of the **CLIPflexR** **install_ctk()** function.
 
 
 ```{r installCTK,echo=TRUE,eval=FALSE}
@@ -110,35 +110,35 @@ dir("/Users/thomascarroll/Library/r-miniconda/envs/clipR_0.1.17/bin/ctk",pattern
 ```
 
 
-### Using the CTK pipeline in clipr.
+### Using the CTK pipeline in CLIPflexR.
 
-Once we have installed the requirements for CTK we can make use of the tools within clipr very easily.
+Once we have installed the requirements for CTK we can make use of the tools within CLIPflexR very easily.
 
-First we load the clipR package and review the loading messages informing us of any established conda paths.
+First we load the CLIPflexR package and review the loading messages informing us of any established conda paths.
 
 ```{r CheckPaths,echo=TRUE,eval=TRUE}
-library(clipR)
+library(CLIPflexR)
 ```
 
-We can also list the important paths from the environmental options set by clipr.
+We can also list the important paths from the environmental options set by CLIPflexR.
 
 
 ```{r CheckPaths2,echo=TRUE,eval=TRUE}
-getOption("clipr.condaEnv")
-getOption("clipr.ctk")
-getOption("clipr.czplib")
+getOption("CLIPflexR.condaEnv")
+getOption("CLIPflexR.ctk")
+getOption("CLIPflexR.czplib")
 ```
 
 
-Now that these are installed, all functions with the clipr package will use these by default without further configuration of paths or environmental variables.
+Now that these are installed, all functions with the CLIPflexR package will use these by default without further configuration of paths or environmental variables.
 
 
 
 
 
 ```{r testa,echo=TRUE,eval=TRUE}
-require(clipR)
-Fox3_Std <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+require(CLIPflexR)
+Fox3_Std <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 Fox3_Std_filtered <- ctk_fastqFilter(Fox3_Std,
                                      outFile = "SRR1107535_Test.fastq",
                                      qsFilter="mean:0-29:20",verbose=TRUE)

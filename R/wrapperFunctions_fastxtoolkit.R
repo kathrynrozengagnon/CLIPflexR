@@ -87,7 +87,7 @@ bzip2 <- function(fileToBzip2,bzip2="Bzip2",
 #' @return Path to unzipped file
 #' @import Rsamtools Rbowtie2  GenomicAlignments
 #' @examples  
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -168,7 +168,7 @@ fastq_quality_filter <- function(fileTofqf,
 #' @return Path to unzipped file
 #' @import Rsamtools Rbowtie2  GenomicAlignments
 #' @examples  
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -251,7 +251,7 @@ fastq_quality_trimmer <- function(fileTofqf,
 #' @return Path to unzipped file
 #' @import Rsamtools Rbowtie2  GenomicAlignments
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
 #' FqFile_QF <- fastq_quality_filter(FqFile)
 #' Fq_Stats <- fastx_quality_stats(FqFile_QF)
@@ -315,7 +315,7 @@ fastx_quality_stats <- function(fileTofqs,
 #' @param verbose Print more message to screen.
 #' @return Path to unzipped file
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
 #' FqFile_QF <- fastq_quality_filter(FqFile)
 #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
@@ -447,7 +447,7 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
 #' @param verbose Print more message to screen.
 #' @return Path to unzipped file
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)

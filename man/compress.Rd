@@ -29,7 +29,7 @@ Wrapper function for Compress
 }
 \examples{
  
-testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 decom <- decompress(testFQ,overwrite=TRUE)
 com <- compress(decom,overwrite=TRUE)
 }

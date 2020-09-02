@@ -6,14 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper function for fastx_collapser — fastx_collapser • clipR</title>
-
+<title>Wrapper function for fastx_collapser — fastx_collapser • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/sandstone/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -38,9 +36,10 @@
 
 
 
-
 <meta property="og:title" content="Wrapper function for fastx_collapser — fastx_collapser" />
+
 <meta property="og:description" content="Wrapper function for fastx_collapser" />
+
 
 
 
@@ -71,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">clipR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.16</span>
+        <a class="navbar-link" href="../index.html">CLIPflexR</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.18</span>
       </span>
     </div>
 
@@ -95,14 +94,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/my-vignette.html">Using the CTK pipeline wrapper from R</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
     </li>
   </ul>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -124,7 +124,9 @@
     </div>
 
     <div class="ref-description">
+    
     <p>Wrapper function for fastx_collapser</p>
+    
     </div>
 
     <pre class="usage"><span class='fu'>fastx_collapser</span>(
@@ -135,17 +137,21 @@
   <span class='kw'>qEncoding</span> <span class='kw'>=</span> <span class='fl'>33</span>,
   <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"fastq_collapse_stderr"</span>),
   <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"fastq_collapse_stdout"</span>),
-  <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"clipr.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
+  <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"CLIPflexR.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
   <span class='kw'>additionalArgumements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
-
+    
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fileTofxc</th>
       <td><p>File to process.</p></td>
+    </tr>
+    <tr>
+      <th>outFile</th>
+      <td><p>Output file name.</p></td>
     </tr>
     <tr>
       <th>fxc</th>
@@ -176,15 +182,17 @@
       <td><p>Print more message to screen.</p></td>
     </tr>
     </table>
-
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Path to unzipped file</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_med.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
+    <pre class="examples"><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
 <span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>testFQ</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_filter.html'>fastq_quality_filter</a></span>(<span class='no'>FqFile</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: error in running command</span></div><div class='input'><span class='no'>FqFile_QFCollapsed</span> <span class='kw'>&lt;-</span> <span class='fu'>fastx_collapser</span>(<span class='no'>FqFile_QF</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fastx_collapser(FqFile_QF): File does not exist</span></div></pre>
+<span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_filter.html'>fastq_quality_filter</a></span>(<span class='no'>FqFile</span>)
+<span class='no'>FqFile_QFCollapsed</span> <span class='kw'>&lt;-</span> <span class='fu'>fastx_collapser</span>(<span class='no'>FqFile_QF</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -196,7 +204,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
 </div>
 
 <div class="pkgdown">

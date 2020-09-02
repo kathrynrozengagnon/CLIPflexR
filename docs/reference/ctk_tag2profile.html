@@ -6,14 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper function for ctk's bed2rgb — ctk_tag2profile • clipR</title>
-
+<title>Wrapper function for ctk's bed2rgb — ctk_tag2profile • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/sandstone/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -38,9 +36,10 @@
 
 
 
-
 <meta property="og:title" content="Wrapper function for ctk's bed2rgb — ctk_tag2profile" />
+
 <meta property="og:description" content="Wrapper function for ctk's bed2rgb" />
+
 
 
 
@@ -71,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">clipR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.16</span>
+        <a class="navbar-link" href="../index.html">CLIPflexR</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.18</span>
       </span>
     </div>
 
@@ -95,14 +94,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/my-vignette.html">Using the CTK pipeline wrapper from R</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
     </li>
   </ul>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -124,7 +124,9 @@
     </div>
 
     <div class="ref-description">
+    
     <p>Wrapper function for ctk's bed2rgb</p>
+    
     </div>
 
     <pre class="usage"><span class='fu'>ctk_tag2profile</span>(
@@ -151,11 +153,11 @@
   <span class='kw'>normalization</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
   <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"stripBarcode_stderr"</span>),
   <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"stripBarcode_stdout"</span>),
-  <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"clipr.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
+  <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"CLIPflexR.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
   <span class='kw'>additionalArgumements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
-
+    
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -168,6 +170,10 @@
       <td><p>Output file</p></td>
     </tr>
     <tr>
+      <th>outFile2</th>
+      <td><p>Output 2 file</p></td>
+    </tr>
+    <tr>
       <th>sb</th>
       <td><p>Path to tag2collapse.pl from FastX toolkit</p></td>
     </tr>
@@ -178,6 +184,66 @@
     <tr>
       <th>PATHTOPERLLIB</th>
       <td><p>Path to PERL5LIB.</p></td>
+    </tr>
+    <tr>
+      <th>bigFile</th>
+      <td><p>TRUE when working with a big file</p></td>
+    </tr>
+    <tr>
+      <th>weight</th>
+      <td><p>weight counts according to the score of each tag</p></td>
+    </tr>
+    <tr>
+      <th>weightAvg</th>
+      <td><p>weight average the score of each tag</p></td>
+    </tr>
+    <tr>
+      <th>ss</th>
+      <td><p>separate strand</p></td>
+    </tr>
+    <tr>
+      <th>exact</th>
+      <td><p>exact count at each nucleotide</p></td>
+    </tr>
+    <tr>
+      <th>nz</th>
+      <td><p>don't print zeroes (works for sgr and bed)</p></td>
+    </tr>
+    <tr>
+      <th>ext5</th>
+      <td><p>extension of tags at the 5' end</p></td>
+    </tr>
+    <tr>
+      <th>ext3</th>
+      <td><p>extension of tags at the 3' end</p></td>
+    </tr>
+    <tr>
+      <th>chromLen</th>
+      <td><p>chrom length file</p></td>
+    </tr>
+    <tr>
+      <th>region</th>
+      <td><p>a bed file with regions to count tag numbers. If not specified, count in moving windows</p></td>
+    </tr>
+    <tr>
+      <th>minBlockSize</th>
+      <td><p>minimum number of lines to read in each block for a big file</p></td>
+    </tr>
+    <tr>
+      <th>windowSize</th>
+      <td><p>Window size</p></td>
+    </tr>
+    <tr>
+      <th>stepSize</th>
+      <td><p>Step size</p></td>
+    </tr>
+    <tr>
+      <th>outputFormat</th>
+      <td><p>output format ([bed] or bedgraph or sgr)</p></td>
+    </tr>
+    <tr>
+      <th>normalization</th>
+      <td><p>normalization ([none] or rpkm or multiply=1.3)</p></td>
     </tr>
     <tr>
       <th>stderr</th>
@@ -200,15 +266,16 @@
       <td><p>Print more message to screen.</p></td>
     </tr>
     </table>
-
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Path to unzipped file</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>testFasta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hg19Small.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
-<span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_med.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
-<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/Fox3_Std_med.fq.gz  /private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/FF_Fox3_Std_med.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in decompress(FqFile_FF, overwrite = TRUE): File does not exist</span></div><div class='input'><span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqs): object 'FqFile' not found</span></div><div class='input'><span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqf): object 'FqFile_clipped' not found</span></div><div class='input'><span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>,<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>FqFile_QF</span>,<span class='st'>".gz"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqf): object 'FqFile_clipped' not found</span></div><div class='input'><span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_fastq2collapse(FqFile_QF, verbose = TRUE): object 'FqFile_QF' not found</span></div><div class='input'><span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_stripBarcode(FqFile_Col, linkerlength = 5): object 'FqFile_Col' not found</span></div><div class='input'><span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStripped</span>,<span class='no'>myIndex</span>)</div><div class='output co'>#&gt; <span class='error'>Error in regexpr("\\.([[:alnum:]]+)$", x): object 'FqFile_QFColStripped' not found</span></div><div class='input'><span class='no'>parsedAlignment</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_parseAlignment.html'>ctk_parseAlignment</a></span>(<span class='no'>bam</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_parseAlignment(bam): object 'bam' not found</span></div><div class='input'><span class='no'>myCollaped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_tag2collapse.html'>ctk_tag2collapse</a></span>(<span class='no'>parsedAlignment</span>,<span class='kw'>weight</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>randomBarcode</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>weightInName</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_tag2collapse(parsedAlignment, weight = FALSE, randomBarcode = FALSE,     weightInName = FALSE, verbose = TRUE): object 'parsedAlignment' not found</span></div><div class='input'><span class='no'>myrgbBed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_bed2rgb.html'>ctk_bed2rgb</a></span>(<span class='no'>myCollaped</span>,<span class='kw'>col</span><span class='kw'>=</span><span class='st'>"128,0,0"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_bed2rgb(myCollaped, col = "128,0,0"): object 'myCollaped' not found</span></div><div class='input'><span class='fu'>ctk_tag2profile</span>(<span class='no'>myrgbBed</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_tag2profile(myrgbBed, verbose = TRUE): object 'myrgbBed' not found</span></div></pre>
+<span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
+<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/Fox3_Std_small.fq.gz  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in decompress(FqFile_FF, overwrite = TRUE): File does not exist</span></div><div class='input'><span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqs): object 'FqFile' not found</span></div><div class='input'><span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqf): object 'FqFile_clipped' not found</span></div><div class='input'><span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>,<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>FqFile_QF</span>,<span class='st'>".gz"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqf): object 'FqFile_clipped' not found</span></div><div class='input'><span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_fastq2collapse(FqFile_QF, verbose = TRUE): object 'FqFile_QF' not found</span></div><div class='input'><span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_stripBarcode(FqFile_Col, linkerlength = 5): object 'FqFile_Col' not found</span></div><div class='input'><span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStripped</span>,<span class='no'>myIndex</span>)</div><div class='output co'>#&gt; <span class='error'>Error in regexpr("\\.([[:alnum:]]+)$", x): object 'FqFile_QFColStripped' not found</span></div><div class='input'><span class='no'>parsedAlignment</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_parseAlignment.html'>ctk_parseAlignment</a></span>(<span class='no'>bam</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_parseAlignment(bam): object 'bam' not found</span></div><div class='input'><span class='no'>myCollaped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_tag2collapse.html'>ctk_tag2collapse</a></span>(<span class='no'>parsedAlignment</span>,<span class='kw'>weight</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>randomBarcode</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>weightInName</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_tag2collapse(parsedAlignment, weight = FALSE, randomBarcode = FALSE,     weightInName = FALSE, verbose = TRUE): object 'parsedAlignment' not found</span></div><div class='input'><span class='no'>myrgbBed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_bed2rgb.html'>ctk_bed2rgb</a></span>(<span class='no'>myCollaped</span>,<span class='kw'>col</span><span class='kw'>=</span><span class='st'>"128,0,0"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_bed2rgb(myCollaped, col = "128,0,0"): object 'myCollaped' not found</span></div><div class='input'><span class='fu'>ctk_tag2profile</span>(<span class='no'>myrgbBed</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_tag2profile(myrgbBed, verbose = TRUE): object 'myrgbBed' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -220,7 +287,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
 </div>
 
 <div class="pkgdown">

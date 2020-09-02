@@ -6,14 +6,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper function for ctk's fastq_filter — ctk_fastqFilter • clipR</title>
-
+<title>Wrapper function for ctk's fastq_filter — ctk_fastqFilter • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/sandstone/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -38,9 +36,10 @@
 
 
 
-
 <meta property="og:title" content="Wrapper function for ctk's fastq_filter — ctk_fastqFilter" />
+
 <meta property="og:description" content="Wrapper function for ctk's fastq_filter" />
+
 
 
 
@@ -71,8 +70,8 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">clipR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.16</span>
+        <a class="navbar-link" href="../index.html">CLIPflexR</a>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.18</span>
       </span>
     </div>
 
@@ -95,14 +94,15 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/my-vignette.html">Using the CTK pipeline wrapper from R</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
     </li>
   </ul>
 </li>
       </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         
       </ul>
@@ -124,7 +124,9 @@
     </div>
 
     <div class="ref-description">
+    
     <p>Wrapper function for ctk's fastq_filter</p>
+    
     </div>
 
     <pre class="usage"><span class='fu'>ctk_fastqFilter</span>(
@@ -140,11 +142,11 @@
   <span class='kw'>outputFormat</span> <span class='kw'>=</span> <span class='st'>"fastq"</span>,
   <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"stripBarcode_stderr"</span>),
   <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"stripBarcode_stdout"</span>),
-  <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"clipr.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
+  <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"CLIPflexR.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
   <span class='kw'>additionalArgumements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
-
+    
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -169,6 +171,26 @@
       <td><p>Path to PERL5LIB.</p></td>
     </tr>
     <tr>
+      <th>fastqFormat</th>
+      <td><p>The fastq format used.</p></td>
+    </tr>
+    <tr>
+      <th>indexPosition</th>
+      <td><p>Position of index in read</p></td>
+    </tr>
+    <tr>
+      <th>qsFilter</th>
+      <td><p>Quality score filter</p></td>
+    </tr>
+    <tr>
+      <th>maxN</th>
+      <td><p>Maximum number of bases below qsFilter</p></td>
+    </tr>
+    <tr>
+      <th>outputFormat</th>
+      <td><p>Output format (fastq or fasta)</p></td>
+    </tr>
+    <tr>
       <th>stderr</th>
       <td><p>Path to stdout file.</p></td>
     </tr>
@@ -188,19 +210,16 @@
       <th>verbose</th>
       <td><p>Print more message to screen.</p></td>
     </tr>
-    <tr>
-      <th>linkerlength</th>
-      <td><p>Linker length to use.</p></td>
-    </tr>
     </table>
-
+    
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Path to unzipped file</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_med.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
-<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'>ctk_fastqFilter</span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/Fox3_Std_med.fq.gz  /private/var/folders/m_/1p7tc8n91k92rn0qlbfy11640000gn/T/Rtmp5njbdY/temp_libpathc5fc2a0da4ce/clipR/extdata/FF_Fox3_Std_med.fq.gz </span></div></pre>
+    <pre class="examples"><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
+<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'>ctk_fastqFilter</span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/Fox3_Std_small.fq.gz  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/FF_Fox3_Std_small.fq.gz </span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -212,7 +231,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
 </div>
 
 <div class="pkgdown">

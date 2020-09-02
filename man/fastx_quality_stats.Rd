@@ -44,7 +44,7 @@ Path to unzipped file
 Wrapper function for fastx_quality_stats
 }
 \examples{
-testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile <- decompress(testFQ,overwrite=TRUE)
 FqFile_QF <- fastq_quality_filter(FqFile)
 Fq_Stats <- fastx_quality_stats(FqFile_QF)

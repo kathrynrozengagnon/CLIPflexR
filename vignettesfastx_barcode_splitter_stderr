@@ -1,0 +1,5 @@
+Use of uninitialized value $first_char in ord at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/fastx_barcode_splitter.pl line 335.
+Use of uninitialized value $first_char in string eq at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/fastx_barcode_splitter.pl line 337.
+Use of uninitialized value $first_char in string eq at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/fastx_barcode_splitter.pl line 341.
+Use of uninitialized value $first_char in concatenation (.) or string at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/fastx_barcode_splitter.pl line 346.
+Error: unknown file format. First character = '' (expecting > or @)
