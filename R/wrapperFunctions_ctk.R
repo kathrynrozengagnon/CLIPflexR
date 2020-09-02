@@ -1081,7 +1081,7 @@ ctk_joinWrapper <- function(file1,
     python <- file.path(getOption("CLIPflexR.condaEnv"),"bin",python)
   }
   
-  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(system.file("extdata/",package="clipR"),cmd),sep = " ")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(system.file("extdata/",package="CLIPflexR"),cmd),sep = " ")
 
   fileToRun <- file1
   
