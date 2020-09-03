@@ -1,5 +1,6 @@
 if(getRversion() >= "2.15.1")  utils::globalVariables(c("seq","Seq","SeqExtended","centerOfPattern",
-                                                        "siteOfPattern","originalPeak","extendedPeak"))
+                                                        "siteOfPattern","originalPeak","extendedPeak",
+                                                        "baseDir"))
 
 
 file_path_sans_ext <- function (x, compression = FALSE) 
