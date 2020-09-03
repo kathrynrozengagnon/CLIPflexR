@@ -928,7 +928,7 @@ unbam <- function(bam,outfa=NULL){
 #' @import GenomicAlignments BiocParallel stringr
 #' @importFrom tibble rownames_to_column
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
-#' @importMethodsFrom purrr map2
+#' @importFrom purrr map2
 #' @export
 chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,verbose=TRUE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
