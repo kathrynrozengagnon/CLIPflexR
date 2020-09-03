@@ -61,7 +61,7 @@ Path to unzipped file
 Wrapper function for ctk's CITS
 }
 \examples{
-testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile <- decompress(testFQ,overwrite=TRUE)
 FqFile_QF <- fastq_quality_filter(FqFile)
 FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)

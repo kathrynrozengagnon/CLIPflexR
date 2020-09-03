@@ -74,7 +74,7 @@ Wrapper function for ctk's CIMS
 }
 \examples{
 \dontrun{
-mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="clipR")
+mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 delBed <- ctk_getMutationType(mutations)
 ctk_cims("~/Downloads/uniq_tags_mutations/Fox.pool.tag.uniq.rgb.bed",delBed,verbose=TRUE)
 }
