@@ -97,7 +97,7 @@
       <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
     </li>
   </ul>
 </li>
@@ -144,6 +144,7 @@
   <span class='kw'>minDist</span> <span class='kw'>=</span> <span class='fl'>50</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>fragLength</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>genomeSize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"homer_stats_stderr"</span>),
   <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"homer_stats_stdout"</span>),
   <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"CLIPflexR.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
@@ -207,6 +208,10 @@
       <td><p>Approximate fragment length,</p></td>
     </tr>
     <tr>
+      <th>genomeSize</th>
+      <td><p>genome size</p></td>
+    </tr>
+    <tr>
       <th>stderr</th>
       <td><p>Path to stderr file.</p></td>
     </tr>
@@ -240,7 +245,10 @@
 <span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_filter.html'>fastq_quality_filter</a></span>(<span class='no'>FqFile</span>)
 <span class='no'>FqFile_QFCollapsed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_collapser.html'>fastx_collapser</a></span>(<span class='no'>FqFile_QF</span>)
 <span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_QFCollapsed</span>)
-<span class='no'>FqFile_QFColStpClipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile_QFColStripped</span>)</div><div class='output co'>#&gt; <span class='error'>Error in fastx_clipper(FqFile_QFColStripped): File does not exist</span></div><div class='input'><span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStpClipped</span>,<span class='no'>myIndex</span>)</div><div class='output co'>#&gt; <span class='error'>Error in regexpr("\\.([[:alnum:]]+)$", x): object 'FqFile_QFColStpClipped' not found</span></div><div class='input'><span class='no'>bed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bamtobed.html'>bamtobed</a></span>(<span class='no'>bam</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(file): object 'bam' not found</span></div><div class='input'><span class='fu'>homer_peaks</span>(<span class='no'>bed</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqs): object 'bed' not found</span></div></pre>
+<span class='no'>FqFile_QFColStpClipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile_QFColStripped</span>)
+<span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStpClipped</span>,<span class='no'>myIndex</span>)
+<span class='no'>bed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bamtobed.html'>bamtobed</a></span>(<span class='no'>bam</span>)
+<span class='fu'>homer_peaks</span>(<span class='no'>bed</span>)</div><div class='output co'>#&gt; [1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/Sorted_QF_Fox3_Std_small_collapse_rm5_clip.fasta/peaks.txt"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

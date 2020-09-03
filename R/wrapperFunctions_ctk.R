@@ -93,14 +93,16 @@ ctk_stripBarcode <- function(filesToRun,
   #                paste(fileToRun,"_rm5",sep=""))
   # #"temp.rm")
   # temp <- system(cmd2,wait = TRUE,intern = TRUE)
+  if (grepl("fa|fasta|fastq",file_ext(outFile))) {
+    outFile <- outFile
+  } else { outFile <- paste0(outFile,  "fa")}
   args <- c(cmd,
     paste0("-len ",linkerlength),
     paste0("-format ",inputFormat),
     ifelse(!is.null(barcodeStartWith),paste0("-barcode-start-with ",barcodeStartWith),""),
     ifelse(!is.null(barcodeEndWith),paste0("-barcode-end-with ",barcodeEndWith),""),
     fileToRun,
-    gsub("\\.gz$","",outFile)
-  )
+    gsub("\\.gz$","",outFile))
   args <- args[args != ""]
   if(verbose){
     
@@ -118,8 +120,9 @@ ctk_stripBarcode <- function(filesToRun,
                     destname=outFile)
     }
   }
-  return(outFile)
-}
+
+    return(outFile)
+  }
 
 
 #' Wrapper function for ctk's CIMS

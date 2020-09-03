@@ -57,7 +57,7 @@
       <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
     </li>
   </ul>
 </li>
@@ -242,7 +242,7 @@
 <h3 class="hasAnchor">
 <a href="#retrieve-sequence-under-peaks" class="anchor"></a>Retrieve sequence under peaks</h3>
 <p><strong>peaks</strong>: tagged bed file of peak-calling result; <strong>reSize</strong>: resizing peak; <strong>fasta</strong>: refenrece sequence</p>
-<div class="sourceCode"><html><body><pre class="r"><span class="no">myseq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/fetchSequencesForClIP.html">fetchSequencesForClIP</a></span>(<span class="kw">peaks</span> <span class="kw">=</span> <span class="no">tagProfile</span>,<span class="kw">reSize</span> <span class="kw">=</span> <span class="fl">20</span>,<span class="kw">fasta</span> <span class="kw">=</span> <span class="st">"mm10.fa"</span>,<span class="kw">bedHeader</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode"><html><body><pre class="r"><span class="no">myseq</span> <span class="kw">&lt;-</span> <span class="fu">fetchSequencesForClIP</span>(<span class="kw">peaks</span> <span class="kw">=</span> <span class="no">tagProfile</span>,<span class="kw">reSize</span> <span class="kw">=</span> <span class="fl">20</span>,<span class="kw">fasta</span> <span class="kw">=</span> <span class="st">"mm10.fa"</span>,<span class="kw">bedHeader</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 </div>
 <div id="retrieve-peaks-associate-with-particular-motif" class="section level3">
 <h3 class="hasAnchor">

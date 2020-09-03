@@ -20,6 +20,7 @@ homer_peaks(
   minDist = 50,
   size = 10,
   fragLength = 10,
+  genomeSize = NULL,
   stderr = paste0(getwd(), "homer_stats_stderr"),
   stdout = paste0(getwd(), "homer_stats_stdout"),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
@@ -53,6 +54,8 @@ homer_peaks(
 \item{size}{Peak size}
 
 \item{fragLength}{Approximate fragment length,}
+
+\item{genomeSize}{genome size}
 
 \item{stderr}{Path to stderr file.}
 

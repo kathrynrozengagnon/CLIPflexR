@@ -37,7 +37,7 @@ fastx_barcode_splitter(
 \item{verbose}{Print more message to screen.}
 }
 \value{
-Path to unzipped file
+output3, path  to split files
 }
 \description{
 Wrapper function for fastx_collapser

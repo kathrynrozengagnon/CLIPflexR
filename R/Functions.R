@@ -133,6 +133,7 @@ compress <- function(fileToCompress,
   return(fileCompressed)
 }
 
+
 readinpeaks <- function(peaks,verbose=FALSE,sep="\t",header=FALSE){
 if(verbose) message("Reading in peaks....",appendLF = FALSE)
 if(is(peaks,"GRanges")){
@@ -142,8 +143,8 @@ if(is(peaks,"GRanges")){
   if(!file.exists(peaks))stop(paste0("The file ",peaks," does not exist"))
   peaks <- read.table(peaks,sep=sep,header=header)
   if(!header){
-    if(ncol(peaks) == 3)    colnames(peaks) <- c("seqnames","start","end")
-    if(ncol(peaks) >= 6)    colnames(peaks)[1:6] <- c("seqnames","start","end","name","score","strand")
+    if(ncol(peaks) == 3)    colnames(peaks) <- c("seqnames","start","end")  ##not sure about this case
+    if(ncol(peaks) >= 6)    colnames(peaks)[1:6] <- c("peakID", "seqnames","start","end","strand","score")
   }
   peaks <- makeGRangesFromDataFrame(peaks,
                                     keep.extra.columns=TRUE,
@@ -428,7 +429,7 @@ bowtie2_index <- function(genomeFasta,
 #' @param maxMismatches max mismatches
 #' @param seedSubString length of seed substrings
 #' @param threads Number of threads to use
-#' @param report_k number of 
+#' @param report_k number of alignments to report
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)

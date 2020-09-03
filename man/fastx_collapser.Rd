@@ -7,7 +7,7 @@
 \usage{
 fastx_collapser(
   fileTofxc,
-  outFile = file.path(dirname(fileTofxc), gsub("\\\\.fastq|\\\\.fq", "_collapse.fastq",
+  outFile = file.path(dirname(fileTofxc), gsub("\\\\.fastq|\\\\.fq", "_collapse.fasta",
     basename(fileTofxc))),
   fxc = "fastx_collapser",
   qEncoding = 33,

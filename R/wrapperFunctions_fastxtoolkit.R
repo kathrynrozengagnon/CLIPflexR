@@ -321,7 +321,7 @@ fastx_quality_stats <- function(fileTofqs,
 #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
 #' @export
 fastx_collapser <- function(fileTofxc,
-                            outFile=file.path(dirname(fileTofxc),gsub("\\.fastq|\\.fq","_collapse.fastq",basename(fileTofxc))),
+                            outFile=file.path(dirname(fileTofxc),gsub("\\.fastq|\\.fq","_collapse.fasta",basename(fileTofxc))),
                             fxc="fastx_collapser",qEncoding=33,
                             stderr=paste0(getwd(),"fastq_collapse_stderr"),
                             stdout=paste0(getwd(),"fastq_collapse_stdout"),
@@ -379,7 +379,7 @@ fastx_collapser <- function(fileTofxc,
 #' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
-#' @return Path to unzipped file
+#' @return output3, path  to split files
 #' @export
 fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
                                    fbs="fastx_barcode_splitter.pl",
@@ -388,8 +388,6 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
                                    useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                    additionalArgumements=NULL,verbose=FALSE){
                                    
-
-
   cmd <- fbs
   if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
 
@@ -397,22 +395,24 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
 
   prefix <- gsub("QF_|\\.fasta|\\.fastq","",basename(fileTofxc))
 
-  args <- c(
-    paste0("--bcfile ",bcFile),
-    "--bol",
-    paste0("--mismatches ",mismatches),
-    paste0("--prefix '",prefix,"_' ")
-  )
+  cmd2 <- c(paste0("cat ", fileTofxc," | ", cmd, " --bcfile ",bcFile,
+    " --bol --mismatches ",mismatches, " --prefix '",prefix,"_'"))
   if(verbose){      
-    message("fastx_collapser command is ",cmd)
-    message("fastx_collapser arguments are ",paste0(args,sep=" ",collapse=" "))
+    message("fastx_collapser command is ",cmd2)
+    message("fastx_collapser arguments are ",paste0(" --bcfile ",bcFile),
+            "--bol",paste0("--mismatches ",mismatches),
+            paste0(" --prefix '",prefix,"_'"))
   }
   
-  system2(cmd,
-          args,
-          stdout=stdout,
-          stderr=stderr
-  )
+  output <- system(cmd2, wait = TRUE, intern = TRUE)
+  samplestats <- as.data.frame(str_split_fixed(output, "\t",  3))
+  write.table(samplestats, file = paste0(baseDir,  "/sample_stats.txt"), col.names = F, row.names = F, sep = "\t",  quote = F)
+  BCFILE  <- read.delim(bcFile, header = F, sep =  "\t")
+  output2 <- samplestats[samplestats$V1 %in% BCFILE$V1,]
+  output3 <- paste0(baseDir,  "/", output2$V3 ) 
+  return(output3)
+  print(samplestats)
+  }
   
   # cmd2 <- paste0(cmd," ",
   #                " --bcfile ",bcFile," ",
@@ -421,8 +421,8 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
   
   # temp <- system(cmd2,wait = TRUE,intern = TRUE)
 
-  return(NULL)
-}
+ 
+
 
 #' Wrapper function for fastx_clipper
 #'
@@ -445,7 +445,7 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
 #' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
-#' @return Path to unzipped file
+#' @return Path to clipped file
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
@@ -490,4 +490,67 @@ fastx_clipper <- function(fileTofqs,
   return(file_fqs)
 }
 
+#' Wrapper function for fastx_clipper
+#'
+#' Wrapper function for fastx_clipper
+#'
+#'
+#' @docType methods
+#' @name fastx_trimmer
+#' @rdname fastx_trimmer
+#'
+#' @author Kathryn Rozen-Gagnon
+#'
+#' @param fileTofqt File to process
+#' @param outFile Output file path
+#' @param fqt Path to fastx_clipper from FastX toolkit
+#' @param read_start read starting base
+#' @param read_end read ending base
+#' @param stderr Path to stderr file
+#' @param stdout Path to stdout file
+#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param additionalArgumements Additional arguments to be passed to system call
+#' @param verbose Print more message to screen
+#' @return Path to trimmed file
+#' @examples
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
+#' FqFile_clipped <- fastx_clipper(FqFile,length=20)
+#' @export
+fastx_trimmer <- function(fileTofqt,fqt="fastx_trimmer",read_start = 10, read_end = NULL,
+                          outFile=paste0(file_path_sans_ext(fileTofqt),"_trim.",file_ext(fileTofqt)),
+                          stderr=file.path(getwd(),"trimmer_stats_stderr"),
+                          stdout=file.path(getwd(),"trimmer_stats_stdout"),  
+                          useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                          additionalArgumements=NULL,verbose=FALSE){
+  cmd <- fqt
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
+  
+  if(!file.exists(fileTofqt))stop("File does not exist")
+  if (grepl("fa|fasta|fastq",file_ext(outFile))) {
+    outFile <- outFile
+  } else { outFile <- paste0(outFile,  "fa")}
+  
+  file_fqt <- outFile
+  if(file.exists(fileTofqt) & !file.exists(file_fqt)){
+  
+    args <- c(
+      paste0("-f ",read_start),
+      paste0("-o ",file_fqt),
+      paste0("-i ",fileTofqt)
+    )
+    if(verbose){      
+      message("fastx_trimmer command is ",cmd)
+      message("fastx_trimmer arguments are ",paste0(args,sep=" ",collapse=" "))
+    }
+    
+    system2(cmd,
+            args,
+            stdout=stdout,
+            stderr=stderr
+    )
+  }
+  return(file_fqt)
+}
 

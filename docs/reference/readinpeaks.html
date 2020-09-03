@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>make count matrix from bed — countFromBed • CLIPflexR</title>
+<title>Read in peaks — readinpeaks • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 
 
 
-<meta property="og:title" content="make count matrix from bed — countFromBed" />
+<meta property="og:title" content="Read in peaks — readinpeaks" />
 
-<meta property="og:description" content="make count matrix from bed" />
+<meta property="og:description" content="Read in peaks" />
 
 
 
@@ -118,48 +118,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>make count matrix from bed</h1>
+    <h1>Read in peaks</h1>
     
-    <div class="hidden name"><code>countFromBed.Rd</code></div>
+    <div class="hidden name"><code>readinpeaks.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>make count matrix from bed</p>
+    <p>Read in peaks</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>countFromBed</span>(<span class='no'>Bed</span>, <span class='no'>GR</span>, <span class='kw'>notStranded</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>interFeature</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>readinpeaks</span>(<span class='no'>peaks</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>sep</span> <span class='kw'>=</span> <span class='st'>"\t"</span>, <span class='kw'>header</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>Bed</th>
-      <td><p>BED bed files containing mapped reads</p></td>
+      <th>peaks</th>
+      <td><p>peaks.txt files</p></td>
     </tr>
     <tr>
-      <th>GR</th>
-      <td><p>BED file containing genomic ranges over which to count</p></td>
+      <th>sep</th>
+      <td><p>seperator, default is tab</p></td>
     </tr>
     <tr>
-      <th>notStranded</th>
-      <td><p>Stranded or not stranded TRUE (default) or FALSE</p></td>
-    </tr>
-    <tr>
-      <th>interFeature</th>
-      <td><p>Count reads mapping to multiple features TRUE or FALSE (default)</p></td>
+      <th>header</th>
+      <td><p>TRUE or FALSE(default)</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>counting matrix</p>
+    <p>peaks</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>testFasta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hg19Small.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/hg19Small"</div></pre>
+    <pre class="examples"><div class='input'>
+<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>decom</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>testFQ</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>com</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='compress.html'>compress</a></span>(<span class='no'>decom</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

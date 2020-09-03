@@ -93,7 +93,7 @@
       <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
     </li>
   </ul>
 </li>
@@ -240,6 +240,18 @@
           <p><code><a href="bowtie_align.html">bowtie_align()</a></code> </p>
         </td>
         <td><p>Alignment using Rbowtie2</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="CLIP_buildIDX.html">CLIP_buildIDX()</a></code> </p>
+        </td>
+        <td><p>Build index for reference genome</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="CLIP_align.html">CLIP_align()</a></code> </p>
+        </td>
+        <td><p>Align to Genome</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -308,6 +320,12 @@
           <p><code><a href="fastq_quality_trimmer.html">fastq_quality_trimmer()</a></code> </p>
         </td>
         <td><p>Wrapper function for fastq_quality_trimmer</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="fastx_trimmer.html">fastx_trimmer()</a></code> </p>
+        </td>
+        <td><p>Wrapper function for fastx_clipper</p></td>
       </tr>
     </tbody><tbody>
       <tr>
@@ -361,15 +379,57 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="unbam.html">unbam()</a></code> </p>
+        </td>
+        <td><p>Turns a BAM to a FASTA file</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="CLIP_bw2.html">CLIP_bw2()</a></code> </p>
+        </td>
+        <td><p>Build bigwigs</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="readinpeaks.html">readinpeaks()</a></code> </p>
+        </td>
+        <td><p>Read in peaks</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="annotatePeaksWithPatterns.html">annotatePeaksWithPatterns()</a></code> </p>
         </td>
         <td><p>Convert Bam to Bed</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="fetchSequencesForClIP.html">fetchSequencesForClIP()</a></code> </p>
+          <p><code><a href="fetchSequencesForCLIP.html">fetchSequencesForCLIP()</a></code> </p>
         </td>
         <td><p>Retrieve sequences from under peaks/regions</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="revmap_process.html">revmap_process()</a></code> </p>
+        </td>
+        <td><p>Process reads for small RNA counting</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="revmap_count.html">revmap_count()</a></code> </p>
+        </td>
+        <td><p>Reverse map small RNAs to processed reads</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="Ranges_count.html">Ranges_count()</a></code> </p>
+        </td>
+        <td><p>Map unprocessed or processed reads to genome and count small RNAs by location</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="chimera_Process.html">chimera_Process()</a></code> </p>
+        </td>
+        <td><p>Chimera process CLIP data</p></td>
       </tr>
     </tbody>
     </table>

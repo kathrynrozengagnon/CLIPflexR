@@ -21,6 +21,7 @@
 #' @param strand find peaks using tags on both strands or separate
 #' @param minDist minimum distance between peaks
 #' @param size Peak size
+#' @param genomeSize genome size
 #' @param fragLength Approximate fragment length,
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
@@ -54,6 +55,7 @@ homer_peaks <- function(fileTofqs,maketagdir="makeTagDirectory",
                         minDist=50,
                         size=10,
                         fragLength=10,
+                        genomeSize=NULL, 
                         stderr=paste0(getwd(),"homer_stats_stderr"),
                         stdout=paste0(getwd(),"homer_stats_stdout"),
                         useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
@@ -110,8 +112,8 @@ homer_peaks <- function(fileTofqs,maketagdir="makeTagDirectory",
       paste0("-strand ",strand),      
       paste0("-minDist ",minDist),
       paste0("-size ",size),
-      paste0("-fragLength ",fragLength)
-    )
+      paste0("-fragLength ",fragLength),
+      paste0("-gsize ", genomeSize))
     if(verbose){      
       message("findPeaks command is ",cmd)
       message("findPeaks arguments are ",paste0(args,sep=" ",collapse=" "))

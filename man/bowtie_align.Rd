@@ -31,7 +31,7 @@ bowtie_align(
 
 \item{threads}{Number of threads to use}
 
-\item{report_k}{number of}
+\item{report_k}{number of alignments to report}
 }
 \value{
 Path to BAM

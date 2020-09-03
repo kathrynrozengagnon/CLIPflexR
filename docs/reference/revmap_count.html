@@ -38,7 +38,7 @@
 
 <meta property="og:title" content="Reverse map small RNAs to processed reads — revmap_count" />
 
-<meta property="og:description" content="Merge read sequence with bedfile" />
+<meta property="og:description" content="Reverse map small RNAs to processed reads" />
 
 
 
@@ -97,7 +97,7 @@
       <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
     </li>
   </ul>
 </li>
@@ -125,7 +125,7 @@
 
     <div class="ref-description">
     
-    <p>Merge read sequence with bedfile</p>
+    <p>Reverse map small RNAs to processed reads</p>
     
     </div>
 
@@ -145,21 +145,41 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fastas</th>
-      <td><p>FASTA files to reverse map.</p></td>
+      <td><p>FASTA files to reverse map</p></td>
     </tr>
     <tr>
       <th>knownMiRNAs</th>
-      <td><p>knownMiRNAs FASTA file.</p></td>
+      <td><p>FASTA file containing annotated miRNA or other small RNA sequences</p></td>
+    </tr>
+    <tr>
+      <th>bpparam</th>
+      <td><p>TRUE or FALSE (default)</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>print messages, TRUE (default) or FALSE</p></td>
     </tr>
     <tr>
       <th>linkers</th>
       <td><p>contaminating sequences to remove</p></td>
     </tr>
+    <tr>
+      <th>length_max</th>
+      <td><p>maximum length required during fasta processing, integer (default is NULL)</p></td>
+    </tr>
+    <tr>
+      <th>length_min</th>
+      <td><p>minimum length required during fasta processing, integer (default is NULL)</p></td>
+    </tr>
+    <tr>
+      <th>removedups</th>
+      <td><p>remove multiple miRNAs or small RNAs mapping to the same read, TRUE or FALSE (FALSE)</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path</p>
+    <p>BEDs containing counts of</p>
     
 
   </div>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retrieve sequences from under peaks/regions — fetchSequencesForClIP • CLIPflexR</title>
+<title>Retrieve sequences from under peaks/regions — fetchSequencesForCLIP • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,7 +36,7 @@
 
 
 
-<meta property="og:title" content="Retrieve sequences from under peaks/regions — fetchSequencesForClIP" />
+<meta property="og:title" content="Retrieve sequences from under peaks/regions — fetchSequencesForCLIP" />
 
 <meta property="og:description" content="Retrieve sequences from under peaks/regions" />
 
@@ -97,7 +97,7 @@
       <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
     </li>
   </ul>
 </li>
@@ -120,7 +120,7 @@
     <div class="page-header">
     <h1>Retrieve sequences from under peaks/regions</h1>
     
-    <div class="hidden name"><code>fetchSequencesForClIP.Rd</code></div>
+    <div class="hidden name"><code>fetchSequencesForCLIP.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -129,7 +129,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>fetchSequencesForClIP</span>(
+    <pre class="usage"><span class='fu'>fetchSequencesForCLIP</span>(
   <span class='no'>peaks</span>,
   <span class='kw'>resize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>fasta</span>,
@@ -145,7 +145,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>peaks</th>
-      <td><p>ClIP peaks to process.</p></td>
+      <td><p>CLIP peaks to process.</p></td>
     </tr>
     <tr>
       <th>resize</th>
@@ -184,7 +184,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
+<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
 <span class='no'>decom</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>testFQ</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='no'>com</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='compress.html'>compress</a></span>(<span class='no'>decom</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div></pre>
   </div>

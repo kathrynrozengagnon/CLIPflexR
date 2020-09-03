@@ -30,6 +30,8 @@ reference:
     contents:
       - bowtie2_index
       - bowtie_align
+      - CLIP_buildIDX
+      - CLIP_align
   - title: "Homer"
     desc: >
       Homer wrapper functions.
@@ -45,6 +47,7 @@ reference:
       - fastq_quality_filter
       - fastx_clipper
       - fastq_quality_trimmer
+      - fastx_trimmer
   - title: "Compress/Decompress"
     desc: >
       Compress/Decompress utility functions.
@@ -57,8 +60,15 @@ reference:
       Useful R functions for CliP processing/analysos.
     contents:      
       - bamtobed
+      - unbam
+      - CLIP_bw2
       - annotatePeaksWithPatterns
-      - fetchSequencesForClIP
+      - fetchSequencesForCLIP
+      - revmap_process
+      - revmap_count
+      - Ranges_count
+      - chimera_Process
+    
 
 
 

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Process reads for miRNA counting — revmap_process • CLIPflexR</title>
+<title>Process reads for small RNA counting — revmap_process • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,10 +36,9 @@
 
 
 
-<meta property="og:title" content="Process reads for miRNA counting — revmap_process" />
+<meta property="og:title" content="Process reads for small RNA counting — revmap_process" />
 
-<meta property="og:description" content="Process reads for miRNA counting
-Process reads for miRNA counting" />
+<meta property="og:description" content="Process reads for small RNA counting" />
 
 
 
@@ -98,7 +97,7 @@ Process reads for miRNA counting" />
       <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
     </li>
   </ul>
 </li>
@@ -119,92 +118,55 @@ Process reads for miRNA counting" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Process reads for miRNA counting</h1>
+    <h1>Process reads for small RNA counting</h1>
     
     <div class="hidden name"><code>revmap_process.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Process reads for miRNA counting</p>
-<p>Process reads for miRNA counting</p>
+    <p>Process reads for small RNA counting</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>revmap_process</span>(<span class='no'>input</span>, <span class='kw'>linkers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>length_max</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>length_min</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
-
-<span class='fu'>revmap_process</span>(<span class='no'>input</span>, <span class='kw'>linkers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>length_max</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>length_min</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>revmap_process</span>(<span class='no'>fastas</span>, <span class='kw'>linkers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>length_max</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>length_min</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>linkers</th>
-      <td><p>contaminating seqences to remove</p></td>
-    </tr>
-    <tr>
-      <th>fasta</th>
+      <th>fastas</th>
       <td><p>FASTA file to process</p></td>
     </tr>
     <tr>
-      <th>readlength</th>
-      <td><p>length requirements for FASTA</p></td>
+      <th>linkers</th>
+      <td><p>contaminating seqences to remove (default is NULL)</p></td>
     </tr>
     <tr>
-      <th>outfa</th>
-      <td><p>PATH to output FASTA</p></td>
+      <th>length_max</th>
+      <td><p>maximum length required during fasta processing, integer (default is NULL)</p></td>
+    </tr>
+    <tr>
+      <th>length_min</th>
+      <td><p>minimum length required during fasta processing, integer (default is NULL)</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to FASTA file</p>
-<p>Path to FASTA file</p>
+    <p>Processed FASTAS</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/example_bams/KRG121817A_Aag2_Ago1_Exp1A_rm5_rm3.bam"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
-<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/Fox3_Std_small.fq.gz  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in decompress(FqFile_FF, overwrite = TRUE): File does not exist</span></div><div class='input'><span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqs): object 'FqFile' not found</span></div><div class='input'><span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqf): object 'FqFile_clipped' not found</span></div><div class='input'><span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>,<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>FqFile_QF</span>,<span class='st'>".gz"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqf): object 'FqFile_clipped' not found</span></div><div class='input'><span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_fastq2collapse(FqFile_QF, verbose = TRUE): object 'FqFile_QF' not found</span></div><div class='input'><span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_stripBarcode(FqFile_Col, linkerlength = 5): object 'FqFile_Col' not found</span></div><div class='input'><span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStripped</span>,<span class='no'>myIndex</span>)</div><div class='output co'>#&gt; <span class='error'>Error in regexpr("\\.([[:alnum:]]+)$", x): object 'FqFile_QFColStripped' not found</span></div><div class='input'><span class='fu'><a href='unbam.html'>unbam</a></span>(<span class='no'>bam</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicAlignments</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocGenerics</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: parallel</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘BiocGenerics’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:parallel’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,</span>
-#&gt; <span class='message'>    clusterExport, clusterMap, parApply, parCapply, parLapply,</span>
-#&gt; <span class='message'>    parLapplyLB, parRapply, parSapply, parSapplyLB</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    IQR, mad, sd, var, xtabs</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyDuplicated, append, as.data.frame, basename, cbind, colMeans,</span>
-#&gt; <span class='message'>    colnames, colSums, dirname, do.call, duplicated, eval, evalq,</span>
-#&gt; <span class='message'>    Filter, Find, get, grep, grepl, intersect, is.unsorted, lapply,</span>
-#&gt; <span class='message'>    lengths, Map, mapply, match, mget, order, paste, pmax, pmax.int,</span>
-#&gt; <span class='message'>    pmin, pmin.int, Position, rank, rbind, Reduce, rowMeans, rownames,</span>
-#&gt; <span class='message'>    rowSums, sapply, setdiff, sort, table, tapply, union, unique,</span>
-#&gt; <span class='message'>    unsplit, which, which.max, which.min</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: S4Vectors</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: stats4</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘S4Vectors’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    expand.grid</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: IRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomeInfoDb</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: GenomicRanges</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: SummarizedExperiment</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Biobase</span></div><div class='output co'>#&gt; <span class='message'>Welcome to Bioconductor</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    Vignettes contain introductory material; view with</span>
-#&gt; <span class='message'>    'browseVignettes()'. To cite Bioconductor, see</span>
-#&gt; <span class='message'>    'citation("Biobase")', and for packages 'citation("pkgname")'.</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: DelayedArray</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: matrixStats</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘matrixStats’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:Biobase’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    anyMissing, rowMedians</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: BiocParallel</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘DelayedArray’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:matrixStats’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    aperm, apply</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Biostrings</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: XVector</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Attaching package: ‘Biostrings’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:DelayedArray’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    type</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:base’:</span>
-#&gt; <span class='message'></span>
-#&gt; <span class='message'>    strsplit</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: Rsamtools</span></div><div class='output co'>#&gt; <span class='error'>Error in value[[3L]](cond): failed to open BamFile: file(s) do not exist:</span>
-#&gt; <span class='error'>  ''</span></div><div class='input'><span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/example_bams/KRG121817A_Aag2_Ago1_Exp1A_rm5_rm3.bam"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
-<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/Fox3_Std_small.fq.gz  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/clipR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in decompress(FqFile_FF, overwrite = TRUE): File does not exist</span></div><div class='input'><span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqs): object 'FqFile' not found</span></div><div class='input'><span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>)</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqf): object 'FqFile_clipped' not found</span></div><div class='input'><span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>,<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>FqFile_QF</span>,<span class='st'>".gz"</span>))</div><div class='output co'>#&gt; <span class='error'>Error in file.exists(fileTofqf): object 'FqFile_clipped' not found</span></div><div class='input'><span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_fastq2collapse(FqFile_QF, verbose = TRUE): object 'FqFile_QF' not found</span></div><div class='input'><span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='error'>Error in ctk_stripBarcode(FqFile_Col, linkerlength = 5): object 'FqFile_Col' not found</span></div><div class='input'><span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStripped</span>,<span class='no'>myIndex</span>)</div><div class='output co'>#&gt; <span class='error'>Error in regexpr("\\.([[:alnum:]]+)$", x): object 'FqFile_QFColStripped' not found</span></div><div class='input'>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/xxbam"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)
+<span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>)
+<span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>,<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>FqFile_QF</span>,<span class='st'>".gz"</span>))
+<span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq2collapse.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq2collapse.pl  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/QF_FF_Fox3_Std_small_clip.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/Collapsed_QF_FF_Fox3_Std_small_clip.fq </span></div><div class='input'><span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)
+<span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStripped</span>,<span class='no'>myIndex</span>)
+<span class='fu'><a href='unbam.html'>unbam</a></span>(<span class='no'>bam</span>)</div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa_unmapped.fa"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Merge read sequence with bedfile — chimera_process • CLIPflexR</title>
+<title>Chimera process CLIP data — chimera_Process • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 
 
 
-<meta property="og:title" content="Merge read sequence with bedfile — chimera_process" />
+<meta property="og:title" content="Chimera process CLIP data — chimera_Process" />
 
-<meta property="og:description" content="Merge read sequence with bedfile" />
+<meta property="og:description" content="Chimera process CLIP data" />
 
 
 
@@ -97,7 +97,7 @@
       <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
-      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using ClipR</a>
+      <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
     </li>
   </ul>
 </li>
@@ -118,14 +118,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Merge read sequence with bedfile</h1>
+    <h1>Chimera process CLIP data</h1>
     
-    <div class="hidden name"><code>chimera_process.Rd</code></div>
+    <div class="hidden name"><code>chimera_Process.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Merge read sequence with bedfile</p>
+    <p>Chimera process CLIP data</p>
     
     </div>
 
@@ -136,17 +136,6 @@
   <span class='no'>exclude</span>,
   <span class='kw'>bpparam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)
-
-<span class='fu'>Ranges_count</span>(
-  <span class='no'>fastas</span>,
-  <span class='no'>miRNA_ranges</span>,
-  <span class='no'>genomeIndex</span>,
-  <span class='kw'>linkers</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>length_max</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>length_min</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>bpparam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -154,11 +143,11 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>bams</th>
-      <td><p>BAM files to process.</p></td>
+      <td><p>BAM files mapped to the genome to process</p></td>
     </tr>
     <tr>
       <th>knownMiRNAs</th>
-      <td><p>knownMiRNAs FASTA file.</p></td>
+      <td><p>FASTA file containing annotated miRNA or other small RNA sequences</p></td>
     </tr>
     <tr>
       <th>genomeIndex</th>
@@ -166,34 +155,21 @@
     </tr>
     <tr>
       <th>exclude</th>
-      <td><p>Names of miRNAs or sequences to remove, character vector.</p></td>
+      <td><p>Names of miRNAs or small RNA sequences to remove, character vector</p></td>
     </tr>
     <tr>
-      <th>fastas</th>
-      <td><p>FASTA files to process.</p></td>
+      <th>bpparam</th>
+      <td><p>TRUE or FALSE (default)</p></td>
     </tr>
     <tr>
-      <th>miRNA_ranges</th>
-      <td><p>knownMiRNAs FASTA file.</p></td>
-    </tr>
-    <tr>
-      <th>linkers</th>
-      <td><p>contaminating sequences to remove</p></td>
-    </tr>
-    <tr>
-      <th>length_max</th>
-      <td><p>maximum length required during fasta processing</p></td>
-    </tr>
-    <tr>
-      <th>length_min</th>
-      <td><p>minimum length required during fasta processing</p></td>
+      <th>verbose</th>
+      <td><p>print messages, TRUE (default) or FALSE</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Path</p>
-<p>Path</p>
     
 
   </div>
