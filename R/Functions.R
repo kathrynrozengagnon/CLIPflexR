@@ -925,6 +925,9 @@ unbam <- function(bam,outfa=NULL){
 #' @param verbose print messages, TRUE (default) or FALSE 
 #' @param bpparam TRUE or FALSE (default)
 #' @return Path 
+#' @examples 
+#' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+#' testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 #' @import GenomicAlignments BiocParallel stringr
 #' @importFrom tibble rownames_to_column
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
