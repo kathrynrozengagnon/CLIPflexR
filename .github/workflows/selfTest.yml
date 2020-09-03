@@ -36,7 +36,6 @@ jobs:
           BiocManager::install("BiocCheck")
           remotes::install_cran("pkgdown")
         shell: Rscript {0}
-      - run: brew install pandoc 
       - name: Install CondaSys dependencies
         run: |
           devtools::install_github("RockefellerUniversity/CondaSysReqs",upgrade = "never")
