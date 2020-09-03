@@ -24,7 +24,7 @@
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -154,7 +154,7 @@ ctk_stripBarcode <- function(filesToRun,
 #' @param verbose Print more message to screen.
 #' @examples
 #' \dontrun{
-#' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="clipR")
+#' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 #' delBed <- ctk_getMutationType(mutations)
 #' ctk_cims("~/Downloads/uniq_tags_mutations/Fox.pool.tag.uniq.rgb.bed",delBed,verbose=TRUE)
 #' }
@@ -283,7 +283,7 @@ ctk_cims <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
 #' FqFile_QF <- fastq_quality_filter(FqFile)
 #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
@@ -392,7 +392,7 @@ ctk_cits <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="clipR")
+#' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 #' ctk_getMutationType(mutations)
 #' @return Path to unzipped file
 #' @export
@@ -492,7 +492,7 @@ ctk_getMutationType <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' @return Path to unzipped file
 #' @export
@@ -603,7 +603,7 @@ ctk_fastqFilter <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -720,9 +720,9 @@ ctk_fastq2collapse <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -861,9 +861,9 @@ ctk_parseAlignment <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -993,9 +993,9 @@ ctk_tag2collapse <- function(filesToRun,
 #' @param verbose Print more message to screen.
 #' @examples
 #' \dontrun{
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -1004,7 +1004,7 @@ ctk_tag2collapse <- function(filesToRun,
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
-#' mutationFile <- system.file("extdata/Fox3_Std_small_mutation.txt",package="clipR")
+#' mutationFile <- system.file("extdata/Fox3_Std_small_mutation.txt",package="CLIPflexR")
 #' parsedAlignment <- ctk_parseAlignment(bam,mutationFile=mutationFile)
 #' uniqueTags <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName=FALSE,verbose=TRUE)
@@ -1118,9 +1118,9 @@ ctk_joinWrapper <- function(file1,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -1261,9 +1261,9 @@ ctk_bed2rgb <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -1425,9 +1425,9 @@ ctk_tag2profile <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
