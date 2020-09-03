@@ -526,6 +526,7 @@ bowtie_align <- function(fq,index,
 #' bowtie2_index(testFasta)
 #' @import GenomicRanges GenomicAlignments
 #' @importMethodsFrom SummarizedExperiment assay
+#' @importMethodsFrom rtracklayer import.bed
 #' @importMethodsFrom GenomeInfoDb seqlengths "seqlengths<-" seqlevels
 #' @return counting matrix
 #' @export
