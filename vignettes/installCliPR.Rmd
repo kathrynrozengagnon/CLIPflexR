@@ -26,7 +26,7 @@ For more information on the processing of data using CLIPflexR you can see our [
 
 ### Set GITHUB PAT ... not needed in future
 
-As CLIPflexR is not public yet you will need add a GITHUB_PAT to your environment to install. 
+As CLIPflexR is not public yet you will need to add a GITHUB_PAT to your environment to install. 
 
 You can do this by visiting the settings -> Developer Settings ->  Personal access tokens and creating a personal access token. Copy the long string of your personal access token to below where **MYGITHUBPAT** is.
 
