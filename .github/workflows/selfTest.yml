@@ -41,7 +41,7 @@ jobs:
           devtools::install_github("RockefellerUniversity/CondaSysReqs",upgrade = "never")
           devtools::install_github("kathrynrozengagnon/CLIPflexR")
           CondaSysReqs::install_CondaSysReqs("CLIPflexR")
-          clipR::install_ctk()
+          CLIPflexR::install_ctk()
         shell: Rscript {0}
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")

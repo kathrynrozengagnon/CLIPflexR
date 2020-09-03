@@ -61,7 +61,8 @@ FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 bam <- bowtie_align(FqFile_QFColStripped,myIndex)
 parsedAlignment <- ctk_parseAlignment(bam)
-myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
+myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+weightInName=FALSE,verbose=TRUE)
 ctk_bed2rgb(myCollaped,col="128,0,0")
 }
 \author{

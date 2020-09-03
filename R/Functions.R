@@ -1,3 +1,7 @@
+if(getRversion() >= "2.15.1")  utils::globalVariables(c("seq","Seq","SeqExtended","centerOfPattern",
+                                                        "siteOfPattern","originalPeak","extendedPeak"))
+
+
 file_path_sans_ext <- function (x, compression = FALSE) 
 {
   if (compression) 
@@ -40,6 +44,8 @@ file_ext <- function (x)
 #' @return Path 
 #' @import GenomicAlignments
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
+#' @importFrom methods is
+#' @importFrom stats setNames
 #' @export
 bamtobed <- function(file,
                      outFile=gsub("\\.bam",".bed",file),
@@ -263,7 +269,7 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
   
   
   if(verbose) message("Aligning seqlevels across peaks and FASTA...",appendLF = FALSE)
-  fastaLens <- FaFile(fasta) %>% seqlengths
+  fastaLens <- seqlengths(FaFile(fasta))
   sees <- seqlevels(peaks)
   seqlengths(peaks) <- fastaLens[match(sees,names(fastaLens),incomparables = 0)]
   if(verbose) message("...done")
@@ -518,6 +524,8 @@ bowtie_align <- function(fq,index,
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' bowtie2_index(testFasta)
 #' @import GenomicRanges GenomicAlignments
+#' @importMethodsFrom SummarizedExperiment assay
+#' @importMethodsFrom GenomeInfoDb seqlengths "seqlengths<-" seqlevels
 #' @return counting matrix
 #' @export
 countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){

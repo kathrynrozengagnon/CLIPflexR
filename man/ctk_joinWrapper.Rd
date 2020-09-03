@@ -67,9 +67,10 @@ FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 bam <- bowtie_align(FqFile_QFColStripped,myIndex)
-mutationFile <- "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/clipR/extdata/Fox3_Std_small_mutation.txt"
+mutationFile <- system.file("extdata/Fox3_Std_small_mutation.txt",package="clipR")
 parsedAlignment <- ctk_parseAlignment(bam,mutationFile=mutationFile)
-uniqueTags <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
+uniqueTags <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+weightInName=FALSE,verbose=TRUE)
 ctk_joinWrapper(mutationFile,uniqueTags,4,4,"N",verbose=TRUE)
 }
 }
