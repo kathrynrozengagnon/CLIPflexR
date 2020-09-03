@@ -33,6 +33,10 @@ Path
 \description{
 Chimera process CLIP data
 }
+\examples{
+testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
+}
 \author{
 Kathryn Rozen-Gagnon
 }

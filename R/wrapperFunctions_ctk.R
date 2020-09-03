@@ -24,7 +24,7 @@
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -33,7 +33,7 @@
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
 #' @return Path to unzipped file
-#' @import reticulate
+#' @importFrom reticulate miniconda_path
 #' @export
 ctk_stripBarcode <- function(filesToRun,
                              outFile=paste(file_path_sans_ext(fileToRun),"_rm5.",file_ext(fileToRun),sep=""),
@@ -157,7 +157,7 @@ ctk_stripBarcode <- function(filesToRun,
 #' @param verbose Print more message to screen.
 #' @examples
 #' \dontrun{
-#' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="clipR")
+#' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 #' delBed <- ctk_getMutationType(mutations)
 #' ctk_cims("~/Downloads/uniq_tags_mutations/Fox.pool.tag.uniq.rgb.bed",delBed,verbose=TRUE)
 #' }
@@ -286,7 +286,7 @@ ctk_cims <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
 #' FqFile_QF <- fastq_quality_filter(FqFile)
 #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
@@ -395,7 +395,7 @@ ctk_cits <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="clipR")
+#' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 #' ctk_getMutationType(mutations)
 #' @return Path to unzipped file
 #' @export
@@ -495,7 +495,7 @@ ctk_getMutationType <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' @return Path to unzipped file
 #' @export
@@ -606,7 +606,7 @@ ctk_fastqFilter <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -723,9 +723,9 @@ ctk_fastq2collapse <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -864,9 +864,9 @@ ctk_parseAlignment <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -897,18 +897,7 @@ ctk_tag2collapse <- function(filesToRun,
                                stdout=paste0(getwd(),"stripBarcode_stdout"),
                                useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                additionalArgumements=NULL,verbose=FALSE){
-  # args <- c(cmd,
-  #           ifelse(keepMaxScore,paste0("--keep-max-score ",keepMaxScore),""),
-  #           ifelse(keepTagName,paste0("--keep-tag-name ",keepTagName),""),
-  #           ifelse(!is.null(outputSeqError),paste0("--output-seq-error ",outputSeqError),""),
-  #           ifelse(!is.null(em),paste0("-EM ",em),paste0("-EM -1")),
-  #           ifelse(!is.null(bigFile),paste0("-big  "),""),
-  #           ifelse(!is.null(weight),paste0("-weight  "),""),
-  #           ifelse(!is.null(randomBarcode),paste0("--random-barcode  "),""),
-  #           ifelse(!is.null(weightInName),paste0("--weight-in-name  "),""),
-  #           fileToRun,
-  #           outFile)
-  # 
+
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
   cmd <- sb
@@ -947,29 +936,6 @@ ctk_tag2collapse <- function(filesToRun,
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
   
-  # Usage: tag2collapse.pl [options] <in.bed> <out.bed>
-  #   <in.bed> : gz file acceptable
-  # [Input options]
-  # -big                        : set when the input file is big
-  # -weight                     : consider the weight of each tag
-  # --weight-in-name            : find weight in name
-  # 
-  # [EM options]
-  # --random-barcode            : random barcode exists, no collapse for different barcodes
-  # -EM        [int]            : EM threshold to infer reliability of each collapsed read (when have random linker, -1=no EM)
-  # --seq-error-model  [string] : sequencing error model to use (alignment|[em-local]|em-global|fix=0.01)
-  # --output-seq-error [file]   : output sequencing errors estimated by the EM algorithm
-  # 
-  # [Output options]
-  # --keep-max-score            : keep the tag with the most weight (instead of the longest one) as representative
-  # --keep-tag-name             : do not change tag name (no extra information)
-  # 
-  # [Other options]
-  # -c      [string]            : cache dir (./tag2collapse.pl_1589296579_0.387752698575245)
-  # --keep-cache                : keep cache when the job is done
-  # -d                          : debug (on|[off])
-  # -v                          : verbose (on|[off])
-  # th
   args <- c(cmd,
             ifelse(keepMaxScore,paste0("--keep-max-score "),""),
             ifelse(keepTagName,paste0("--keep-tag-name "),""),
@@ -1030,9 +996,9 @@ ctk_tag2collapse <- function(filesToRun,
 #' @param verbose Print more message to screen.
 #' @examples
 #' \dontrun{
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -1041,9 +1007,10 @@ ctk_tag2collapse <- function(filesToRun,
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
-#' mutationFile <- "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/clipR/extdata/Fox3_Std_small_mutation.txt"
+#' mutationFile <- system.file("extdata/Fox3_Std_small_mutation.txt",package="CLIPflexR")
 #' parsedAlignment <- ctk_parseAlignment(bam,mutationFile=mutationFile)
-#' uniqueTags <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
+#' uniqueTags <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+#' weightInName=FALSE,verbose=TRUE)
 #' ctk_joinWrapper(mutationFile,uniqueTags,4,4,"N",verbose=TRUE)
 #' }
 #' @return Path to unzipped file
@@ -1084,7 +1051,7 @@ ctk_joinWrapper <- function(file1,
     python <- file.path(getOption("CLIPflexR.condaEnv"),"bin",python)
   }
   
-  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(system.file("extdata/",package="clipR"),cmd),sep = " ")
+  if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(system.file("extdata/",package="CLIPflexR"),cmd),sep = " ")
 
   fileToRun <- file1
   
@@ -1154,9 +1121,9 @@ ctk_joinWrapper <- function(file1,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -1166,7 +1133,8 @@ ctk_joinWrapper <- function(file1,
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
 #' parsedAlignment <- ctk_parseAlignment(bam)
-#' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
+#' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+#' weightInName=FALSE,verbose=TRUE)
 #' ctk_bed2rgb(myCollaped,col="128,0,0")
 #' @return Path to unzipped file
 #' @export
@@ -1296,9 +1264,9 @@ ctk_bed2rgb <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -1308,7 +1276,8 @@ ctk_bed2rgb <- function(filesToRun,
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
 #' parsedAlignment <- ctk_parseAlignment(bam)
-#' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
+#' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+#' weightInName=FALSE,verbose=TRUE)
 #' myrgbBed <- ctk_bed2rgb(myCollaped,col="128,0,0")
 #' ctk_tag2profile(myrgbBed,verbose=TRUE)
 #' @return Path to unzipped file
@@ -1338,24 +1307,7 @@ ctk_tag2profile <- function(filesToRun,
                         stdout=paste0(getwd(),"stripBarcode_stdout"),
                         useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                         additionalArgumements=NULL,verbose=FALSE){
-  # args <- c(cmd,
-  #           ifelse(bigFile,"-big ",""),
-  #           ifelse(weight,"-weight ",""),
-  #           ifelse(weightAvg,"-weight-avg ",""),
-  #           ifelse(ss,"-ss ",""),
-  #           ifelse(exact,"-exact ",""),
-  #           ifelse(nz,"-nz ",""),
-  #           ifelse(!is.null(ext5),paste0("-ext5 ",ext5),""),
-  #           ifelse(!is.null(ext3),paste0("-ext3 ",ext3),""),
-  #           ifelse(!is.null(chromLen),paste0("--chrLen ",chromLen),""),
-  #           ifelse(!is.null(regions),paste0("--region ",region),""),
-  #           paste0("-minBlockSize ",minBlockSize),
-  #           paste0("-w ",windowSize),
-  #           paste0("-s ",stepSize),
-  #           paste0("-of ",outputFormat),
-  #           paste0("-normalize ",normalization),
-  #           fileToRun,
-  #           outFile)
+
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -1476,9 +1428,9 @@ ctk_tag2profile <- function(filesToRun,
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -1488,7 +1440,8 @@ ctk_tag2profile <- function(filesToRun,
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
 #' parsedAlignment <- ctk_parseAlignment(bam)
-#' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
+#' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+#' weightInName=FALSE,verbose=TRUE)
 #' myrgbBed <- ctk_bed2rgb(myCollaped,col="128,0,0")
 #' ctk_tag2profile(myrgbBed,verbose=TRUE)
 #' @return Path to unzipped file

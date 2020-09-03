@@ -52,7 +52,7 @@ Path to unzipped file
 Wrapper function for ctk's getMutationType
 }
 \examples{
-mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="clipR")
+mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 ctk_getMutationType(mutations)
 }
 \author{

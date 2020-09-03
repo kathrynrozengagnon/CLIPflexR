@@ -94,9 +94,9 @@ Path to unzipped file
 Wrapper function for ctk's bed2rgb
 }
 \examples{
-testFasta <- system.file("extdata/hg19Small.fa",package="clipR")
+testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 myIndex <- bowtie2_index(testFasta)
-testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="clipR")
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 FqFile_clipped <- fastx_clipper(FqFile,length=20)
@@ -106,7 +106,8 @@ FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 bam <- bowtie_align(FqFile_QFColStripped,myIndex)
 parsedAlignment <- ctk_parseAlignment(bam)
-myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
+myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+weightInName=FALSE,verbose=TRUE)
 myrgbBed <- ctk_bed2rgb(myCollaped,col="128,0,0")
 ctk_tag2profile(myrgbBed,verbose=TRUE)
 }
