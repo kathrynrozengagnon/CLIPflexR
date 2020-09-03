@@ -517,7 +517,7 @@ bowtie_align <- function(fq,index,
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' bowtie2_index(testFasta)
-#' @import rtracklayer GenomicRanges GenomicAlignments
+#' @import GenomicRanges GenomicAlignments
 #' @return counting matrix
 #' @export
 countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
@@ -692,49 +692,6 @@ CLIP_align <- function(samID,res_dir=NULL,genome_idx=NULL,aligner=NULL,samSheet=
     }else{print("The index is not built by hisat2.")}
   }else{print("Please assign an available aligner: bowtie2, subread, subjunc, bwa, and hisat2")}}
 
-#' Install ctk pipeline
-#'
-#' Install ctk pipeline
-#'
-#'
-#' @docType methods
-#' @name install_ctk
-#' @rdname install_ctk
-#'
-#' @author Kathryn Rozen-Gagnon Thomas Carroll Ji-Dung Luo
-#'
-#' @param path Path to where to install ctk and czplib
-#' @import utils
-#' @examples 
-#' install_ctk()
-#' getOption("CLIPflexR.condaEnv")
-#' getOption("CLIPflexR.ctk")
-#' getOption("CLIPflexR.czplib")
-#' @export
-install_ctk <- function(path=NULL){
-  tempdir <- tempdir()
-  miniCondaPath <- miniconda_path()
-  miniCondaPathExists <- miniconda_exists(miniCondaPath)
-  clipr <- file.path(miniCondaPath,"envs",paste0("CLIPflexR","_",packageVersion("CLIPflexR")))
-  if(dir.exists(clipr)) path <- clipr
-  if(is.null(path) & !is.null(getOption("CLIPflexR.condaEnv"))) path <- clipr
-  if(is.null(path) & is.null(getOption("CLIPflexR.condaEnv"))) path <- getwd()
-  download.file(url = "https://github.com/chaolinzhanglab/czplib/archive/master.zip",
-                destfile = file.path(tempdir,"czplib-master.zip"))
-  download.file(url = "https://github.com/chaolinzhanglab/ctk/archive/master.zip",
-                destfile = file.path(tempdir,"ctk-master.zip"))
-  utils::unzip(file.path(tempdir,"czplib-master.zip"),exdir = file.path(tempdir))
-  utils::unzip(file.path(tempdir,"ctk-master.zip"),exdir = file.path(tempdir))
-  czplipCopy <- list.files(file.path(tempdir,"czplib-master"),recursive=TRUE)
-  ctkCopy <- list.files(file.path(tempdir,"ctk-master"),recursive=TRUE)
-  dir.create(file.path(path,"lib","czplib"),recursive = TRUE,showWarnings = FALSE)
-  dir.create(file.path(path,"bin","ctk"),recursive = TRUE,showWarnings = FALSE)
-  file.copy(file.path(tempdir,"czplib-master",czplipCopy),file.path(path,"lib","czplib"),recursive = TRUE,copy.mode = TRUE)
-  file.copy(file.path(tempdir,"ctk-master",ctkCopy),file.path(path,"bin","ctk"),recursive = TRUE,copy.mode = TRUE)
-  Sys.chmod(dir(file.path(path,"lib","czplib"),include.dirs = TRUE,recursive = TRUE,full.names = TRUE),mode = "0755")
-  Sys.chmod(dir(file.path(path,"bin","ctk"),include.dirs = TRUE,recursive = TRUE,full.names = TRUE),mode = "0755")
-}
-
 #' Process reads for small RNA counting
 #'
 #' Process reads for small RNA counting
@@ -763,7 +720,7 @@ install_ctk <- function(path=NULL){
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
 #' unbam(bam)
 #' @return Processed FASTAS
-#' @import reticulate Biostrings IRanges
+#' @import Biostrings IRanges
 #' @export
 revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min = NULL) { 
   fa <- readDNAStringSet(fastas, format = "fasta", nrec = -1L)
@@ -808,6 +765,7 @@ revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min
 #' @return BEDs containing counts of  
 #' @import GenomicAlignments BiocParallel stringr Biostrings
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
+#' @importFrom rtracklayer import
 #' @export
 revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=TRUE, linkers = NULL, length_max = NULL, length_min = NULL, removedups =FALSE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
@@ -934,7 +892,7 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
 #' unbam(bam)
 #' @return Path to FASTA file
-#' @import reticulate GenomicAlignments Biostrings
+#' @import GenomicAlignments Biostrings
 #' @export
 unbam <- function(bam,outfa=NULL){
   inBAM <- scanBam(bam,param=ScanBamParam(what = c("qname","seq"),flag = scanBamFlag(isUnmappedQuery = TRUE)))
@@ -967,8 +925,10 @@ unbam <- function(bam,outfa=NULL){
 #' @param verbose print messages, TRUE (default) or FALSE 
 #' @param bpparam TRUE or FALSE (default)
 #' @return Path 
-#' @import GenomicAlignments BiocParallel purrr stringr tibble
+#' @import GenomicAlignments BiocParallel stringr
+#' @importFrom tibble rownames_to_column
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
+#' @importMethodsFrom purrr map2
 #' @export
 chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,verbose=TRUE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()

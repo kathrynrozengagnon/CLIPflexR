@@ -33,7 +33,7 @@
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
 #' @return Path to unzipped file
-#' @import reticulate
+#' @importFrom reticulate miniconda_path
 #' @export
 ctk_stripBarcode <- function(filesToRun,
                              outFile=paste(file_path_sans_ext(fileToRun),"_rm5.",file_ext(fileToRun),sep=""),
