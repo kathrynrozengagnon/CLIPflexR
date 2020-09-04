@@ -15,14 +15,14 @@
 #' @param format Input format
 #' @param createSingleTagsTSV Create a single tags.tsv file for all "chromosomes"
 #' @param tagdir Name of Tag Directory
-#' @param style Type of Homer peak calling
+#' @param style Type of Homer peak calling, factor | histone | groseq | tss | dnase | super | mCs
 #' @param foldEnrichmentOverLocal fold enrichment over local tag count
 #' @param localSize region to check for local tag enrichment
-#' @param strand find peaks using tags on both strands or separate
+#' @param strand find peaks using tags on both | separate strands
 #' @param minDist minimum distance between peaks
 #' @param size Peak size
-#' @param genomeSize genome size
-#' @param fragLength Approximate fragment length,
+#' @param genomeSize genome size, NULL (default) = 2E9, applicable for human or mouse), or set for your genome
+#' @param fragLength Approximate fragment length
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs

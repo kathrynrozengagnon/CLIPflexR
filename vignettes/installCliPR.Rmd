@@ -18,7 +18,7 @@ baseDir <- "/Users/thomascarroll/Desktop/Projects/brc/clipRUTest/"
 
 The CLIPflexR package provides a set of its functions for the processing and analysis of differing forms of ClIP data for use within the R framework.
 
-For more information on the processing of data using CLIPflexR you can see our [quickstart](StandardandBrdU_Processing_CTK_small.html) and full [vignettes](StandardandBrdU_Processing_CTK.html).
+For more information on the processing of data using CLIPflexR you can see our [CTK](StandardandBrdU_Processing_CTK.html) and [CLIPflexR](Processing_to_matrix.html) vignettes
 
 
 ## Installation

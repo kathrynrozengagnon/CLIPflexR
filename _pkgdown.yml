@@ -57,10 +57,11 @@ reference:
       - bzip2
   - title: "R utility functions"
     desc: >
-      Useful R functions for CliP processing/analysos.
+      Useful R functions for CLIP processing/analyses.
     contents:      
       - bamtobed
       - unbam
+      - countFromBed
       - CLIP_bw2
       - annotatePeaksWithPatterns
       - fetchSequencesForCLIP

@@ -94,7 +94,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
+    </li>
+    <li>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -209,9 +212,9 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>testFasta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hg19Small.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
+<span class='no'>testFasta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hg19Small.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
 <span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)
-<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"clipR"</span>)
+<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
 <span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)
@@ -220,9 +223,10 @@
 <span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)
 <span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStripped</span>,<span class='no'>myIndex</span>)
-<span class='no'>mutationFile</span> <span class='kw'>&lt;-</span> <span class='st'>"/Library/Frameworks/R.framework/Versions/3.6/Resources/library/clipR/extdata/Fox3_Std_small_mutation.txt"</span>
+<span class='no'>mutationFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small_mutation.txt"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
 <span class='no'>parsedAlignment</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_parseAlignment.html'>ctk_parseAlignment</a></span>(<span class='no'>bam</span>,<span class='kw'>mutationFile</span><span class='kw'>=</span><span class='no'>mutationFile</span>)
-<span class='no'>uniqueTags</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_tag2collapse.html'>ctk_tag2collapse</a></span>(<span class='no'>parsedAlignment</span>,<span class='kw'>weight</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>randomBarcode</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>weightInName</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>uniqueTags</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_tag2collapse.html'>ctk_tag2collapse</a></span>(<span class='no'>parsedAlignment</span>,<span class='kw'>weight</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>randomBarcode</span><span class='kw'>=</span><span class='fl'>FALSE</span>,
+<span class='kw'>weightInName</span><span class='kw'>=</span><span class='fl'>FALSE</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='fu'>ctk_joinWrapper</span>(<span class='no'>mutationFile</span>,<span class='no'>uniqueTags</span>,<span class='fl'>4</span>,<span class='fl'>4</span>,<span class='st'>"N"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 }</div></pre>
   </div>
@@ -236,7 +240,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
 </div>
 
 <div class="pkgdown">

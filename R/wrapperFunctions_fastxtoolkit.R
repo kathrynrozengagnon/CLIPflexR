@@ -179,8 +179,8 @@ fastq_quality_trimmer <- function(fileTofqf,
                                  fqf="fastq_quality_trimmer",
                                  qualityThreshold=5,
                                  minimumLength=20,
-                                 stderr=paste0(getwd(),"fastq_quality_filter_stderr"),
-                                 stdout=paste0(getwd(),"fastq_quality_filter_stdout"),
+                                 stderr=paste0(getwd(),"fastq_quality_trimmer_stderr"),
+                                 stdout=paste0(getwd(),"fastq_quality_trimmer_stdout"),
                                  useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
                                  additionalArgumements=NULL,
                                  verbose=FALSE){
@@ -359,9 +359,9 @@ fastx_collapser <- function(fileTofxc,
 
 
 
-#' Wrapper function for fastx_collapser
+#' Wrapper function for fastx_barcode_splitter
 #'
-#' Wrapper function for fastx_collapser
+#' Wrapper function for fastx_barcode_splitter
 #'
 #'
 #' @docType methods
@@ -373,13 +373,13 @@ fastx_collapser <- function(fileTofxc,
 #' @param fileTofxc File to process.
 #' @param bcFile Barcode file
 #' @param mismatches Number of mismatches allowed.
-#' @param fbs Path to fastx_barcode_splitter.pl from FastX toolkit
+#' @param fbs Path to fastx_barcode_splitter.pl from FASTX toolkit
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
-#' @return output3, path  to split files
+#' @return output3, path to split files
 #' @export
 fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
                                    fbs="fastx_barcode_splitter.pl",
@@ -406,7 +406,7 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
   
   output <- system(cmd2, wait = TRUE, intern = TRUE)
   samplestats <- as.data.frame(str_split_fixed(output, "\t",  3))
-  write.table(samplestats, file = paste0(baseDir,  "/sample_stats.txt"), col.names = F, row.names = F, sep = "\t",  quote = F)
+  write.table(samplestats, file = paste0(baseDir, "/",gsub(".txt",  "_stats.txt", basename(bcFile))), col.names = F, row.names = F, sep = "\t",  quote = F)
   BCFILE  <- read.delim(bcFile, header = F, sep =  "\t")
   output2 <- samplestats[samplestats$V1 %in% BCFILE$V1,]
   output3 <- paste0(baseDir,  "/", output2$V3 ) 

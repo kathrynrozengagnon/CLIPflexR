@@ -7,34 +7,31 @@ output: md_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<!-- badges: start -->
-  [![R build status](https://github.com/ThomasCarroll/clipr/workflows/R-CMD-check/badge.svg)](https://github.com/ThomasCarroll/clipr/actions)
-<!-- badges: end -->
-
-
 ## Readme
 
-**clipR** is a R wrapper for the [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) and additional functions to call other external libraries into an R environment.
+**CLIPflexR** is a R wrapper for the [**CLIP Tool Kit  (CTK)**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) and additional functions to call other external libraries into an R environment.
 
-**clipR** makes use of the **CondaSysReqs** library to install conda dependencies to your machine within a conda environment using the reticulate libraries.
+**CLIPflexR** makes use of the **CondaSysReqs** library to install conda dependencies to your machine within a conda environment using the reticulate libraries.
 
-The [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) is installed as part of the **clipR** **install_ctk()** function.
+The [**CTK toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) is installed as part of the **CLIPflexR** **install_ctk()** function.
 
-### How to install clipR
+### How to install CLIPflexR
 ```{r,echo=TRUE,eval=FALSE}
 install.packages("devtools")
-devtools::install_github("RockefellerUniversity/clipR")
+devtools::install_github("kathrynrozengagnon/CLIPflexR")
 devtools::install_github("RockefellerUniversity/CondaSysReqs")
-CondaSysReqs::install_CondaSysReqs("clipR")
-clipR::install_ctk()
+CondaSysReqs::install_CondaSysReqs("CLIPflexR")
+CLIPflexR::install_ctk()
 ```
 
 ## Path to Conda tools and Ctk/czplib
 
 ```{r,echo=TRUE,eval=TRUE}
-library(clipR)
-getOption("clipr.condaEnv")
-getOption("clipr.ctk")
-getOption("clipr.czplib")
+library(CLIPflexR)
+getOption("CLIPflexR.condaEnv")
+getOption("CLIPflexR.ctk")
+getOption("CLIPflexR.czplib")
 ```
 
+##See our vignettes for [installing CLIPflexR](installCliPR.html) processing CLIP data using [CTK](StandardandBrdU_Processing_CTK.html) or [CLIPflexR](Processing_to_matrix.html), or mix and match!
+##Please bear with us while we update examples and vignettes, coming soon....

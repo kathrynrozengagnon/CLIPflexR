@@ -3,7 +3,7 @@
 \docType{methods}
 \name{compress}
 \alias{compress}
-\title{Wrapper function for Compress}
+\title{Compress}
 \usage{
 compress(
   fileToCompress,

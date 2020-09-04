@@ -3,7 +3,7 @@
 \docType{methods}
 \name{unbam}
 \alias{unbam}
-\title{Turns a BAM to a FASTA file}
+\title{unbam}
 \usage{
 unbam(bam, outfa = NULL)
 }

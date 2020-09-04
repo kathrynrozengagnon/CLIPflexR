@@ -42,7 +42,7 @@ ctk_fastqFilter(
 
 \item{maxN}{Maximum number of bases below qsFilter}
 
-\item{outputFormat}{Output format (fastq or fasta)}
+\item{outputFormat}{Output format (fastq | fasta)}
 
 \item{stderr}{Path to stdout file.}
 

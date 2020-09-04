@@ -3,7 +3,7 @@
 \docType{methods}
 \name{revmap_count}
 \alias{revmap_count}
-\title{Reverse map small RNAs to processed reads}
+\title{revmap_count}
 \usage{
 revmap_count(
   fastas,
@@ -34,10 +34,14 @@ revmap_count(
 \item{removedups}{remove multiple miRNAs or small RNAs mapping to the same read, TRUE or FALSE (FALSE)}
 }
 \value{
-BEDs containing counts of
+BEDs
 }
 \description{
-Reverse map small RNAs to processed reads
+Reverse map small RNAs to processed or unprocessed reads
+}
+\examples{
+testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 }
 \author{
 Kathryn Rozen-Gagnon

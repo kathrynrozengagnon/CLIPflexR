@@ -41,21 +41,21 @@ homer_peaks(
 
 \item{tagdir}{Name of Tag Directory}
 
-\item{style}{Type of Homer peak calling}
+\item{style}{Type of Homer peak calling, factor | histone | groseq | tss | dnase | super | mCs}
 
 \item{foldEnrichmentOverLocal}{fold enrichment over local tag count}
 
 \item{localSize}{region to check for local tag enrichment}
 
-\item{strand}{find peaks using tags on both strands or separate}
+\item{strand}{find peaks using tags on both | separate strands}
 
 \item{minDist}{minimum distance between peaks}
 
 \item{size}{Peak size}
 
-\item{fragLength}{Approximate fragment length,}
+\item{fragLength}{Approximate fragment length}
 
-\item{genomeSize}{genome size}
+\item{genomeSize}{genome size, NULL (default) = 2E9, applicable for human or mouse), or set for your genome}
 
 \item{stderr}{Path to stderr file.}
 

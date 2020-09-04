@@ -3,7 +3,7 @@
 \docType{methods}
 \name{revmap_process}
 \alias{revmap_process}
-\title{Process reads for small RNA counting}
+\title{Revmap_process}
 \usage{
 revmap_process(fastas, linkers = NULL, length_max = NULL, length_min = NULL)
 }
@@ -21,19 +21,6 @@ Processed FASTAS
 }
 \description{
 Process reads for small RNA counting
-}
-\examples{
-bam <- system.file("extdata/xxbam",package="CLIPflexR")
-testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
-FqFile <- decompress(FqFile_FF,overwrite=TRUE)
-FqFile_clipped <- fastx_clipper(FqFile,length=20)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
-FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-bam <- bowtie_align(FqFile_QFColStripped,myIndex)
-unbam(bam)
 }
 \author{
 Kathryn Rozen-Gagnon

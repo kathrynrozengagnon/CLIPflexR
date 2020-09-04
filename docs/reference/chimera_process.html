@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Chimera process CLIP data — chimera_Process • CLIPflexR</title>
+<title>chimera_Process — chimera_Process • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,7 +36,7 @@
 
 
 
-<meta property="og:title" content="Chimera process CLIP data — chimera_Process" />
+<meta property="og:title" content="chimera_Process — chimera_Process" />
 
 <meta property="og:description" content="Chimera process CLIP data" />
 
@@ -94,7 +94,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
+    </li>
+    <li>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -118,7 +121,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Chimera process CLIP data</h1>
+    <h1>chimera_Process</h1>
     
     <div class="hidden name"><code>chimera_Process.Rd</code></div>
     </div>
@@ -172,6 +175,10 @@
     <p>Path</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>testFastq</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/SRR1742056.fastq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>testMiRNA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hsa_mature.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>testMiRNA</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hsa_mature.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -183,7 +190,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
 </div>
 
 <div class="pkgdown">

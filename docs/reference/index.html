@@ -90,7 +90,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
+    </li>
+    <li>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -233,13 +236,13 @@
         <td>
           <p><code><a href="bowtie2_index.html">bowtie2_index()</a></code> </p>
         </td>
-        <td><p>Make index for Rbowtie2</p></td>
+        <td><p>bowtie2_index</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="bowtie_align.html">bowtie_align()</a></code> </p>
         </td>
-        <td><p>Alignment using Rbowtie2</p></td>
+        <td><p>bowtie_align</p></td>
       </tr><tr>
         
         <td>
@@ -301,7 +304,7 @@
         <td>
           <p><code><a href="fastx_barcode_splitter.html">fastx_barcode_splitter()</a></code> </p>
         </td>
-        <td><p>Wrapper function for fastx_collapser</p></td>
+        <td><p>Wrapper function for fastx_barcode_splitter</p></td>
       </tr><tr>
         
         <td>
@@ -344,13 +347,13 @@
         <td>
           <p><code><a href="decompress.html">decompress()</a></code> </p>
         </td>
-        <td><p>Wrapper function for bzip2</p></td>
+        <td><p>Decompress</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="compress.html">compress()</a></code> </p>
         </td>
-        <td><p>Wrapper function for Compress</p></td>
+        <td><p>Compress</p></td>
       </tr><tr>
         
         <td>
@@ -362,7 +365,7 @@
       <tr>
         <th colspan="2">
           <h2 id="section-r-utility-functions" class="hasAnchor"><a href="#section-r-utility-functions" class="anchor"></a>R utility functions</h2>
-          <p class="section-desc"><p>Useful R functions for CliP processing/analysos.</p></p>
+          <p class="section-desc"><p>Useful R functions for CLIP processing/analyses.</p></p>
         </th>
       </tr>
       
@@ -381,7 +384,13 @@
         <td>
           <p><code><a href="unbam.html">unbam()</a></code> </p>
         </td>
-        <td><p>Turns a BAM to a FASTA file</p></td>
+        <td><p>unbam</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="countFromBed.html">countFromBed()</a></code> </p>
+        </td>
+        <td><p>countFromBed to make count matrix</p></td>
       </tr><tr>
         
         <td>
@@ -391,15 +400,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="readinpeaks.html">readinpeaks()</a></code> </p>
-        </td>
-        <td><p>Read in peaks</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="annotatePeaksWithPatterns.html">annotatePeaksWithPatterns()</a></code> </p>
         </td>
-        <td><p>Convert Bam to Bed</p></td>
+        <td><p>annotatePeaksWithPatterns</p></td>
       </tr><tr>
         
         <td>
@@ -411,25 +414,25 @@
         <td>
           <p><code><a href="revmap_process.html">revmap_process()</a></code> </p>
         </td>
-        <td><p>Process reads for small RNA counting</p></td>
+        <td><p>Revmap_process</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="revmap_count.html">revmap_count()</a></code> </p>
         </td>
-        <td><p>Reverse map small RNAs to processed reads</p></td>
+        <td><p>revmap_count</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="Ranges_count.html">Ranges_count()</a></code> </p>
         </td>
-        <td><p>Map unprocessed or processed reads to genome and count small RNAs by location</p></td>
+        <td><p>Ranges_count</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="chimera_Process.html">chimera_Process()</a></code> </p>
         </td>
-        <td><p>Chimera process CLIP data</p></td>
+        <td><p>chimera_Process</p></td>
       </tr>
     </tbody>
     </table>
@@ -445,7 +448,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
 </div>
 
 <div class="pkgdown">

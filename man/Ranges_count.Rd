@@ -3,7 +3,7 @@
 \docType{methods}
 \name{Ranges_count}
 \alias{Ranges_count}
-\title{Map unprocessed or processed reads to genome and count small RNAs by location}
+\title{Ranges_count}
 \usage{
 Ranges_count(
   fastas,
@@ -38,6 +38,9 @@ Path
 }
 \description{
 Map unprocessed or processed reads to genome and count small RNAs by location
+}
+\examples{
+testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
 }
 \author{
 Kathryn Rozen-Gagnon

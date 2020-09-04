@@ -3,7 +3,7 @@
 \docType{methods}
 \name{fastx_barcode_splitter}
 \alias{fastx_barcode_splitter}
-\title{Wrapper function for fastx_collapser}
+\title{Wrapper function for fastx_barcode_splitter}
 \usage{
 fastx_barcode_splitter(
   fileTofxc,
@@ -24,7 +24,7 @@ fastx_barcode_splitter(
 
 \item{mismatches}{Number of mismatches allowed.}
 
-\item{fbs}{Path to fastx_barcode_splitter.pl from FastX toolkit}
+\item{fbs}{Path to fastx_barcode_splitter.pl from FASTX toolkit}
 
 \item{stderr}{Path to stderr file.}
 
@@ -37,10 +37,10 @@ fastx_barcode_splitter(
 \item{verbose}{Print more message to screen.}
 }
 \value{
-output3, path  to split files
+output3, path to split files
 }
 \description{
-Wrapper function for fastx_collapser
+Wrapper function for fastx_barcode_splitter
 }
 \author{
 Kathryn Rozen-Gagnon

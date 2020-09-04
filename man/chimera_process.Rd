@@ -3,7 +3,7 @@
 \docType{methods}
 \name{chimera_Process}
 \alias{chimera_Process}
-\title{Chimera process CLIP data}
+\title{chimera_Process}
 \usage{
 chimera_Process(
   bams,
@@ -35,6 +35,7 @@ Chimera process CLIP data
 }
 \examples{
 testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 }
 \author{

@@ -65,7 +65,7 @@ bamtobed <- function(file,
   return(outFile)
 }
 
-#' Wrapper function for bzip2
+#' Decompress
 #'
 #' Wrapper function for bzip2
 #'
@@ -102,7 +102,7 @@ decompress <- function(fileToDecompress,
   return(fileWithoutExtension)
 }
 
-#' Wrapper function for Compress
+#' Compress
 #'
 #' Wrapper function for Compress
 #'
@@ -231,9 +231,9 @@ fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=
 }
 
 
-#' Convert Bam to Bed
+#' annotatePeaksWithPatterns
 #'
-#' Convert Bam to Bed
+#' Search for small RNA targets, or any pattern, in peaks
 #'
 #'
 #' @docType methods
@@ -382,7 +382,7 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
 }
 
 
-#' Make index for Rbowtie2
+#' bowtie2_index
 #'
 #' Make index for Rbowtie2
 #'
@@ -418,7 +418,7 @@ bowtie2_index <- function(genomeFasta,
 }
 
 
-#' Alignment using Rbowtie2
+#' bowtie_align
 #'
 #' Alignment using Rbowtie2
 #'
@@ -507,9 +507,9 @@ bowtie_align <- function(fq,index,
   
 }
 
-#' make count matrix from bed
+#' countFromBed to make count matrix
 #'
-#' make count matrix from bed
+#' count from mapped beds to make count matrix
 #'
 #'
 #' @docType methods
@@ -703,7 +703,7 @@ CLIP_align <- function(samID,res_dir=NULL,genome_idx=NULL,aligner=NULL,samSheet=
     }else{print("The index is not built by hisat2.")}
   }else{print("Please assign an available aligner: bowtie2, subread, subjunc, bwa, and hisat2")}}
 
-#' Process reads for small RNA counting
+#' Revmap_process
 #'
 #' Process reads for small RNA counting
 #'
@@ -718,18 +718,7 @@ CLIP_align <- function(samID,res_dir=NULL,genome_idx=NULL,aligner=NULL,samSheet=
 #' @param length_min minimum length required during fasta processing, integer (default is NULL)
 #' @param length_max maximum length required during fasta processing, integer (default is NULL) 
 #' @param linkers contaminating seqences to remove (default is NULL)
-#' @examples
-#' bam <- system.file("extdata/xxbam",package="CLIPflexR")
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
-#' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
-#' FqFile_clipped <- fastx_clipper(FqFile,length=20)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
-#' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
-#' unbam(bam)
+#' 
 #' @return Processed FASTAS
 #' @import Biostrings IRanges
 #' @export
@@ -754,9 +743,9 @@ revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min
 
 
 
-#' Reverse map small RNAs to processed reads
+#' revmap_count
 #'
-#'Reverse map small RNAs to processed reads
+#'Reverse map small RNAs to processed or unprocessed reads
 #'
 #'
 #' @docType methods
@@ -773,7 +762,10 @@ revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min
 #' @param verbose print messages, TRUE (default) or FALSE 
 #' @param bpparam TRUE or FALSE (default)
 #' @param removedups remove multiple miRNAs or small RNAs mapping to the same read, TRUE or FALSE (FALSE)
-#' @return BEDs containing counts of  
+#' @return BEDs 
+#' @examples 
+#' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+#' testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 #' @import GenomicAlignments BiocParallel stringr Biostrings
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
 #' @importFrom rtracklayer import
@@ -819,7 +811,7 @@ revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=TRUE, linkers
   else { return(beds)}
   if(verbose) message("done")  }
 
-#' Map unprocessed or processed reads to genome and count small RNAs by location
+#' Ranges_count
 #'
 #' Map unprocessed or processed reads to genome and count small RNAs by location
 #'
@@ -839,6 +831,8 @@ revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=TRUE, linkers
 #' @param verbose print messages, TRUE (default) or FALSE 
 #' @param bpparam TRUE or FALSE (default)
 #' @return Path 
+#' @examples
+#' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
 #' @import GenomicAlignments BiocParallel stringr rtracklayer GenomicRanges
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
 #' @export
@@ -876,7 +870,7 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
   if (verbose) message("done")
 }
 
-#' Turns a BAM to a FASTA file
+#' unbam
 #'
 #' Turns a BAM to a FASTA file
 #'
@@ -918,7 +912,7 @@ unbam <- function(bam,outfa=NULL){
 
 
 
-#' Chimera process CLIP data
+#' chimera_Process
 #'
 #'Chimera process CLIP data
 #'
@@ -938,6 +932,7 @@ unbam <- function(bam,outfa=NULL){
 #' @return Path 
 #' @examples 
 #' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+#' testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 #' testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 #' @import GenomicAlignments BiocParallel stringr
 #' @importFrom tibble rownames_to_column

@@ -54,7 +54,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
+    </li>
+    <li>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -90,7 +93,7 @@
 <h2 class="hasAnchor">
 <a href="#clipflexr" class="anchor"></a>CLIPflexR</h2>
 <p>The CLIPflexR package provides a set of its functions for the processing and analysis of differing forms of ClIP data for use within the R framework.</p>
-<p>For more information on the processing of data using CLIPflexR you can see our <a href="StandardandBrdU_Processing_CTK_small.html">quickstart</a> and full <a href="StandardandBrdU_Processing_CTK.html">vignettes</a>.</p>
+<p>For more information on the processing of data using CLIPflexR you can see our <a href="StandardandBrdU_Processing_CTK.html">CTK</a> and <a href="Processing_to_matrix.html">CLIPflexR</a> vignettes</p>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -98,7 +101,7 @@
 <div id="set-github-pat-not-needed-in-future" class="section level3">
 <h3 class="hasAnchor">
 <a href="#set-github-pat-not-needed-in-future" class="anchor"></a>Set GITHUB PAT … not needed in future</h3>
-<p>As CLIPflexR is not public yet you will need add a GITHUB_PAT to your environment to install.</p>
+<p>As CLIPflexR is not public yet you will need to add a GITHUB_PAT to your environment to install.</p>
 <p>You can do this by visiting the settings -&gt; Developer Settings -&gt; Personal access tokens and creating a personal access token. Copy the long string of your personal access token to below where <strong>MYGITHUBPAT</strong> is.</p>
 <div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span>(<span class="kw">GITHUB_PAT</span><span class="kw">=</span><span class="st">"MYGITHUBPAT"</span>)</pre></body></html></div>
 </div>
@@ -148,22 +151,6 @@
 <p>Once we have installed the requirements for CTK we can make use of the tools within CLIPflexR very easily.</p>
 <p>First we load the CLIPflexR package and review the loading messages informing us of any established conda paths.</p>
 <div class="sourceCode"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">CLIPflexR</span>)</pre></body></html></div>
-<pre><code>## Warning: replacing previous import 'ShortRead::compose' by 'purrr::compose'
-## when loading 'CLIPflexR'</code></pre>
-<pre><code>## Warning: replacing previous import 'IRanges::reduce' by 'purrr::reduce'
-## when loading 'CLIPflexR'</code></pre>
-<pre><code>## Warning: replacing previous import 'reticulate::import' by
-## 'rtracklayer::import' when loading 'CLIPflexR'</code></pre>
-<pre><code>## Warning: replacing previous import 'ShortRead::view' by 'tibble::view' when
-## loading 'CLIPflexR'</code></pre>
-<pre><code>## Warning: replacing previous import 'Biostrings::tail' by 'utils::tail' when
-## loading 'CLIPflexR'</code></pre>
-<pre><code>## Warning: replacing previous import 'IRanges::stack' by 'utils::stack' when
-## loading 'CLIPflexR'</code></pre>
-<pre><code>## Warning: replacing previous import 'IRanges::relist' by 'utils::relist'
-## when loading 'CLIPflexR'</code></pre>
-<pre><code>## Warning: replacing previous import 'Biostrings::head' by 'utils::head' when
-## loading 'CLIPflexR'</code></pre>
 <pre><code>## CLIPflexR_0.1.18 conda env found at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18</code></pre>
 <pre><code>## ctk found  at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk</code></pre>
 <pre><code>## czplib found  at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib</code></pre>
@@ -181,7 +168,7 @@
                                      <span class="kw">outFile</span> <span class="kw">=</span> <span class="st">"SRR1107535_Test.fastq"</span>,
                                      <span class="kw">qsFilter</span><span class="kw">=</span><span class="st">"mean:0-29:20"</span>,<span class="kw">verbose</span><span class="kw">=</span><span class="fl">TRUE</span>)</pre></body></html></div>
 <pre><code>## fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl</code></pre>
-<pre><code>## fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/Fox3_Std_small.fq.gz  SRR1107535_Test.fastq</code></pre>
+<pre><code>## fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp3FK8Ma/temp_libpathbc4c67bc603c/CLIPflexR/extdata/Fox3_Std_small.fq.gz  SRR1107535_Test.fastq</code></pre>
 </div>
 </div>
   </div>
@@ -196,7 +183,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
 </div>
 
 <div class="pkgdown">

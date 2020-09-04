@@ -3,7 +3,7 @@
 \docType{methods}
 \name{decompress}
 \alias{decompress}
-\title{Wrapper function for bzip2}
+\title{Decompress}
 \usage{
 decompress(
   fileToDecompress,

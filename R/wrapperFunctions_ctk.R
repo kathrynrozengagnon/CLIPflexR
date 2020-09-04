@@ -490,7 +490,7 @@ ctk_getMutationType <- function(filesToRun,
 #' @param indexPosition Position of index in read
 #' @param qsFilter Quality score filter
 #' @param maxN Maximum number of bases below qsFilter 
-#' @param outputFormat Output format (fastq or fasta)
+#' @param outputFormat Output format (fastq | fasta)
 #' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.

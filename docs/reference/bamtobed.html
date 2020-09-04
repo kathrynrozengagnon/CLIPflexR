@@ -94,7 +94,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
+    </li>
+    <li>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -163,7 +166,7 @@
 <span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_QFCollapsed</span>)
 <span class='no'>FqFile_QFColStpClipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile_QFColStripped</span>)
 <span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStpClipped</span>,<span class='no'>myIndex</span>)
-<span class='fu'>bamtobed</span>(<span class='no'>bam</span>)</div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/Sorted_QF_Fox3_Std_small_collapse_rm5_clip.fasta.bed"</div></pre>
+<span class='fu'>bamtobed</span>(<span class='no'>bam</span>)</div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp3FK8Ma/temp_libpathbc4c67bc603c/CLIPflexR/extdata/Sorted_QF_Fox3_Std_small_collapse_rm5_clip.fasta.bed"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -175,7 +178,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
 </div>
 
 <div class="pkgdown">

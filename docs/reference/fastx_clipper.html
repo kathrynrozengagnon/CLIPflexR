@@ -94,7 +94,10 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
+    </li>
+    <li>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -194,7 +197,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpIScDF7/temp_libpath36fc19ba7804/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp3FK8Ma/temp_libpathbc4c67bc603c/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp3FK8Ma/temp_libpathbc4c67bc603c/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'>fastx_clipper</span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -207,7 +210,7 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang.</p>
+  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
 </div>
 
 <div class="pkgdown">

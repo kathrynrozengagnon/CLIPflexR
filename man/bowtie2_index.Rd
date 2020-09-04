@@ -3,7 +3,7 @@
 \docType{methods}
 \name{bowtie2_index}
 \alias{bowtie2_index}
-\title{Make index for Rbowtie2}
+\title{bowtie2_index}
 \usage{
 bowtie2_index(
   genomeFasta,

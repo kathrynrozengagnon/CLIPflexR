@@ -11,8 +11,8 @@ fastq_quality_trimmer(
   fqf = "fastq_quality_trimmer",
   qualityThreshold = 5,
   minimumLength = 20,
-  stderr = paste0(getwd(), "fastq_quality_filter_stderr"),
-  stdout = paste0(getwd(), "fastq_quality_filter_stdout"),
+  stderr = paste0(getwd(), "fastq_quality_trimmer_stderr"),
+  stdout = paste0(getwd(), "fastq_quality_trimmer_stdout"),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE

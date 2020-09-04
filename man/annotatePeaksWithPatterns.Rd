@@ -3,7 +3,7 @@
 \docType{methods}
 \name{annotatePeaksWithPatterns}
 \alias{annotatePeaksWithPatterns}
-\title{Convert Bam to Bed}
+\title{annotatePeaksWithPatterns}
 \usage{
 annotatePeaksWithPatterns(
   peaks,
@@ -43,7 +43,7 @@ annotatePeaksWithPatterns(
 Path
 }
 \description{
-Convert Bam to Bed
+Search for small RNA targets, or any pattern, in peaks
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")

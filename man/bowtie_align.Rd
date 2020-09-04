@@ -3,7 +3,7 @@
 \docType{methods}
 \name{bowtie_align}
 \alias{bowtie_align}
-\title{Alignment using Rbowtie2}
+\title{bowtie_align}
 \usage{
 bowtie_align(
   fq,
