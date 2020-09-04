@@ -37,9 +37,9 @@ if(!file.exists(Fox3_Std)){
 ## Process data
 
 ### Quality filter reads **(wrapping CTK's fastq_filter.pl)**
-Filtering low quality read using R-wrapped **fastq_filter.pl** from   [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#fastq_filter.pl).
+Filtering low quality read using R-wrapped **fastq_filter.pl** from   [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#fastq_filter.pl).  
 Use fastq/gzipped fast files as input. **outFile**: fastq file after filtering low quality reads; **qsFilter**: filtering criteria, "mean:0-29:20" means the average quality of the first 30 bases must be equal or greater than 20.  
-[CLIPflexR documentation](../reference/ctk_fastqFilter.html)
+[CLIPflexR documentation](../reference/ctk_fastqFilter.html).
 
 ```{r fastq_filter,echo=TRUE,eval=FALSE}
 Fox3_Std <- "SRR1107535.fastq.gz"
@@ -50,9 +50,9 @@ Fox3_Std_filtered <- ctk_fastqFilter(Fox3_Std,
 ```
 
 ### Remove 3' linkers **(wrapping FASTX's fastx_clipper)**
-Trimming 3'-end adapter sequences using R-wrapped **fastx_clipper** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage).
-**adaptor**: CLIP this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).
-[CLIPflexR documentation](../reference/fastx_clipper.html)
+Trimming 3'-end adapter sequences using R-wrapped **fastx_clipper** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage).  
+**adaptor**: CLIP this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).  
+[CLIPflexR documentation](../reference/fastx_clipper.html).
 
 ```{r fastq_clipper,echo=TRUE,eval=FALSE}
 Fox3_Std_filtered <- fastx_clipper(Fox3_Std_filtered,outFile = "SRR1107535_clipped.fastq",adaptor = "GTGTCAGTCACTTCCAGCGG",length =20)
@@ -71,8 +71,8 @@ Fox3_Std_filtered <- fastq_quality_trimmer(Fox3_Std_filtered,
 ```
 
 ### Collapse exact ctk_fastq2collapse **(wrapping CTKs's ctk_fastq2collapse.pl)**
-Collapse duplicate sequences into unique reads using R-wrapped **fastq2collapse.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#fastq2collapse.pl). 
-[CLIPflexR documentation](../reference/ctk_fastq2collapse.html)
+Collapse duplicate sequences into unique reads using R-wrapped **fastq2collapse.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#fastq2collapse.pl).   
+[CLIPflexR documentation](../reference/ctk_fastq2collapse.html).
 
 ```{r fastq_collapser,echo=TRUE,eval=FALSE}
 Fox3_Std_filtered <- ctk_fastq2collapse(Fox3_Std_filtered,
@@ -81,9 +81,9 @@ Fox3_Std_filtered <- ctk_fastq2collapse(Fox3_Std_filtered,
 ```
 
 ### Remove random barcodes **(wrapping CTK's stripBarcode.pl)**
-Strip random barcodes with specific length from the reads using R-wrapped **stripBarcode.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl).
-**linkerlength**: barcode length; **inputFormat**: format of input sequences, fasta (default) or fastq.
-[CLIPflexR documentation](../reference/ctk_stripBarcode.html)
+Strip random barcodes with specific length from the reads using R-wrapped **stripBarcode.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl).  
+**linkerlength**: barcode length; **inputFormat**: format of input sequences, fasta (default) or fastq.  
+[CLIPflexR documentation](../reference/ctk_stripBarcode.html).
 
 ```{r ctk_stripBarcode,echo=TRUE,eval=FALSE}
 Fox3_Std_filtered <- ctk_stripBarcode(Fox3_Std_filtered,linkerlength = 5,
@@ -105,17 +105,18 @@ writeXStringSet(toWrite,file="mm10.fa")
 ```
 
 ### Build a Bowtie2 genome index using Rbowtie2.
-Build Bowtie2 index of reference genome, mm10 in this vignette. **threads**: number of threads used.
-[Index documentation](../reference/bowtie2_index.html)
+Build Bowtie2 index of reference genome, mm10 in this vignette.  
+**threads**: number of threads used.
+[Index documentation](../reference/bowtie2_index.html).
 
 ```{r bowtie2_index,echo=TRUE,eval=FALSE}
 bowtie2_index("mm10.fa",threads = 6)
 ```
 
 ### Align to genome using Rbowtie2.
-Align reads to indexed reference genome using Rbowtie2.
-**format**: format of input sequences, fasta (default) or fastq; **threads**: number of threads used, 1 (default); **maxMismatches**: number of mismatches allowed, 1 (default) or 0; **seedSubString**: length of seed substrings, 18 (default), must be >3 & <32; **report_k**: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.
-[Alignment documentation](../reference/bowtie_align.html)
+Align reads to indexed reference genome using Rbowtie2.  
+**format**: format of input sequences, fasta (default) or fastq; **threads**: number of threads used, 1 (default); **maxMismatches**: number of mismatches allowed, 1 (default) or 0; **seedSubString**: length of seed substrings, 18 (default), must be >3 & <32; **report_k**: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.  
+[Alignment documentation](../reference/bowtie_align.html).
 
 ```{r bowtie_align,echo=TRUE,eval=FALSE}
 Fox3_Std_filtered <- decompress(Fox3_Std_filtered)
@@ -127,9 +128,9 @@ alignedFile <- bowtie_align(Fox3_Std_filtered,
 ```
 
 ### Parsing SAM files
-Parsing SAM files toget unique mapped reads and mismatches per read using R-wrapped **parseAlignment.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#parseAlignment.pl).
-**minLen**: miminal mapping length to report, 18 (default); **mapQual**: Minimum map quality, 1 (default MAPQ), keep only uniquely mapped reads when mapQual>=1.
-[CLIPflexR documentation](../reference/ctk_parseAlignment.html)
+Parsing SAM files toget unique mapped reads and mismatches per read using R-wrapped **parseAlignment.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#parseAlignment.pl).  
+**minLen**: miminal mapping length to report, 18 (default); **mapQual**: Minimum map quality, 1 (default MAPQ), keep only uniquely mapped reads when mapQual>=1.  
+[CLIPflexR documentation](../reference/ctk_parseAlignment.html).
 
 ```{r ctk_parseAlignment,echo=TRUE,eval=FALSE}
 parsedAlignement <- ctk_parseAlignment(alignedFile,
@@ -139,9 +140,9 @@ parsedAlignement <- ctk_parseAlignment(alignedFile,
 ```
 
 ### Collapse duplicated mapped reads 
-Collapse CLIP tags generated by parseAlignment using R-wrapped **tag2collapse.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2collapse.pl) of CTK.
-**bigFile**: set TRUE if input file is big; **keepMaxScore**: keep the tag with the most weight (instead of the longest one) as representative; **keepTagName**: do not change tag name (no extra information); **weight**: consider the weight of each tag; **weightInName**: find weight in name; **randomBarcode**: random barcode exists, no collapse for different barcodes; **em**: EM threshold to infer reliability of each collapsed read (when have random linker, -1 = no EM); **outputSeqError**: output sequencing errors estimated by the EM algorithm.
-[CLIPflexR documentation](../reference/ctk_tag2collapse.html)
+Collapse CLIP tags generated by parseAlignment using R-wrapped **tag2collapse.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2collapse.pl).  
+**bigFile**: set TRUE if input file is big; **keepMaxScore**: keep the tag with the most weight (instead of the longest one) as representative; **keepTagName**: do not change tag name (no extra information); **weight**: consider the weight of each tag; **weightInName**: find weight in name; **randomBarcode**: random barcode exists, no collapse for different barcodes; **em**: EM threshold to infer reliability of each collapsed read (when have random linker, -1 = no EM); **outputSeqError**: output sequencing errors estimated by the EM algorithm.  
+[CLIPflexR documentation](../reference/ctk_tag2collapse.html).
 
 ```{r ctk_tag2collapse,echo=TRUE,eval=FALSE}
 # -v -big --random-barcode -EM 30 --seq-error-model alignment -weight --weight-in-name --keep-max-score --keep-tag-name $f.tag.bed
@@ -159,9 +160,9 @@ tagcollapsed <- ctk_tag2collapse(parsedAlignement,
 ```
 
 ### Join tags and mutations
-Get the mutations in unique tags using R-wrapped **selectRow.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#selectRow.pl) (originally wrapped from Galaxy).
-**file1**: mutation file; **file2**: tagged bed file; **field1**: query column; **field2**: filter column; **mode**: running mode, set N while only print paired rows.
-[CLIPflexR documentation](../reference/ctk_joinWrapper.html)
+Get the mutations in unique tags using R-wrapped **selectRow.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#selectRow.pl) (originally wrapped from Galaxy).  
+**file1**: mutation file; **file2**: tagged bed file; **field1**: query column; **field2**: filter column; **mode**: running mode, set N while only print paired rows.  
+[CLIPflexR documentation](../reference/ctk_joinWrapper.html).
 
 ```{r ctk_joinWrapper,echo=TRUE,eval=FALSE}
 tagJoined <- ctk_joinWrapper("mutations.txt",tagcollapsed,field1 = 4,field2 = 4,mode = "n",
@@ -170,18 +171,18 @@ tagJoined <- ctk_joinWrapper("mutations.txt",tagcollapsed,field1 = 4,field2 = 4,
 
 
 ### label bed file with rgb information
-Add colors to bed file using R-wrapped **bed2rgb.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#bed2rgb.pl).
-**filesToRun**: taged bed files; **col**: assign color in r,g,b format
-[CLIPflexR documentation](../reference/ctk_bed2rgb.html)
+Add colors to bed file using R-wrapped **bed2rgb.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#bed2rgb.pl).  
+**filesToRun**: taged bed files; **col**: assign color in r,g,b format.  
+[CLIPflexR documentation](../reference/ctk_bed2rgb.html).
 
 ```{r ctk_bed2rgb,echo=TRUE,eval=FALSE}
 tagcollapsedRGB <- ctk_bed2rgb(filesToRun = tagcollapsed,col = "128,0,0")
 ```
 
 ### Generate bedgraph
-Generate bedgraphs for visualization using R-wrapped **tag2profile.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2profile.pl).
-**bigFile**: set TRUE if input file is big; **ss**: separate strand, TRUE (default); **exact**: exact count of each nucleotide, TRUE (default).
-[CLIPflexR documentation](../reference/ctk_tag2profile.html)
+Generate bedgraphs for visualization using R-wrapped **tag2profile.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2profile.pl).  
+**bigFile**: set TRUE if input file is big; **ss**: separate strand, TRUE (default); **exact**: exact count of each nucleotide, TRUE (default).  
+[CLIPflexR documentation](../reference/ctk_tag2profile.html).
 
 ```{r ctk_tag2profile,echo=TRUE,eval=FALSE}
 # -v -big --random-barcode -EM 30 --seq-error-model alignment -weight --weight-in-name --keep-max-score --keep-tag-name $f.tag.bed
@@ -189,8 +190,8 @@ tagProfile <- ctk_tag2profile(filesToRun = tagcollapsedRGB,bigFile = TRUE,ss = T
 ```
 
 ### Peak calling without statistical assessment
-Call peaks using R-wrapped **tag2peak.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2peak.pl) *without* statistical assessment. **filesToRun**: RGB labeled tagged bed files; **valleySeeking**: find candidate peaks by valley seeking, TRUE (default); **valleyDepth**: depth of valley, if valley seeking, 0.9 (default), between 0.5 and 1; **bigFile**: set TRUE if the input file is big; **ss**: separate strand, TRUE (default).
-[CLIPflexR documentation](../reference/ctk_tag2peak.html)
+Call peaks using R-wrapped **tag2peak.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2peak.pl) *without* statistical assessment.   **filesToRun**: RGB labeled tagged bed files; **valleySeeking**: find candidate peaks by valley seeking, TRUE (default); **valleyDepth**: depth of valley, if valley seeking, 0.9 (default), between 0.5 and 1; **bigFile**: set TRUE if the input file is big; **ss**: separate strand, TRUE (default).  
+[CLIPflexR documentation](../reference/ctk_tag2peak.html).
 
 ```{r ctk_tag2peak,echo=TRUE,eval=FALSE}
 tagPeaksNoStats <- ctk_tag2peak(filesToRun = tagcollapsedRGB,valleySeeking = TRUE,valleyDepth = 0.9,bigFile = TRUE,ss = TRUE)
@@ -198,8 +199,8 @@ tagPeaksNoStats <- ctk_tag2peak(filesToRun = tagcollapsedRGB,valleySeeking = TRU
 
 ### Peak calling with statistical assessment
 
-Call peaks using R-wrapped **tag2peak.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2peak.pl) *with* statistical assessment. **filesToRun**: RGB labeled tagged bed files;  **valleySeeking**: find candidate peaks by valley seeking, TRUE (default);**valleyDepth**: depth of valley, if valley seeking, 0.9 (default), between 0.5 and 1; **bigFile**: set TRUE if the input file is big; **ss**: separate strand, TRUE (default); **genes**: gene locus in bed format.
-[CLIPflexR documentation](../reference/ctk_tag2peak.html)
+Call peaks using R-wrapped **tag2peak.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2peak.pl) *with* statistical assessment.   **filesToRun**: RGB labeled tagged bed files;  **valleySeeking**: find candidate peaks by valley seeking, TRUE (default);**valleyDepth**: depth of valley, if valley seeking, 0.9 (default), between 0.5 and 1; **bigFile**: set TRUE if the input file is big; **ss**: separate strand, TRUE (default); **genes**: gene locus in bed format.  
+[CLIPflexR documentation](../reference/ctk_tag2peak.html).
 
 ```{r ctk_tag2peak2,echo=TRUE,eval=FALSE}
 require(TxDb.Mmusculus.UCSC.mm10.knownGene)
@@ -212,16 +213,16 @@ tagProfile <- ctk_tag2peak(filesToRun = tagcollapsedRGB,
 ```
 
 ### Retrieve sequence under peaks using CLIPflexR **fetchSequencesForClIP**
-**peaks**: tagged bed file or GRanges of peaks; **reSize**: resize peak to this width around peak center, 64 (default); **fasta**: reference sequence
-[CLIPflexR documentation](../reference/fetchSequencesForClIP.html)
+**peaks**: tagged bed file or GRanges of peaks; **reSize**: resize peak to this width around peak center, 64 (default); **fasta**: reference sequence.  
+[CLIPflexR documentation](../reference/fetchSequencesForClIP.html).
 
 ```{r fetchSequencesForClIP,echo=TRUE,eval=FALSE}
 myseq <- fetchSequencesForClIP(peaks = tagProfile,reSize = 20,fasta = "mm10.fa",bedHeader = FALSE)
 ```
 
 ### Retrieve peaks associated with particular motifs using CLIPflexR **annotatePeaksWithPatterns**
-**peaks**: tagged bed file or GRanges of peaks; **reSize**: resize peak to this width around peak center,  64 (default); **fasta**: reference sequence; **pattern**: FASTA of motif sequence(s) 
-[CLIPflexR documentation](../reference/annotatePeaksWithPatterns.html)
+**peaks**: tagged bed file or GRanges of peaks; **reSize**: resize peak to this width around peak center, 64 (default); **fasta**: reference sequence; **pattern**: FASTA of motif sequence(s).   
+[CLIPflexR documentation](../reference/annotatePeaksWithPatterns.html).
 
 ```{r annotatePeaksWithPatterns,echo=TRUE,eval=FALSE}
 myseq <- annotatePeaksWithPatterns(peaks = tagProfile,patterns = "TGCATG",resize = 100,fasta = "mm10.fa",bedHeader=FALSE)
