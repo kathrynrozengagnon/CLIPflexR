@@ -918,5 +918,5 @@ head(peaksDF)
 ## 6 1:1183109_1183119:+
 ```
 
-##now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more...
-##more vignettes coming soon!
+#now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more...
+#more vignettes coming soon!
