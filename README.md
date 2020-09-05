@@ -22,8 +22,8 @@ is installed as part of the **CLIPflexR** **install\_ctk()** function.
     CondaSysReqs::install_CondaSysReqs("CLIPflexR")
     CLIPflexR::install_ctk()
 
-Path to Conda tools and CTTK/czplib
------------------------------------
+Path to Conda tools and CTK/czplib
+----------------------------------
 
     library(CLIPflexR)
 
