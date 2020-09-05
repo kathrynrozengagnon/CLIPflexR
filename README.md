@@ -45,11 +45,8 @@ Path to Conda tools and CTK/czplib
 
     ## [1] "/Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib"
 
-See our vignettes for [installing CLIPflexR](https://kathrynrozengagnon.github.io/CLIPflexR/articles/Processing_to_matrix.html/installCliPR.html) processing CLIP data using [CTK](https://kathrynrozengagnon.github.io/CLIPflexR/articles/StandardandBrdU_Processing_CTK.html) or [CLIPflexR](https://kathrynrozengagnon.github.io/CLIPflexR/articles/Processing_to_matrix.html), or mix and match!
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### See our vignettes for [installing CLIPflexR](https://kathrynrozengagnon.github.io/CLIPflexR/articles/Processing_to_matrix.html/installCliPR.html), or processing CLIP data using [CTK](https://kathrynrozengagnon.github.io/CLIPflexR/articles/StandardandBrdU_Processing_CTK.html) or [CLIPflexR](https://kathrynrozengagnon.github.io/CLIPflexR/articles/Processing_to_matrix.html). You can also mix and match!
 
-Please bear with us while we update examples and vignettes, more coming soon....
---------------------------------------------------------------------------------
+### Please bear with us while we update examples and vignettes, more coming soon....
 
-Report [issues](https://github.com/kathrynrozengagnon/CLIPflexR/issues)
------------------------------------------------------------------------
+### Report [issues](https://github.com/kathrynrozengagnon/CLIPflexR/issues)
