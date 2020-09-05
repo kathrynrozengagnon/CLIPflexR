@@ -1,6 +1,6 @@
 Package: CLIPflexR
 Type: Package
-Title: ClIP tools and wrappers in R
+Title: CLIP tools and wrappers in R
 URL: https://github.com/kathrynrozengagnon/CLIPflexR
 BugReports: https://github.com/kathrynrozengagnon/CLIPflexR/issues
 Version: 0.1.18
