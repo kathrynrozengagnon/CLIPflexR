@@ -22,8 +22,8 @@ is installed as part of the **CLIPflexR** **install\_ctk()** function.
     CondaSysReqs::install_CondaSysReqs("CLIPflexR")
     CLIPflexR::install_ctk()
 
-Path to Conda tools and Ctk/czplib
-----------------------------------
+Path to Conda tools and CTTK/czplib
+-----------------------------------
 
     library(CLIPflexR)
 
@@ -45,8 +45,8 @@ Path to Conda tools and Ctk/czplib
 
     ## [1] "/Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib"
 
-See our vignettes for [installing CLIPflexR](../articles/installCliPR.html) processing CLIP data using [CTK](../articles/StandardandBrdU_Processing_CTK.html) or [CLIPflexR](../articles/Processing_to_matrix.html), or mix and match!
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+See our vignettes for [installing CLIPflexR](https://kathrynrozengagnon.github.io/CLIPflexR/articles/Processing_to_matrix.html/installCliPR.html) processing CLIP data using [CTK](https://kathrynrozengagnon.github.io/CLIPflexR/articles/StandardandBrdU_Processing_CTK.html) or [CLIPflexR](https://kathrynrozengagnon.github.io/CLIPflexR/articles/Processing_to_matrix.html), or mix and match!
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Please bear with us while we update examples and vignettes, more coming soon....
 --------------------------------------------------------------------------------

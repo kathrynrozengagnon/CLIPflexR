@@ -327,7 +327,7 @@ samples_split_std_rm5_rm3
 ###First strip random barcode sequences (UMI) from the 5' end of reads **(wrapping CTK's stripBarcode.pl)**
 Strip random barcodes/linkers with specific length from reads using R-wrapped **stripBarcode.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl).  
 **linkerlength**: barcode length; **inputformat**: format of input sequences. (fasta/fastq).  
-[CLIPflexR documentation]../reference/ctk_stripBarcode.html).
+[CLIPflexR documentation](../reference/ctk_stripBarcode.html).
 
 
 ```r
@@ -409,7 +409,7 @@ head(BrdU_samples_stats)
 ###Trim 3 "not G" (DDD) and index (6nt) from the 5' end of reads **(wrapping  FASTX's fastx_trimmer)**
 Trimming 5'-end adapter sequences using R-wrapped **fastx_trimmer** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_trimmer_usage).  
 **read_start**: read starts at this base, 10 (default);  **read_end** read ends at this base, NULL (default).  
-[../reference/CLIPflexR documentation](../reference/fastx_trimmer.html).
+[CLIPflexR documentation](../reference/fastx_trimmer.html).
 
 
 ```
@@ -521,7 +521,7 @@ These reads are now ready to map to your genome
 
 ##Build a Bowtie2 genome index and align to genome using Rbowtie2.
 Build Bowtie2 index of reference genome, AaegL5 in this vignette.
-[Index documentation](bowtie2_index.html); see also [CTK processing vignette](../docs/articles/StandardandBrdU_Processing_CTK_editJD.html).
+[Index documentation](bowtie2_index.html); see also [CTK processing vignette](../articles/StandardandBrdU_Processing_CTK_editJD.html).
 
 Align reads to genome by bowtie.  
 **format**: format of input sequences, fasta (default) or fastq; **threads**: number of threads used, 1 (default); **maxMismatches**: number of mismatches allowed, 1 (default) or 0; **seedSubString**: length of seed substrings, 18 (default), must be >3 & <32; **report_k**: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.    

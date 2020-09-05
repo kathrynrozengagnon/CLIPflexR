@@ -347,8 +347,7 @@
 <h3 class="hasAnchor">
 <a href="#first-strip-random-barcode-sequences-umi-from-the-5-end-of-reads-wrapping-ctks-stripbarcode-pl" class="anchor"></a>First strip random barcode sequences (UMI) from the 5’ end of reads <strong>(wrapping CTK’s stripBarcode.pl)</strong>
 </h3>
-<p>Strip random barcodes/linkers with specific length from reads using R-wrapped <strong>stripBarcode.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl">CTK</a>.<br><strong>linkerlength</strong>: barcode length; <strong>inputformat</strong>: format of input sequences. (fasta/fastq).<br>
-[CLIPflexR documentation]../reference/ctk_stripBarcode.html).</p>
+<p>Strip random barcodes/linkers with specific length from reads using R-wrapped <strong>stripBarcode.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl">CTK</a>.<br><strong>linkerlength</strong>: barcode length; <strong>inputformat</strong>: format of input sequences. (fasta/fastq).<br><a href="../reference/ctk_stripBarcode.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode"><html><body><pre class="r"><span class="no">BrdU_rm5</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/ctk_stripBarcode.html">ctk_stripBarcode</a></span>(<span class="no">coll_FqFile_QF</span><span class="kw">[[</span><span class="fl">1</span>]], <span class="kw">linkerlength</span> <span class="kw">=</span> <span class="fl">7</span>, <span class="kw">inputFormat</span><span class="kw">=</span><span class="st">"fasta"</span>)
 <span class="no">BrdU_rm5</span></pre></body></html></div>
 <pre><code>## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG091819_S1_L001_R1_001_collapse_rm5.fasta"</code></pre>
@@ -402,7 +401,7 @@
 <h3 class="hasAnchor">
 <a href="#trim-3-not-g-ddd-and-index-6nt-from-the-5-end-of-reads-wrapping-fastxs-fastx_trimmer" class="anchor"></a>Trim 3 “not G” (DDD) and index (6nt) from the 5’ end of reads <strong>(wrapping FASTX’s fastx_trimmer)</strong>
 </h3>
-<p>Trimming 5’-end adapter sequences using R-wrapped <strong>fastx_trimmer</strong> function from <a href="http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_trimmer_usage">FASTX_toolkit</a>.<br><strong>read_start</strong>: read starts at this base, 10 (default); <strong>read_end</strong> read ends at this base, NULL (default).<br><a href="../reference/fastx_trimmer.html">../reference/CLIPflexR documentation</a>.</p>
+<p>Trimming 5’-end adapter sequences using R-wrapped <strong>fastx_trimmer</strong> function from <a href="http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_trimmer_usage">FASTX_toolkit</a>.<br><strong>read_start</strong>: read starts at this base, 10 (default); <strong>read_end</strong> read ends at this base, NULL (default).<br><a href="../reference/fastx_trimmer.html">CLIPflexR documentation</a>.</p>
 <pre><code>## [[1]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim.fa"
 ## 
@@ -509,7 +508,7 @@
 <div id="build-a-bowtie2-genome-index-and-align-to-genome-using-rbowtie2-" class="section level2">
 <h2 class="hasAnchor">
 <a href="#build-a-bowtie2-genome-index-and-align-to-genome-using-rbowtie2-" class="anchor"></a>Build a Bowtie2 genome index and align to genome using Rbowtie2.</h2>
-<p>Build Bowtie2 index of reference genome, AaegL5 in this vignette. <a href="bowtie2_index.html">Index documentation</a>; see also <a href="../docs/articles/StandardandBrdU_Processing_CTK_editJD.html">CTK processing vignette</a>.</p>
+<p>Build Bowtie2 index of reference genome, AaegL5 in this vignette. <a href="bowtie2_index.html">Index documentation</a>; see also <a href="../articles/StandardandBrdU_Processing_CTK_editJD.html">CTK processing vignette</a>.</p>
 <p>Align reads to genome by bowtie.<br><strong>format</strong>: format of input sequences, fasta (default) or fastq; <strong>threads</strong>: number of threads used, 1 (default); <strong>maxMismatches</strong>: number of mismatches allowed, 1 (default) or 0; <strong>seedSubString</strong>: length of seed substrings, 18 (default), must be &gt;3 &amp; &lt;32; <strong>report_k</strong>: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.<br><a href="../reference/bowtie_align.html">Alignment documentation</a>.</p>
 <div class="sourceCode"><html><body><pre class="r"><span class="co">#you will need to get the genome fasta of your organism and input the path to this fasta</span>
 <span class="no">genomeFasta</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="no">baseDir</span>, <span class="st">"/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5.fa"</span>)
