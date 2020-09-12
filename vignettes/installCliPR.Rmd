@@ -15,46 +15,47 @@ baseDir <- "/Users/thomascarroll/Desktop/Projects/brc/clipRUTest/"
 
 ## CLIPflexR
 
-
 The CLIPflexR package provides a set of its functions for the processing and analysis of differing forms of ClIP data for use within the R framework.
 
 For more information on the processing of data using CLIPflexR you can see our [CTK](StandardandBrdU_Processing_CTK.html) and [CLIPflexR](Processing_to_matrix.html) vignettes
 
-
 ## Installation
-
-
-### Set GITHUB PAT ... not needed in future
-
-As CLIPflexR is not public yet you will need to add a GITHUB_PAT to your environment to install. 
-
-You can do this by visiting the settings -> Developer Settings ->  Personal access tokens and creating a personal access token. Copy the long string of your personal access token to below where **MYGITHUBPAT** is.
-
-```{r setGH,echo=TRUE,eval=FALSE}
-Sys.setenv(GITHUB_PAT="MYGITHUBPAT")
-```
 
 ### Installing CLIPflexR
 
-We can install CLIPflexR package from Github using the devtools package
+We can install CLIPflexR package from Github using the devtools package:
 
 ```{r installCLIPflexR,echo=TRUE,eval=FALSE}
 install.packages("devtools")
 devtools::install_github("kathrynrozengagnon/CLIPflexR")
 ```
 
-### Installing rfastp... will be stable dependency once CLIPflexR is released.
-We also can install the rfastp package which may use to pre-process FastQ/FastA and de-duplicate BAM files as an alternative to the standard CTK workflow.
+### Installing Rfastp... will be stable dependency once CLIPflexR is released.
+We also can install the Rfastp package which may use to pre-process FastQ/FastA and de-duplicate BAM files as an alternative to the standard CTK/FASTX workflow.
 
-```{r installrfastp,echo=TRUE,eval=FALSE}
+If you are running <  R version 4.0, use  the following  lines to install the [Github Rfastp package](https://github.com/RockefellerUniversity/Rfastp):
+
+```{r installrfastp_git,echo=TRUE,eval=FALSE}
 devtools::install_github("RockefellerUniversity/rfastp")
+```
+
+If you are running >= R version 4.0, you can install the [Bioconductor development Rfastp package](https://bioconductor.org/packages/Rfastp/):
+
+```{r installrfastp_BioC,echo=TRUE,eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+# The following initializes usage of Bioc devel
+BiocManager::install(version='devel')
+
+BiocManager::install("Rfastp")
 ```
 
 ### Installing CTK software requirements.
 
 The CTK toolkit requires many external softwares to be available on the system path for use within their pipeline scripts. 
 
-Once solution to the meet these system requirements is to create a Conda environment containing all the required software. 
+One solution to the meet these system requirements is to create a Conda environment containing all the required software. 
 
 The CondaSysReq package provides a simple workflow to install self-contained Conda environments associated to packages using the Reticulate library. 
 
@@ -62,17 +63,29 @@ This approach also allows us to capture the current Conda environment using the 
 
 First we need to install the CondaSysReqs package.
 
+### Set GITHUB PAT ... not needed in future
+
+As CondaSysReqs is not public yet you will need to add a GITHUB_PAT to your environment to install. Please contact [Kathryn Rozen-Gagnon](mailto:krozen@rockfeller.edu) for access... This will not be necessary once CondaSysReqs becomes public.
+
+Once access is provided, you can generate your GITHUB pat by visiting the settings -> Developer Settings ->  Personal access tokens and creating a personal access token. Copy the long string of your personal access token replace **MYGITHUBPAT** below.
+
+```{r setGH,echo=TRUE,eval=FALSE}
+Sys.setenv(GITHUB_PAT="MYGITHUBPAT")
+```
+
+###Install CondaSysReqs:
+
 ```{r installCondaSysReqs,echo=TRUE,eval=FALSE}
 library(devtools)
 install_github("RockefellerUniversity/CondaSysReqs")
 ```
 
-
 We can now use the CondaSysReqs package to create the required Conda environment and requirments for the CLIPflexR package.
 
 The below code will install the required external software to a Conda environment within the default location (same path as the Reticulate package's Conda environments). 
 
-The path to the Conda executable and the name of the Conda environment 
+The path to the Conda executable and the name of the Conda environment:
+
 ```{r installConda_Reqs,echo=TRUE,eval=FALSE}
 library(CondaSysReqs)
 CondaInfo <- install_CondaSysReqs("CLIPflexR")
@@ -122,19 +135,13 @@ library(CLIPflexR)
 
 We can also list the important paths from the environmental options set by CLIPflexR.
 
-
 ```{r CheckPaths2,echo=TRUE,eval=TRUE}
 getOption("CLIPflexR.condaEnv")
 getOption("CLIPflexR.ctk")
 getOption("CLIPflexR.czplib")
 ```
 
-
 Now that these are installed, all functions with the CLIPflexR package will use these by default without further configuration of paths or environmental variables.
-
-
-
-
 
 ```{r testa,echo=TRUE,eval=TRUE}
 require(CLIPflexR)
