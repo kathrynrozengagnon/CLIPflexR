@@ -73,7 +73,7 @@ Once access is provided, you can generate your GITHUB pat by visiting the settin
 Sys.setenv(GITHUB_PAT="MYGITHUBPAT")
 ```
 
-###Install CondaSysReqs:
+### Install CondaSysReqs:
 
 ```{r installCondaSysReqs,echo=TRUE,eval=FALSE}
 library(devtools)

@@ -22,7 +22,7 @@ library(rtracklayer)
 
 This is an alternative to the CTK processing pipeline for CLIP data, and returns a peak matrix with genomic locations of peaks and counts in each peak by sample
 
-##Initial processing and quality control
+## Initial processing and quality control
 
 ### Decompress fastq files
 Use compressed fastq files as input; R-wrapped decompression function using bzip2.
@@ -134,7 +134,7 @@ coll_FqFile_QF
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG092419_S1_L001_R1_001_collapse.fasta"
 ```
 
-##Follow these steps to process standard CLIP libraries
+## Follow these steps to process standard CLIP libraries
 
 ### De-multiplex samples **(wrapping FASTX's barcode splitter)**
 De-multiplex samples by indices using R-wrapped **fastx_barcode_splitter** from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_barcode_splitter_usage).
@@ -320,11 +320,11 @@ samples_split_std_rm5_rm3
 ## [[14]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_aegypti_mIgG_Exp7D_rm5_clip.fa"
 ```
-###These reads are now ready to map to your genome
+### These reads are now ready to map to your genome
 
-##Follow these steps to process BrdU-CLIP libraries
+## Follow these steps to process BrdU-CLIP libraries
 
-###First strip random barcode sequences (UMI) from the 5' end of reads **(wrapping CTK's stripBarcode.pl)**
+### First strip random barcode sequences (UMI) from the 5' end of reads **(wrapping CTK's stripBarcode.pl)**
 Strip random barcodes/linkers with specific length from reads using R-wrapped **stripBarcode.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl).
 **linkerlength**: barcode length; **inputformat**: format of input sequences. (fasta/fastq).
 [CLIPflexR documentation](../reference/ctk_stripBarcode.html)
@@ -406,7 +406,7 @@ head(BrdU_samples_stats)
 ## 6 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_mIgG_Exp6B
 ```
 
-###Trim 3 "not G" (DDD) and index (6nt) from the 5' end of reads **(wrapping  FASTX's fastx_trimmer)**
+### Trim 3 "not G" (DDD) and index (6nt) from the 5' end of reads **(wrapping  FASTX's fastx_trimmer)**
 Trimming 5'-end adapter sequences using R-wrapped **fastx_trimmer** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_trimmer_usage).
 **read_start**: read starts at this base, 10 (default);  **read_end** read ends at this base, NULL (default)
 [CLIPflexR documentation](../reference/fastx_trimmer.html)
@@ -519,7 +519,7 @@ Trimming 3'-end adapter sequences using R-wrapped **fastx_clipper** function fro
 ```
 These reads are now ready to map to your genome
 
-##Build a Bowtie2 genome index and align to genome using Rbowtie2.
+## Build a Bowtie2 genome index and align to genome using Rbowtie2.
 Build Bowtie2 index of reference genome, AaegL5 in this vignette.
 [Index documentation](../reference/bowtie2_index.html); see also [CTK processing vignette](StandardandBrdU_Processing_CTK_editJD.html)
 
@@ -580,9 +580,9 @@ bams
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bam"
 ```
 
-##Convert to beds, find peaks, and build count matrix
+## Convert to beds, find peaks, and build count matrix
 
-###Convert to beds
+### Convert to beds
 [CLIPflexR documentation](../reference/bamtobed_index.html)
 
 
@@ -605,7 +605,7 @@ beds
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bed"
 ```
 
-###Make tag directories and findpeaks **(wrapping HOMER's MakeTagDirectory and findpeaks)**
+### Make tag directories and findpeaks **(wrapping HOMER's MakeTagDirectory and findpeaks)**
 Call significant peaks in each sample using R-wrapped **homer_peaks** from [HOMER makeTagDirectory](http://homer.ucsd.edu/homer/ngs/tagDir.html) &
 [HOMER findpeaks](http://homer.ucsd.edu/homer/ngs/peaks.html).
 **style**: type of HOMER peak calling, "factor" (default); **foldEnrichmentOverLocal**: fold enrichment over local tag count, 2 (default); **localSize**:region to check for local tag enrichment, 10000 (default); **strand**: find peaks using tags on "seperate" (default); **minDist**: minimum distance between peaks, 50 (default); **size**: peak size, 10 (default); **fragLength**: approximate fragment length, 10 (default);  **genomeSize**: NULL=2e9 (default, human or mouse), or set for your genome
@@ -617,7 +617,7 @@ Call significant peaks in each sample using R-wrapped **homer_peaks** from [HOME
 peaks <- lapply(beds, homer_peaks, fragLength=25)
 ```
 
-###Make count matrix of peaks, starting with reading in HOMER peak files and making a matrix that indicated which peaks were called in each sample
+### Make count matrix of peaks, starting with reading in HOMER peak files and making a matrix that indicated which peaks were called in each sample
 
 
 ```r
@@ -669,7 +669,7 @@ head(peakmat)
 ## [6,]                                                                          FALSE
 ```
 
-###The next step is to countFromBed  to append the number of reads at each peak location, by sample
+### The next step is to countFromBed  to append the number of reads at each peak location, by sample
 [CLIPflexR documentation](../reference/countFromBed.html)
 
 
@@ -780,4 +780,4 @@ head(peaksDF)
 ## 6 1:1947625_1947635:+
 ```
 
-##now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more...
+## Now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more...
