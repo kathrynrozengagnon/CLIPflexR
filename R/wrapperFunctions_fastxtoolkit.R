@@ -490,9 +490,9 @@ fastx_clipper <- function(fileTofqs,
   return(file_fqs)
 }
 
-#' Wrapper function for fastx_clipper
+#' Wrapper function for fastx_trimmer
 #'
-#' Wrapper function for fastx_clipper
+#' Wrapper function for fastx_trimmer
 #'
 #'
 #' @docType methods
@@ -503,7 +503,7 @@ fastx_clipper <- function(fileTofqs,
 #'
 #' @param fileTofqt File to process
 #' @param outFile Output file path
-#' @param fqt Path to fastx_clipper from FastX toolkit
+#' @param fqt Path to fastx_trimmer from FastX toolkit
 #' @param read_start read starting base
 #' @param read_end read ending base
 #' @param stderr Path to stderr file
