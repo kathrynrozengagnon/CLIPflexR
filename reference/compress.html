@@ -135,12 +135,12 @@
     <p>Wrapper function for Compress</p>
     </div>
 
-    <pre class="usage"><span class='fu'>compress</span>(
-  <span class='kw'>fileToCompress</span>,
-  keep = <span class='fl'>TRUE</span>,
-  methodCompress = <span class='st'>"gunzip"</span>,
-  overwrite = <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>compress</span><span class='op'>(</span>
+  <span class='va'>fileToCompress</span>,
+  keep <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  methodCompress <span class='op'>=</span> <span class='st'>"gunzip"</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,9 +172,9 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> 
-<span class='kw'>testFQ</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,package=<span class='st'>"CLIPflexR"</span>)
-<span class='kw'>decom</span> <span class='op'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='kw'>testFQ</span>,overwrite=<span class='fl'>TRUE</span>)
-<span class='kw'>com</span> <span class='op'>&lt;-</span> <span class='fu'>compress</span>(<span class='kw'>decom</span>,overwrite=<span class='fl'>TRUE</span>)
+<span class='va'>testFQ</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,package<span class='op'>=</span><span class='st'>"CLIPflexR"</span><span class='op'>)</span>
+<span class='va'>decom</span> <span class='op'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span><span class='op'>(</span><span class='va'>testFQ</span>,overwrite<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>com</span> <span class='op'>&lt;-</span> <span class='fu'>compress</span><span class='op'>(</span><span class='va'>decom</span>,overwrite<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

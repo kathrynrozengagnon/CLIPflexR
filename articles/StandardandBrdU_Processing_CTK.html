@@ -101,21 +101,19 @@
 <a href="#download-data" class="anchor"></a>Download Data</h2>
 <p>Download data from <a href="https://www.ncbi.nlm.nih.gov/sra">SRA</a>. <em>SRR110753</em> was selected as an example in this vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="kw">SRAdb</span>)
-<span class="kw">mySRA</span> <span class="op">&lt;-</span> <span class="st">"SRAmetadb.sqlite"</span>
-<span class="co">if</span>(<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="kw">mySRA</span>)){
-  <span class="kw">mySRA</span> <span class="op">&lt;-</span> <span class="fu">getSRAdbFile</span>()
-}
-<span class="kw">sra_con</span> <span class="op">&lt;-</span> <span class="fu">dbConnect</span>(<span class="fu">dbDriver</span>(<span class="st">"SQLite"</span>), <span class="kw">mySRA</span> )
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">SRAdb</span><span class="op">)</span>
+<span class="va">mySRA</span> <span class="op">&lt;-</span> <span class="st">"SRAmetadb.sqlite"</span>
+<span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">mySRA</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">mySRA</span> <span class="op">&lt;-</span> <span class="fu">getSRAdbFile</span><span class="op">(</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="va">sra_con</span> <span class="op">&lt;-</span> <span class="fu">dbConnect</span><span class="op">(</span><span class="fu">dbDriver</span><span class="op">(</span><span class="st">"SQLite"</span><span class="op">)</span>, <span class="va">mySRA</span> <span class="op">)</span></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw">Fox3_Std</span> <span class="op">&lt;-</span> <span class="st">"SRR1107535.fastq.gz"</span>
-<span class="co">if</span>(<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span>(<span class="kw">Fox3_Std</span>)){
-  <span class="fu">getFASTQfile</span>(<span class="st">"SRR1107535"</span>,
-               sra_con = <span class="kw">sra_con</span>,
-               destDir = <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>())
-}
-</pre></div>
+<span class="va">Fox3_Std</span> <span class="op">&lt;-</span> <span class="st">"SRR1107535.fastq.gz"</span>
+<span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">Fox3_Std</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="fu">getFASTQfile</span><span class="op">(</span><span class="st">"SRR1107535"</span>,
+               sra_con <span class="op">=</span> <span class="va">sra_con</span>,
+               destDir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></pre></div>
 </div>
 <div id="process-data" class="section level2">
 <h2 class="hasAnchor">
@@ -127,11 +125,10 @@
 <p>Filtering low quality read using R-wrapped <strong>fastq_filter.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#fastq_filter.pl">CTK</a>.<br>
 Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file after filtering low quality reads; <strong>qsFilter</strong>: filtering criteria, “mean:0-29:20” means the average quality of the first 30 bases must be equal or greater than 20.<br><a href="../reference/ctk_fastqFilter.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">Fox3_Std</span> <span class="op">&lt;-</span> <span class="st">"SRR1107535.fastq.gz"</span>
-<span class="kw">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_fastqFilter.html">ctk_fastqFilter</a></span>(<span class="kw">Fox3_Std</span>,
-                                     outFile = <span class="st">"SRR1107535_FF.fastq"</span>,
-                                     qsFilter=<span class="st">"mean:0-29:20"</span>)
-</pre></div>
+<span class="va">Fox3_Std</span> <span class="op">&lt;-</span> <span class="st">"SRR1107535.fastq.gz"</span>
+<span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_fastqFilter.html">ctk_fastqFilter</a></span><span class="op">(</span><span class="va">Fox3_Std</span>,
+                                     outFile <span class="op">=</span> <span class="st">"SRR1107535_FF.fastq"</span>,
+                                     qsFilter<span class="op">=</span><span class="st">"mean:0-29:20"</span><span class="op">)</span></pre></div>
 </div>
 <div id="remove-3-linkers-wrapping-fastxs-fastx_clipper" class="section level3">
 <h3 class="hasAnchor">
@@ -139,8 +136,7 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 </h3>
 <p>Trimming 3’-end adapter sequences using R-wrapped <strong>fastx_clipper</strong> function from <a href="http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage">FASTX_toolkit</a>.<br><strong>adaptor</strong>: CLIP this sequence from the 3’-end of reads, “GTGTCAGTCACTTCCAGCGG” (default); <strong>length</strong>: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).<br><a href="../reference/fastx_clipper.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fastx_clipper.html">fastx_clipper</a></span>(<span class="kw">Fox3_Std_filtered</span>,outFile = <span class="st">"SRR1107535_clipped.fastq"</span>,adaptor = <span class="st">"GTGTCAGTCACTTCCAGCGG"</span>,length =<span class="fl">20</span>)
-</pre></div>
+<span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fastx_clipper.html">fastx_clipper</a></span><span class="op">(</span><span class="va">Fox3_Std_filtered</span>,outFile <span class="op">=</span> <span class="st">"SRR1107535_clipped.fastq"</span>,adaptor <span class="op">=</span> <span class="st">"GTGTCAGTCACTTCCAGCGG"</span>,length <span class="op">=</span><span class="fl">20</span><span class="op">)</span></pre></div>
 </div>
 <div id="trim-low-quality-nucleotides-and-short-reads-wrapping-fastxs-fastq_quality_trimmer" class="section level3">
 <h3 class="hasAnchor">
@@ -148,9 +144,8 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 </h3>
 <p>Discard reads with low quality bases and and short reads using R-wrapped <strong>fastq_quality_trimmer</strong> function from <a href="http://hannonlab.cshl.edu/fastx_toolkit/commandline.html">FASTX-toolkit</a>. <strong>outfile</strong>: file name and path of the fastq files after filtering; <strong>qualityThreshold</strong>: the minimum quality threshold. <a href="../reference/fastq_quality_trimmer.html">CLIPflexR documentation</a></p>
 <div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="kw">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fastq_quality_trimmer.html">fastq_quality_trimmer</a></span>(<span class="kw">Fox3_Std_filtered</span>,
-                                           outFile = <span class="st">"SRR1107535_clipFiltered.fastq.gz"</span>,qualityThreshold = <span class="fl">5</span>,minimumLength = <span class="fl">20</span> )
-</pre></div>
+<span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fastq_quality_trimmer.html">fastq_quality_trimmer</a></span><span class="op">(</span><span class="va">Fox3_Std_filtered</span>,
+                                           outFile <span class="op">=</span> <span class="st">"SRR1107535_clipFiltered.fastq.gz"</span>,qualityThreshold <span class="op">=</span> <span class="fl">5</span>,minimumLength <span class="op">=</span> <span class="fl">20</span> <span class="op">)</span></pre></div>
 </div>
 <div id="collapse-exact-ctk_fastq2collapse-wrapping-ctkss-ctk_fastq2collapse-pl" class="section level3">
 <h3 class="hasAnchor">
@@ -158,9 +153,8 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 </h3>
 <p>Collapse duplicate sequences into unique reads using R-wrapped <strong>fastq2collapse.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#fastq2collapse.pl">CTK</a>.<br><a href="../reference/ctk_fastq2collapse.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_fastq2collapse.html">ctk_fastq2collapse</a></span>(<span class="kw">Fox3_Std_filtered</span>,
-                                           outFile = <span class="st">"SRR1107535_collapsed.fastq.gz"</span>)
-</pre></div>
+<span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_fastq2collapse.html">ctk_fastq2collapse</a></span><span class="op">(</span><span class="va">Fox3_Std_filtered</span>,
+                                           outFile <span class="op">=</span> <span class="st">"SRR1107535_collapsed.fastq.gz"</span><span class="op">)</span></pre></div>
 </div>
 <div id="remove-random-barcodes-wrapping-ctks-stripbarcode-pl" class="section level3">
 <h3 class="hasAnchor">
@@ -168,55 +162,50 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 </h3>
 <p>Strip random barcodes with specific length from the reads using R-wrapped <strong>stripBarcode.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl">CTK</a>.<br><strong>linkerlength</strong>: barcode length; <strong>inputFormat</strong>: format of input sequences, fasta (default) or fastq.<br><a href="../reference/ctk_stripBarcode.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="kw">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_stripBarcode.html">ctk_stripBarcode</a></span>(<span class="kw">Fox3_Std_filtered</span>,linkerlength = <span class="fl">5</span>,
-                                      inputFormat = <span class="st">"fasta"</span>,
-                                           outFile = <span class="st">"SRR1107535_stripped.fastq.gz"</span>)
-</pre></div>
+<span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_stripBarcode.html">ctk_stripBarcode</a></span><span class="op">(</span><span class="va">Fox3_Std_filtered</span>,linkerlength <span class="op">=</span> <span class="fl">5</span>,
+                                      inputFormat <span class="op">=</span> <span class="st">"fasta"</span>,
+                                           outFile <span class="op">=</span> <span class="st">"SRR1107535_stripped.fastq.gz"</span><span class="op">)</span></pre></div>
 </div>
 <div id="make-reference-data-for-mm10" class="section level3">
 <h3 class="hasAnchor">
 <a href="#make-reference-data-for-mm10" class="anchor"></a>Make reference data for mm10</h3>
 <p>Fetch reference sequences from <a href="https://www.bioconductor.org/packages/release/bioc/html/BSgenome.html">BSgenome</a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="kw">BSgenome.Mmusculus.UCSC.mm10</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="kw">magrittr</span>)
-<span class="kw">listOfSeq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="fu">seqnames</span>(<span class="kw">BSgenome.Mmusculus.UCSC.mm10</span>),<span class="fu">function</span>(<span class="kw">x</span>)<span class="kw">BSgenome.Mmusculus.UCSC.mm10</span>[[<span class="kw">x</span>]])
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">listOfSeq</span>) <span class="op">&lt;-</span> <span class="fu">seqnames</span>(<span class="kw">BSgenome.Mmusculus.UCSC.mm10</span>)
-<span class="kw">toWrite</span> <span class="op">&lt;-</span> <span class="fu">DNAStringSet</span>(<span class="kw">listOfSeq</span>[<span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span>(<span class="st">"Un|random|hap"</span>,<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="kw">listOfSeq</span>))])
-<span class="fu">writeXStringSet</span>(<span class="kw">toWrite</span>,file=<span class="st">"mm10.fa"</span>)
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">BSgenome.Mmusculus.UCSC.mm10</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">magrittr</span><span class="op">)</span>
+<span class="va">listOfSeq</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="fu">seqnames</span><span class="op">(</span><span class="va">BSgenome.Mmusculus.UCSC.mm10</span><span class="op">)</span>,<span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="va">BSgenome.Mmusculus.UCSC.mm10</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">listOfSeq</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu">seqnames</span><span class="op">(</span><span class="va">BSgenome.Mmusculus.UCSC.mm10</span><span class="op">)</span>
+<span class="va">toWrite</span> <span class="op">&lt;-</span> <span class="fu">DNAStringSet</span><span class="op">(</span><span class="va">listOfSeq</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Un|random|hap"</span>,<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">listOfSeq</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+<span class="fu">writeXStringSet</span><span class="op">(</span><span class="va">toWrite</span>,file<span class="op">=</span><span class="st">"mm10.fa"</span><span class="op">)</span></pre></div>
 </div>
 <div id="build-a-bowtie2-genome-index-using-rbowtie2-" class="section level3">
 <h3 class="hasAnchor">
 <a href="#build-a-bowtie2-genome-index-using-rbowtie2-" class="anchor"></a>Build a Bowtie2 genome index using Rbowtie2.</h3>
 <p>Build Bowtie2 index of reference genome, mm10 in this vignette.<br><strong>threads</strong>: number of threads used. <a href="../reference/bowtie2_index.html">Index documentation</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="../reference/bowtie2_index.html">bowtie2_index</a></span>(<span class="st">"mm10.fa"</span>,threads = <span class="fl">6</span>)
-</pre></div>
+<span class="fu"><a href="../reference/bowtie2_index.html">bowtie2_index</a></span><span class="op">(</span><span class="st">"mm10.fa"</span>,threads <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></pre></div>
 </div>
 <div id="align-to-genome-using-rbowtie2-" class="section level3">
 <h3 class="hasAnchor">
 <a href="#align-to-genome-using-rbowtie2-" class="anchor"></a>Align to genome using Rbowtie2.</h3>
 <p>Align reads to indexed reference genome using Rbowtie2.<br><strong>format</strong>: format of input sequences, fasta (default) or fastq; <strong>threads</strong>: number of threads used, 1 (default); <strong>maxMismatches</strong>: number of mismatches allowed, 1 (default) or 0; <strong>seedSubString</strong>: length of seed substrings, 18 (default), must be &gt;3 &amp; &lt;32; <strong>report_k</strong>: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.<br><a href="../reference/bowtie_align.html">Alignment documentation</a>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="kw">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decompress.html">decompress</a></span>(<span class="kw">Fox3_Std_filtered</span>)
-<span class="kw">alignedFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bowtie_align.html">bowtie_align</a></span>(<span class="kw">Fox3_Std_filtered</span>,
+<span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decompress.html">decompress</a></span><span class="op">(</span><span class="va">Fox3_Std_filtered</span><span class="op">)</span>
+<span class="va">alignedFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/bowtie_align.html">bowtie_align</a></span><span class="op">(</span><span class="va">Fox3_Std_filtered</span>,
               <span class="st">"mm10"</span>,
-              <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">"\\.fastq"</span>,<span class="st">".bam"</span>,<span class="kw">Fox3_Std_filtered</span>),
-              format=<span class="st">"fastq"</span>,
-              threads = <span class="fl">6</span>)
-</pre></div>
+              <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"\\.fastq"</span>,<span class="st">".bam"</span>,<span class="va">Fox3_Std_filtered</span><span class="op">)</span>,
+              format<span class="op">=</span><span class="st">"fastq"</span>,
+              threads <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></pre></div>
 </div>
 <div id="parsing-sam-files" class="section level3">
 <h3 class="hasAnchor">
 <a href="#parsing-sam-files" class="anchor"></a>Parsing SAM files</h3>
 <p>Parsing SAM files toget unique mapped reads and mismatches per read using R-wrapped <strong>parseAlignment.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#parseAlignment.pl">CTK</a>.<br><strong>minLen</strong>: miminal mapping length to report, 18 (default); <strong>mapQual</strong>: Minimum map quality, 1 (default MAPQ), keep only uniquely mapped reads when mapQual&gt;=1.<br><a href="../reference/ctk_parseAlignment.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="kw">parsedAlignement</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_parseAlignment.html">ctk_parseAlignment</a></span>(<span class="kw">alignedFile</span>,
-                                       minLen = <span class="fl">18</span>,
-                                       mapQual = <span class="fl">1</span>,
-                                       mutationFile = <span class="st">"mutations.txt"</span>)
-</pre></div>
+<span class="va">parsedAlignement</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_parseAlignment.html">ctk_parseAlignment</a></span><span class="op">(</span><span class="va">alignedFile</span>,
+                                       minLen <span class="op">=</span> <span class="fl">18</span>,
+                                       mapQual <span class="op">=</span> <span class="fl">1</span>,
+                                       mutationFile <span class="op">=</span> <span class="st">"mutations.txt"</span><span class="op">)</span></pre></div>
 </div>
 <div id="collapse-duplicated-mapped-reads" class="section level3">
 <h3 class="hasAnchor">
@@ -224,34 +213,31 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 <p>Collapse CLIP tags generated by parseAlignment using R-wrapped <strong>tag2collapse.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2collapse.pl">CTK</a>.<br><strong>bigFile</strong>: set TRUE if input file is big; <strong>keepMaxScore</strong>: keep the tag with the most weight (instead of the longest one) as representative; <strong>keepTagName</strong>: do not change tag name (no extra information); <strong>weight</strong>: consider the weight of each tag; <strong>weightInName</strong>: find weight in name; <strong>randomBarcode</strong>: random barcode exists, no collapse for different barcodes; <strong>em</strong>: EM threshold to infer reliability of each collapsed read (when have random linker, -1 = no EM); <strong>outputSeqError</strong>: output sequencing errors estimated by the EM algorithm.<br><a href="../reference/ctk_tag2collapse.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="co"># -v -big --random-barcode -EM 30 --seq-error-model alignment -weight --weight-in-name --keep-max-score --keep-tag-name $f.tag.bed</span>
-<span class="kw">tagcollapsed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2collapse.html">ctk_tag2collapse</a></span>(<span class="kw">parsedAlignement</span>,
-                                     keepMaxScore = <span class="fl">TRUE</span>,
-                                     keepTagName = <span class="fl">TRUE</span>,
-                                     weight = <span class="fl">TRUE</span>,
-                                     bigFile = <span class="fl">TRUE</span>,
-                                     weightInName = <span class="fl">TRUE</span>,
-                                     randomBarcode = <span class="fl">TRUE</span>,
-                                     em = <span class="fl">30</span>,
-                                     outputSeqError = <span class="fl">TRUE</span>
-                                     )
-</pre></div>
+<span class="va">tagcollapsed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2collapse.html">ctk_tag2collapse</a></span><span class="op">(</span><span class="va">parsedAlignement</span>,
+                                     keepMaxScore <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     keepTagName <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     weight <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     bigFile <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     weightInName <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     randomBarcode <span class="op">=</span> <span class="cn">TRUE</span>,
+                                     em <span class="op">=</span> <span class="fl">30</span>,
+                                     outputSeqError <span class="op">=</span> <span class="cn">TRUE</span>
+                                     <span class="op">)</span></pre></div>
 </div>
 <div id="join-tags-and-mutations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#join-tags-and-mutations" class="anchor"></a>Join tags and mutations</h3>
 <p>Get the mutations in unique tags using R-wrapped <strong>selectRow.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#selectRow.pl">CTK</a> (originally wrapped from Galaxy).<br><strong>file1</strong>: mutation file; <strong>file2</strong>: tagged bed file; <strong>field1</strong>: query column; <strong>field2</strong>: filter column; <strong>mode</strong>: running mode, set N while only print paired rows.<br><a href="../reference/ctk_joinWrapper.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="kw">tagJoined</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_joinWrapper.html">ctk_joinWrapper</a></span>(<span class="st">"mutations.txt"</span>,<span class="kw">tagcollapsed</span>,field1 = <span class="fl">4</span>,field2 = <span class="fl">4</span>,mode = <span class="st">"n"</span>,
-                                outFile=<span class="st">"Fox3_3_tag.unique.mutation.txt"</span>)
-</pre></div>
+<span class="va">tagJoined</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_joinWrapper.html">ctk_joinWrapper</a></span><span class="op">(</span><span class="st">"mutations.txt"</span>,<span class="va">tagcollapsed</span>,field1 <span class="op">=</span> <span class="fl">4</span>,field2 <span class="op">=</span> <span class="fl">4</span>,mode <span class="op">=</span> <span class="st">"n"</span>,
+                                outFile<span class="op">=</span><span class="st">"Fox3_3_tag.unique.mutation.txt"</span><span class="op">)</span></pre></div>
 </div>
 <div id="label-bed-file-with-rgb-information" class="section level3">
 <h3 class="hasAnchor">
 <a href="#label-bed-file-with-rgb-information" class="anchor"></a>label bed file with rgb information</h3>
 <p>Add colors to bed file using R-wrapped <strong>bed2rgb.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#bed2rgb.pl">CTK</a>.<br><strong>filesToRun</strong>: taged bed files; <strong>col</strong>: assign color in r,g,b format.<br><a href="../reference/ctk_bed2rgb.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="kw">tagcollapsedRGB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_bed2rgb.html">ctk_bed2rgb</a></span>(filesToRun = <span class="kw">tagcollapsed</span>,col = <span class="st">"128,0,0"</span>)
-</pre></div>
+<span class="va">tagcollapsedRGB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_bed2rgb.html">ctk_bed2rgb</a></span><span class="op">(</span>filesToRun <span class="op">=</span> <span class="va">tagcollapsed</span>,col <span class="op">=</span> <span class="st">"128,0,0"</span><span class="op">)</span></pre></div>
 </div>
 <div id="generate-bedgraph" class="section level3">
 <h3 class="hasAnchor">
@@ -259,30 +245,27 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 <p>Generate bedgraphs for visualization using R-wrapped <strong>tag2profile.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2profile.pl">CTK</a>.<br><strong>bigFile</strong>: set TRUE if input file is big; <strong>ss</strong>: separate strand, TRUE (default); <strong>exact</strong>: exact count of each nucleotide, TRUE (default).<br><a href="../reference/ctk_tag2profile.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit">
 <span class="co"># -v -big --random-barcode -EM 30 --seq-error-model alignment -weight --weight-in-name --keep-max-score --keep-tag-name $f.tag.bed</span>
-<span class="kw">tagProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2profile.html">ctk_tag2profile</a></span>(filesToRun = <span class="kw">tagcollapsedRGB</span>,bigFile = <span class="fl">TRUE</span>,ss = <span class="fl">TRUE</span>,exact = <span class="fl">TRUE</span>,outputFormat = <span class="st">"bedgraph"</span>)
-</pre></div>
+<span class="va">tagProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2profile.html">ctk_tag2profile</a></span><span class="op">(</span>filesToRun <span class="op">=</span> <span class="va">tagcollapsedRGB</span>,bigFile <span class="op">=</span> <span class="cn">TRUE</span>,ss <span class="op">=</span> <span class="cn">TRUE</span>,exact <span class="op">=</span> <span class="cn">TRUE</span>,outputFormat <span class="op">=</span> <span class="st">"bedgraph"</span><span class="op">)</span></pre></div>
 </div>
 <div id="peak-calling-without-statistical-assessment" class="section level3">
 <h3 class="hasAnchor">
 <a href="#peak-calling-without-statistical-assessment" class="anchor"></a>Peak calling without statistical assessment</h3>
 <p>Call peaks using R-wrapped <strong>tag2peak.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2peak.pl">CTK</a> <em>without</em> statistical assessment. <strong>filesToRun</strong>: RGB labeled tagged bed files; <strong>valleySeeking</strong>: find candidate peaks by valley seeking, TRUE (default); <strong>valleyDepth</strong>: depth of valley, if valley seeking, 0.9 (default), between 0.5 and 1; <strong>bigFile</strong>: set TRUE if the input file is big; <strong>ss</strong>: separate strand, TRUE (default).<br><a href="../reference/ctk_tag2peak.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="kw">tagPeaksNoStats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2peak.html">ctk_tag2peak</a></span>(filesToRun = <span class="kw">tagcollapsedRGB</span>,valleySeeking = <span class="fl">TRUE</span>,valleyDepth = <span class="fl">0.9</span>,bigFile = <span class="fl">TRUE</span>,ss = <span class="fl">TRUE</span>)
-</pre></div>
+<span class="va">tagPeaksNoStats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2peak.html">ctk_tag2peak</a></span><span class="op">(</span>filesToRun <span class="op">=</span> <span class="va">tagcollapsedRGB</span>,valleySeeking <span class="op">=</span> <span class="cn">TRUE</span>,valleyDepth <span class="op">=</span> <span class="fl">0.9</span>,bigFile <span class="op">=</span> <span class="cn">TRUE</span>,ss <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></pre></div>
 </div>
 <div id="peak-calling-with-statistical-assessment" class="section level3">
 <h3 class="hasAnchor">
 <a href="#peak-calling-with-statistical-assessment" class="anchor"></a>Peak calling with statistical assessment</h3>
 <p>Call peaks using R-wrapped <strong>tag2peak.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2peak.pl">CTK</a> <em>with</em> statistical assessment. <strong>filesToRun</strong>: RGB labeled tagged bed files; <strong>valleySeeking</strong>: find candidate peaks by valley seeking, TRUE (default);<strong>valleyDepth</strong>: depth of valley, if valley seeking, 0.9 (default), between 0.5 and 1; <strong>bigFile</strong>: set TRUE if the input file is big; <strong>ss</strong>: separate strand, TRUE (default); <strong>genes</strong>: gene locus in bed format.<br><a href="../reference/ctk_tag2peak.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">require</a></span>(<span class="kw">TxDb.Mmusculus.UCSC.mm10.knownGene</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/BEDFile-class.html">export.bed</a></span>(<span class="fu">genes</span>(<span class="kw">TxDb.Mmusculus.UCSC.mm10.knownGene</span>),<span class="st">"genes.bed"</span>)
-<span class="kw">tagProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2peak.html">ctk_tag2peak</a></span>(filesToRun = <span class="kw">tagcollapsedRGB</span>,
-                           outFile = <span class="st">"TC_SRR1107535_stripped.RGB.peakWithStats.bed"</span>,
-                           outBoundary =<span class="st">"TC_SRR1107535_stripped.RGB.peakBoundary.bed"</span>,
-                           outHalfPH = <span class="st">"TC_SRR1107535_stripped.RGB.peakHalf.bed"</span>,
-                           valleySeeking = <span class="fl">TRUE</span>,valleyDepth = <span class="fl">0.9</span>,bigFile = <span class="fl">TRUE</span>,ss = <span class="fl">TRUE</span>,genes = <span class="st">"genes.bed"</span>)
-</pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">TxDb.Mmusculus.UCSC.mm10.knownGene</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/BEDFile-class.html">export.bed</a></span><span class="op">(</span><span class="fu">genes</span><span class="op">(</span><span class="va">TxDb.Mmusculus.UCSC.mm10.knownGene</span><span class="op">)</span>,<span class="st">"genes.bed"</span><span class="op">)</span>
+<span class="va">tagProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2peak.html">ctk_tag2peak</a></span><span class="op">(</span>filesToRun <span class="op">=</span> <span class="va">tagcollapsedRGB</span>,
+                           outFile <span class="op">=</span> <span class="st">"TC_SRR1107535_stripped.RGB.peakWithStats.bed"</span>,
+                           outBoundary <span class="op">=</span><span class="st">"TC_SRR1107535_stripped.RGB.peakBoundary.bed"</span>,
+                           outHalfPH <span class="op">=</span> <span class="st">"TC_SRR1107535_stripped.RGB.peakHalf.bed"</span>,
+                           valleySeeking <span class="op">=</span> <span class="cn">TRUE</span>,valleyDepth <span class="op">=</span> <span class="fl">0.9</span>,bigFile <span class="op">=</span> <span class="cn">TRUE</span>,ss <span class="op">=</span> <span class="cn">TRUE</span>,genes <span class="op">=</span> <span class="st">"genes.bed"</span><span class="op">)</span></pre></div>
 </div>
 <div id="retrieve-sequence-under-peaks-using-clipflexr-fetchsequencesforclip" class="section level3">
 <h3 class="hasAnchor">
@@ -290,8 +273,7 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 </h3>
 <p><strong>peaks</strong>: tagged bed file or GRanges of peaks; <strong>reSize</strong>: resize peak to this width around peak center, 64 (default); <strong>fasta</strong>: reference sequence.<br><a href="../reference/fetchSequencesForClIP.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="kw">myseq</span> <span class="op">&lt;-</span> <span class="fu">fetchSequencesForClIP</span>(peaks = <span class="kw">tagProfile</span>,reSize = <span class="fl">20</span>,fasta = <span class="st">"mm10.fa"</span>,bedHeader = <span class="fl">FALSE</span>)
-</pre></div>
+<span class="va">myseq</span> <span class="op">&lt;-</span> <span class="fu">fetchSequencesForClIP</span><span class="op">(</span>peaks <span class="op">=</span> <span class="va">tagProfile</span>,reSize <span class="op">=</span> <span class="fl">20</span>,fasta <span class="op">=</span> <span class="st">"mm10.fa"</span>,bedHeader <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></pre></div>
 </div>
 <div id="retrieve-peaks-associated-with-particular-motifs-using-clipflexr-annotatepeakswithpatterns" class="section level3">
 <h3 class="hasAnchor">
@@ -299,8 +281,7 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 </h3>
 <p><strong>peaks</strong>: tagged bed file or GRanges of peaks; <strong>reSize</strong>: resize peak to this width around peak center, 64 (default); <strong>fasta</strong>: reference sequence; <strong>pattern</strong>: FASTA of motif sequence(s).<br><a href="../reference/annotatePeaksWithPatterns.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="kw">myseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotatePeaksWithPatterns.html">annotatePeaksWithPatterns</a></span>(peaks = <span class="kw">tagProfile</span>,patterns = <span class="st">"TGCATG"</span>,resize = <span class="fl">100</span>,fasta = <span class="st">"mm10.fa"</span>,bedHeader=<span class="fl">FALSE</span>)
-</pre></div>
+<span class="va">myseq</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotatePeaksWithPatterns.html">annotatePeaksWithPatterns</a></span><span class="op">(</span>peaks <span class="op">=</span> <span class="va">tagProfile</span>,patterns <span class="op">=</span> <span class="st">"TGCATG"</span>,resize <span class="op">=</span> <span class="fl">100</span>,fasta <span class="op">=</span> <span class="st">"mm10.fa"</span>,bedHeader<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span></pre></div>
 </div>
 </div>
   </div>
