@@ -21,8 +21,8 @@ homer_peaks(
   size = 10,
   fragLength = 10,
   genomeSize = NULL,
-  stderr = paste0(getwd(), "homer_stats_stderr"),
-  stdout = paste0(getwd(), "homer_stats_stdout"),
+  stderr = paste0(getwd(), "/homer_stderr"),
+  stdout = paste0(getwd(), "/homer_stdout"),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE

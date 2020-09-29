@@ -3,7 +3,7 @@
 \docType{methods}
 \name{fastx_trimmer}
 \alias{fastx_trimmer}
-\title{Wrapper function for fastx_clipper}
+\title{Wrapper function for fastx_trimmer}
 \usage{
 fastx_trimmer(
   fileTofqt,
@@ -21,7 +21,7 @@ fastx_trimmer(
 \arguments{
 \item{fileTofqt}{File to process}
 
-\item{fqt}{Path to fastx_clipper from FastX toolkit}
+\item{fqt}{Path to fastx_trimmer from FastX toolkit}
 
 \item{read_start}{read starting base}
 
@@ -43,7 +43,7 @@ fastx_trimmer(
 Path to trimmed file
 }
 \description{
-Wrapper function for fastx_clipper
+Wrapper function for fastx_trimmer
 }
 \examples{
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
