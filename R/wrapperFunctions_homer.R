@@ -25,7 +25,7 @@
 #' @param fragLength Approximate fragment length
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @return Path to unzipped file

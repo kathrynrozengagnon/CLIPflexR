@@ -57,7 +57,7 @@ miniconda_exists <- function (path = miniconda_path()) {
     op.CLIPflexR$CLIPflexR.condaEnv <- clipr
   }else{
     packageStartupMessage(basename(clipr)," conda env was not found found at ",clipr)
-    packageStartupMessage("For more information on setting up conda environments for CLIPflexR, see the CondaSysReqs package")
+    packageStartupMessage("For more information on setting up conda environments for CLIPflexR, see the Herper package")
   }
   ctk <- file.path(clipr,"bin","ctk")
   czplib <- file.path(clipr,"lib","czplib")

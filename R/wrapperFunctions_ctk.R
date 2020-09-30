@@ -20,7 +20,7 @@
 #' @param inputFormat Input file format (fasta|fastq)
 #' @param barcodeStartWith Filter sequences based on the starting nucleotides in the barcode
 #' @param barcodeEndWith Filter sequences based on the ending nucleotides in the barcode
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -152,7 +152,7 @@ ctk_stripBarcode <- function(filesToRun,
 #' @param cacheDir Name for cache directory.
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -282,7 +282,7 @@ ctk_cims <- function(filesToRun,
 #' @param cacheDir Name for cache directory.
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -391,7 +391,7 @@ ctk_cits <- function(filesToRun,
 #' @param summaryStat Create summary file
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -491,7 +491,7 @@ ctk_getMutationType <- function(filesToRun,
 #' @param qsFilter Quality score filter
 #' @param maxN Maximum number of bases below qsFilter 
 #' @param outputFormat Output format (fastq | fasta)
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -602,7 +602,7 @@ ctk_fastqFilter <- function(filesToRun,
 #' @param PATHTOPERLLIB Path to PERL5LIB.
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -719,7 +719,7 @@ ctk_fastq2collapse <- function(filesToRun,
 #' @param indelInScore Include indels in mutation score count.
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -860,7 +860,7 @@ ctk_parseAlignment <- function(filesToRun,
 #' @param em EM threshold to infer reliability of each collapsed read (when have random linker, -1=no EM)
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -991,7 +991,7 @@ ctk_tag2collapse <- function(filesToRun,
 #' @param python Path to python
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -1117,7 +1117,7 @@ ctk_joinWrapper <- function(file1,
 #' @param col Colour to include in BED rgb column
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -1260,7 +1260,7 @@ ctk_bed2rgb <- function(filesToRun,
 #' @param PATHTOPERLLIB Path to PERL5LIB.
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples
@@ -1424,7 +1424,7 @@ ctk_tag2profile <- function(filesToRun,
 #' @param peakPrefix prefix of peak id (Peak) (so output file will look like Peak1, Peak2, etc)
 #' @param stderr Path to stdout file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @examples

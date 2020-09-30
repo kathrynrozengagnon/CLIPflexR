@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 **CLIPflexR** is a R wrapper for the [**CLIP Tool Kit  (CTK)**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) and additional functions to call other external libraries into an R environment.
 
-**CLIPflexR** makes use of the **CondaSysReqs** library to install conda dependencies to your machine within a conda environment using the reticulate libraries.
+**CLIPflexR** makes use of the **Herper** library to install conda dependencies to your machine within a conda environment using the reticulate libraries.
 
 The [**CTK toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) is installed as part of the **CLIPflexR** **install_ctk()** function.
 
@@ -19,8 +19,8 @@ The [**CTK toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documenta
 ```{r,echo=TRUE,eval=FALSE}
 install.packages("devtools")
 devtools::install_github("kathrynrozengagnon/CLIPflexR")
-devtools::install_github("RockefellerUniversity/CondaSysReqs")
-CondaSysReqs::install_CondaSysReqs("CLIPflexR")
+devtools::install_github("RockefellerUniversity/Herper")
+Herper::install_CondaSysReqs("CLIPflexR", SysReqsAsJSON = FALSE)
 CLIPflexR::install_ctk()
 ```
 

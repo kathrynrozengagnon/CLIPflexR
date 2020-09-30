@@ -67,9 +67,9 @@ jobs:
         
       - name: Install CondaSys dependencies
         run: |
-          devtools::install_github("RockefellerUniversity/CondaSysReqs",upgrade = "never")
+          devtools::install_github("RockefellerUniversity/Herper",upgrade = "never")
           devtools::install_github("RockefellerUniversity/clipR")
-          CondaSysReqs::install_CondaSysReqs("clipR")
+          Herper::install_CondaSysReqs("clipR")
           clipR::install_ctk()
         shell: Rscript {0}
 

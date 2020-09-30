@@ -6,7 +6,7 @@ Readme
 and additional functions to call other external libraries into an R
 environment.
 
-**CLIPflexR** makes use of the **CondaSysReqs** library to install conda
+**CLIPflexR** makes use of the **Herper** library to install conda
 dependencies to your machine within a conda environment using the
 reticulate libraries.
 
@@ -18,8 +18,8 @@ is installed as part of the **CLIPflexR** **install\_ctk()** function.
 
     install.packages("devtools")
     devtools::install_github("kathrynrozengagnon/CLIPflexR")
-    devtools::install_github("RockefellerUniversity/CondaSysReqs")
-    CondaSysReqs::install_CondaSysReqs("CLIPflexR")
+    devtools::install_github("RockefellerUniversity/Herper")
+    Herper::install_CondaSysReqs("CLIPflexR")
     CLIPflexR::install_ctk()
 
 Path to Conda tools and CTK/czplib

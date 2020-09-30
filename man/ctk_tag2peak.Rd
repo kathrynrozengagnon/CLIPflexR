@@ -78,7 +78,7 @@ ctk_tag2peak(
 
 \item{stdout}{Path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by CondaSysReqs}
+\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 

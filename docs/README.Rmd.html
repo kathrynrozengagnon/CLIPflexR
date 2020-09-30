@@ -125,15 +125,15 @@
 <div id="readme" class="section level1">
 
 <p><strong>clipR</strong> is a R wrapper for the <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation"><strong>ctk toolkit</strong></a> and additional functions to call other external libraries into an R environment.</p>
-<p><strong>clipR</strong> makes use of the <strong>CondaSysReqs</strong> library to install conda dependencies to your machine within a conda environment using the reticulate libraries.</p>
+<p><strong>clipR</strong> makes use of the <strong>Herper</strong> library to install conda dependencies to your machine within a conda environment using the reticulate libraries.</p>
 <p>The <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation"><strong>ctk toolkit</strong></a> is installed as part of the <strong>clipR</strong> <strong>install_ctk()</strong> function.</p>
 <div id="how-to-install-clipr" class="section level2">
 <h2 class="hasAnchor">
 <a href="#how-to-install-clipr" class="anchor"></a>How to install clipR</h2>
 <pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages("devtools")
 devtools::install_github("RockefellerUniversity/clipR")
-devtools::install_github("RockefellerUniversity/CondaSysReqs")
-CondaSysReqs::install_CondaSysReqs("clipR")
+devtools::install_github("RockefellerUniversity/Herper")
+Herper::install_CondaSysReqs("clipR")
 clipR::install_ctk()
 library(clipR)</a></code></pre>
 </div>

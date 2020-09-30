@@ -17,7 +17,7 @@
 #' @param blockSize  set block size to 100k .. 900k.
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs.
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper.
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @return Path to unzipped file.
@@ -81,7 +81,7 @@ bzip2 <- function(fileToBzip2,bzip2="Bzip2",
 #' @param minimumPercentOfRead Minimum percent of bases that must have [-q] quality.
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @return Path to unzipped file
@@ -162,7 +162,7 @@ fastq_quality_filter <- function(fileTofqf,
 #' @param minimumLength Minimum percent of bases that must have [-q] quality.
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @return Path to unzipped file
@@ -245,7 +245,7 @@ fastq_quality_trimmer <- function(fileTofqf,
 #' @param qEncoding Quality encoding
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @return Path to unzipped file
@@ -310,7 +310,7 @@ fastx_quality_stats <- function(fileTofqs,
 #' @param qEncoding Quality encoding
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @return Path to unzipped file
@@ -376,7 +376,7 @@ fastx_collapser <- function(fileTofxc,
 #' @param fbs Path to fastx_barcode_splitter.pl from FASTX toolkit
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @return output3, path to split files
@@ -442,7 +442,7 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
 #' @param adaptor Adapter to remove
 #' @param stderr Path to stderr file.
 #' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
 #' @param verbose Print more message to screen.
 #' @return Path to clipped file
@@ -508,7 +508,7 @@ fastx_clipper <- function(fileTofqs,
 #' @param read_end read ending base
 #' @param stderr Path to stderr file
 #' @param stdout Path to stdout file
-#' @param useClipRConda Boolean on whether to use conda environment install by CondaSysReqs
+#' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call
 #' @param verbose Print more message to screen
 #' @return Path to trimmed file

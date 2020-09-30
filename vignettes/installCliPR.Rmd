@@ -61,11 +61,11 @@ The CondaSysReq package provides a simple workflow to install self-contained Con
 
 This approach also allows us to capture the current Conda environment using the same tools we capture R library versions by means of the Renv package.
 
-First we need to install the CondaSysReqs package.
+First we need to install the Herper package.
 
 ### Set GITHUB PAT ... not needed in future
 
-As CondaSysReqs is not public yet you will need to add a GITHUB_PAT to your environment to install. Please contact [Kathryn Rozen-Gagnon](mailto:krozen@rockfeller.edu) for access... This will not be necessary once CondaSysReqs becomes public.
+As Herper is not public yet you will need to add a GITHUB_PAT to your environment to install. Please contact [Kathryn Rozen-Gagnon](mailto:krozen@rockfeller.edu) for access... This will not be necessary once Herper becomes public.
 
 Once access is provided, you can generate your GITHUB pat by visiting the settings -> Developer Settings ->  Personal access tokens and creating a personal access token. Copy the long string of your personal access token replace **MYGITHUBPAT** below.
 
@@ -73,21 +73,21 @@ Once access is provided, you can generate your GITHUB pat by visiting the settin
 Sys.setenv(GITHUB_PAT="MYGITHUBPAT")
 ```
 
-### Install CondaSysReqs:
+### Install Herper:
 
-```{r installCondaSysReqs,echo=TRUE,eval=FALSE}
+```{r installHerper,echo=TRUE,eval=FALSE}
 library(devtools)
-install_github("RockefellerUniversity/CondaSysReqs")
+install_github("RockefellerUniversity/Herper")
 ```
 
-We can now use the CondaSysReqs package to create the required Conda environment and requirments for the CLIPflexR package.
+We can now use the Herper package to create the required Conda environment and requirments for the CLIPflexR package.
 
 The below code will install the required external software to a Conda environment within the default location (same path as the Reticulate package's Conda environments). 
 
 The path to the Conda executable and the name of the Conda environment:
 
 ```{r installConda_Reqs,echo=TRUE,eval=FALSE}
-library(CondaSysReqs)
+library(Herper)
 CondaInfo <- install_CondaSysReqs("CLIPflexR")
 CondaInfo$pathToConda
 CondaInfo$environment
@@ -115,7 +115,7 @@ The [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documenta
 CLIPflexR::install_ctk()
 ```
 
-This function installs CTK and it's perl library dependencies to a user specified directory or if a Conda environment has been created with CondaSysReqs to within the same Conda Environment associated to the package. 
+This function installs CTK and it's perl library dependencies to a user specified directory or if a Conda environment has been created with Herper to within the same Conda Environment associated to the package. 
 
 
 ```{r lookAtEnv3,echo=FALSE,eval=FALSE}

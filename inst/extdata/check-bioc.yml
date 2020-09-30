@@ -200,9 +200,9 @@ jobs:
           message(paste('****', Sys.time(), 'installing rcmdcheck and BiocCheck ****'))
           remotes::install_cran("rcmdcheck")
           BiocManager::install("BiocCheck")
-          devtools::install_github("RockefellerUniversity/CondaSysReqs",upgrade = "never")
+          devtools::install_github("RockefellerUniversity/Herper",upgrade = "never")
           devtools::install_github("RockefellerUniversity/clipR")
-          CondaSysReqs::install_CondaSysReqs("clipR")
+          Herper::install_CondaSysReqs("clipR")
           clipR::install_ctk()
         shell: Rscript {0}
 
