@@ -107,7 +107,10 @@
 <h2 class="hasAnchor">
 <a href="#process-standardbrdu-clip-libraries-using-clipflexr" class="anchor"></a>Process standard/BrdU-CLIP libraries using CLIPflexR</h2>
 <p>This is an alternative to the CTK processing pipeline for CLIP data, and returns a peak matrix with genomic locations of peaks and counts in each peak by sample</p>
-<p>##Initial processing and quality control</p>
+</div>
+<div id="initial-processing-and-quality-control" class="section level2">
+<h2 class="hasAnchor">
+<a href="#initial-processing-and-quality-control" class="anchor"></a>Initial processing and quality control</h2>
 <div id="decompress-fastq-files" class="section level3">
 <h3 class="hasAnchor">
 <a href="#decompress-fastq-files" class="anchor"></a>Decompress fastq files</h3>
@@ -188,8 +191,11 @@
 ## 
 ## [[2]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG092419_S1_L001_R1_001_collapse.fasta"</code></pre>
-<p>##Follow these steps to process standard CLIP libraries</p>
 </div>
+</div>
+<div id="follow-these-steps-to-process-standard-clip-libraries" class="section level2">
+<h2 class="hasAnchor">
+<a href="#follow-these-steps-to-process-standard-clip-libraries" class="anchor"></a>Follow these steps to process standard CLIP libraries</h2>
 <div id="de-multiplex-samples-wrapping-fastxs-barcode-splitter" class="section level3">
 <h3 class="hasAnchor">
 <a href="#de-multiplex-samples-wrapping-fastxs-barcode-splitter" class="anchor"></a>De-multiplex samples <strong>(wrapping FASTX’s barcode splitter)</strong>
@@ -341,9 +347,20 @@
 ## 
 ## [[14]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_aegypti_mIgG_Exp7D_rm5_clip.fa"</code></pre>
-<p>###These reads are now ready to map to your genome</p>
-<p>##Follow these steps to process BrdU-CLIP libraries</p>
-<p>###First strip random barcode sequences (UMI) from the 5’ end of reads <strong>(wrapping CTK’s stripBarcode.pl)</strong> Strip random barcodes/linkers with specific length from reads using R-wrapped <strong>stripBarcode.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl">CTK</a>.<br><strong>linkerlength</strong>: barcode length; <strong>inputformat</strong>: format of input sequences (fasta/fastq).<br><a href="../reference/ctk_stripBarcode.html">CLIPflexR documentation</a></p>
+</div>
+<div id="these-reads-are-now-ready-to-map-to-your-genome" class="section level3">
+<h3 class="hasAnchor">
+<a href="#these-reads-are-now-ready-to-map-to-your-genome" class="anchor"></a>These reads are now ready to map to your genome</h3>
+</div>
+</div>
+<div id="follow-these-steps-to-process-brdu-clip-libraries" class="section level2">
+<h2 class="hasAnchor">
+<a href="#follow-these-steps-to-process-brdu-clip-libraries" class="anchor"></a>Follow these steps to process BrdU-CLIP libraries</h2>
+<div id="first-strip-random-barcode-sequences-umi-from-the-5-end-of-reads-wrapping-ctks-stripbarcode-pl" class="section level3">
+<h3 class="hasAnchor">
+<a href="#first-strip-random-barcode-sequences-umi-from-the-5-end-of-reads-wrapping-ctks-stripbarcode-pl" class="anchor"></a>First strip random barcode sequences (UMI) from the 5’ end of reads <strong>(wrapping CTK’s stripBarcode.pl)</strong>
+</h3>
+<p>Strip random barcodes/linkers with specific length from reads using R-wrapped <strong>stripBarcode.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl">CTK</a>.<br><strong>linkerlength</strong>: barcode length; <strong>inputformat</strong>: format of input sequences (fasta/fastq).<br><a href="../reference/ctk_stripBarcode.html">CLIPflexR documentation</a></p>
 <div class="sourceCode" id="cb27"><pre class="downlit">
 <span class="va">BrdU_rm5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_stripBarcode.html">ctk_stripBarcode</a></span><span class="op">(</span><span class="va">coll_FqFile_QF</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, linkerlength <span class="op">=</span> <span class="fl">7</span>, inputFormat<span class="op">=</span><span class="st">"fasta"</span><span class="op">)</span>
 <span class="va">BrdU_rm5</span></pre></div>
@@ -396,7 +413,12 @@
 ## 4 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago2_Exp6B
 ## 5 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_mIgG_Exp6A
 ## 6 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_mIgG_Exp6B</code></pre>
-<p>###Trim 3 “not G” (DDD) and index (6nt) from the 5’ end of reads <strong>(wrapping FASTX’s fastx_trimmer)</strong> Trimming 5’-end adapter sequences using R-wrapped <strong>fastx_trimmer</strong> function from <a href="http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_trimmer_usage">FASTX_toolkit</a>.<br><strong>read_start</strong>: read starts at this base, 10 (default); <strong>read_end</strong>: read ends at this base, NULL (default).<br><a href="../reference/fastx_trimmer.html">CLIPflexR documentation</a></p>
+</div>
+<div id="trim-3-not-g-ddd-and-index-6nt-from-the-5-end-of-reads-wrapping-fastxs-fastx_trimmer" class="section level3">
+<h3 class="hasAnchor">
+<a href="#trim-3-not-g-ddd-and-index-6nt-from-the-5-end-of-reads-wrapping-fastxs-fastx_trimmer" class="anchor"></a>Trim 3 “not G” (DDD) and index (6nt) from the 5’ end of reads <strong>(wrapping FASTX’s fastx_trimmer)</strong>
+</h3>
+<p>Trimming 5’-end adapter sequences using R-wrapped <strong>fastx_trimmer</strong> function from <a href="http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_trimmer_usage">FASTX_toolkit</a>.<br><strong>read_start</strong>: read starts at this base, 10 (default); <strong>read_end</strong>: read ends at this base, NULL (default).<br><a href="../reference/fastx_trimmer.html">CLIPflexR documentation</a></p>
 <div class="sourceCode" id="cb36"><pre class="downlit">
 <span class="va">BrdU_split_rm5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">samples_split_BrdU</span>, <span class="va">fastx_trimmer</span>, read_start <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="va">BrdU_split_rm5</span></pre></div>
@@ -504,7 +526,12 @@
 ## [[16]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_aegypti_rIgG_Exp6B_trim_clip.fa"</code></pre>
 <p>These reads are now ready to map to your genome</p>
-<p>##Build a Bowtie2 genome index and align to genome using Rbowtie2. Build Bowtie2 index of reference genome, AaegL5 in this vignette.<br><a href="../reference/bowtie2_index.html">Index documentation</a>; see also <a href="StandardandBrdU_Processing_CTK_editJD.html">CTK processing vignette</a>.</p>
+</div>
+</div>
+<div id="build-a-bowtie2-genome-index-and-align-to-genome-using-rbowtie2" class="section level2">
+<h2 class="hasAnchor">
+<a href="#build-a-bowtie2-genome-index-and-align-to-genome-using-rbowtie2" class="anchor"></a>Build a Bowtie2 genome index and align to genome using Rbowtie2</h2>
+<p>Build Bowtie2 index of reference genome, AaegL5 in this vignette.<br><a href="../reference/bowtie2_index.html">Index documentation</a>; see also <a href="StandardandBrdU_Processing_CTK_editJD.html">CTK processing vignette</a>.</p>
 <p>Align reads to genome by bowtie.<br><strong>format</strong>: format of input sequences, fasta (default) or fastq; <strong>threads</strong>: number of threads used, 1 (default); <strong>maxMismatches</strong>: number of mismatches allowed, 1 (default) or 0; <strong>seedSubString</strong>: length of seed substrings, 18 (default), must be &gt;3 &amp; &lt;32; <strong>report_k</strong>: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.<br><a href="../reference/bowtie_align.html">Alignment documentation</a></p>
 <div class="sourceCode" id="cb40"><pre class="downlit">
 <span class="co">#you will need to get the genome fasta of your organism and input the path to this fasta</span>
@@ -548,8 +575,14 @@
 ## 
 ## [[4]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bam"</code></pre>
-<p>##Convert to beds, find peaks, and build count matrix</p>
-<p>###Convert to beds <a href="../reference/bamtobed_index.html">CLIPflexR documentation</a></p>
+</div>
+<div id="convert-to-beds-find-peaks-and-build-count-matrix" class="section level2">
+<h2 class="hasAnchor">
+<a href="#convert-to-beds-find-peaks-and-build-count-matrix" class="anchor"></a>Convert to beds, find peaks, and build count matrix</h2>
+<div id="convert-to-beds" class="section level3">
+<h3 class="hasAnchor">
+<a href="#convert-to-beds" class="anchor"></a>Convert to beds</h3>
+<p><a href="../reference/bamtobed_index.html">CLIPflexR documentation</a></p>
 <div class="sourceCode" id="cb44"><pre class="downlit">
 <span class="va">beds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">bams</span>, <span class="va">bamtobed</span><span class="op">)</span>
 <span class="va">beds</span></pre></div>
@@ -564,11 +597,19 @@
 ## 
 ## [[4]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bed"</code></pre>
-<p>###Make tag directories and findpeaks <strong>(wrapping HOMER’s MakeTagDirectory and findpeaks)</strong> Call significant peaks in each sample using R-wrapped <strong>homer_peaks</strong> from <a href="http://homer.ucsd.edu/homer/ngs/tagDir.html">HOMER makeTagDirectory</a> &amp; <a href="http://homer.ucsd.edu/homer/ngs/peaks.html">HOMER findpeaks</a>.<br><strong>style</strong>: type of HOMER peak calling, “factor” (default); <strong>foldEnrichmentOverLocal</strong>: fold enrichment over local tag count, 2 (default); <strong>localSize</strong>:region to check for local tag enrichment, 10000 (default); <strong>strand</strong>: find peaks using tags on “seperate” (default); <strong>minDist</strong>: minimum distance between peaks, 50 (default); <strong>size</strong>: peak size, 10 (default); <strong>fragLength</strong>: approximate fragment length, 10 (default); <strong>genomeSize</strong>: NULL=2e9 (default, human or mouse), or set for your genome.<br><a href="../reference/homer_peaks.html">CLIPflexR documentation</a></p>
+</div>
+<div id="make-tag-directories-and-findpeaks-wrapping-homers-maketagdirectory-and-findpeaks" class="section level3">
+<h3 class="hasAnchor">
+<a href="#make-tag-directories-and-findpeaks-wrapping-homers-maketagdirectory-and-findpeaks" class="anchor"></a>Make tag directories and findpeaks <strong>(wrapping HOMER’s MakeTagDirectory and findpeaks)</strong>
+</h3>
+<p>Call significant peaks in each sample using R-wrapped <strong>homer_peaks</strong> from <a href="http://homer.ucsd.edu/homer/ngs/tagDir.html">HOMER makeTagDirectory</a> &amp; <a href="http://homer.ucsd.edu/homer/ngs/peaks.html">HOMER findpeaks</a>.<br><strong>style</strong>: type of HOMER peak calling, “factor” (default); <strong>foldEnrichmentOverLocal</strong>: fold enrichment over local tag count, 2 (default); <strong>localSize</strong>:region to check for local tag enrichment, 10000 (default); <strong>strand</strong>: find peaks using tags on “seperate” (default); <strong>minDist</strong>: minimum distance between peaks, 50 (default); <strong>size</strong>: peak size, 10 (default); <strong>fragLength</strong>: approximate fragment length, 10 (default); <strong>genomeSize</strong>: NULL=2e9 (default, human or mouse), or set for your genome.<br><a href="../reference/homer_peaks.html">CLIPflexR documentation</a></p>
 <div class="sourceCode" id="cb46"><pre class="downlit">
 <span class="co">#you may want to play with these parameters depending on your protein of interest, and ensure that coverage lines up with the peaks you have called</span>
 <span class="va">peaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">beds</span>, <span class="va">homer_peaks</span>, fragLength<span class="op">=</span><span class="fl">25</span><span class="op">)</span></pre></div>
-<p>###Make count matrix of peaks, starting with reading in HOMER peak files and making a matrix that indicated which peaks were called in each sample</p>
+</div>
+<div id="make-count-matrix-of-peaks-starting-with-reading-in-homer-peak-files-and-making-a-matrix-that-indicated-which-peaks-were-called-in-each-sample" class="section level3">
+<h3 class="hasAnchor">
+<a href="#make-count-matrix-of-peaks-starting-with-reading-in-homer-peak-files-and-making-a-matrix-that-indicated-which-peaks-were-called-in-each-sample" class="anchor"></a>Make count matrix of peaks, starting with reading in HOMER peak files and making a matrix that indicated which peaks were called in each sample</h3>
 <div class="sourceCode" id="cb47"><pre class="downlit">
 <span class="co">#read in peak files and convert to GRanges</span>
 <span class="va">read_peaks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">peaks</span>,<span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="va">x</span>,sep<span class="op">=</span><span class="st">"\t"</span>,comment.char <span class="op">=</span> <span class="st">"#"</span>,h<span class="op">=</span><span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>
@@ -613,7 +654,11 @@
 ## [4,]                                                                          FALSE
 ## [5,]                                                                           TRUE
 ## [6,]                                                                          FALSE</code></pre>
-<p>###The next step is to countFromBed to append the number of reads at each peak location, by sample <a href="../reference/countFromBed.html">CLIPflexR documentation</a></p>
+</div>
+<div id="the-next-step-is-to-countfrombed-to-append-the-number-of-reads-at-each-peak-location-by-sample" class="section level3">
+<h3 class="hasAnchor">
+<a href="#the-next-step-is-to-countfrombed-to-append-the-number-of-reads-at-each-peak-location-by-sample" class="anchor"></a>The next step is to countFromBed to append the number of reads at each peak location, by sample</h3>
+<p><a href="../reference/countFromBed.html">CLIPflexR documentation</a></p>
 <div class="sourceCode" id="cb49"><pre class="downlit">
 <span class="co">#defaults are: notStranded=TRUE,interFeature=FALSE</span>
 <span class="va">countmat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">beds</span>,<span class="va">countFromBed</span>,GR<span class="op">=</span><span class="va">nGRSet</span><span class="op">)</span></pre></div>
@@ -705,7 +750,10 @@
 ## 4 1:1386212_1386222:+
 ## 5 1:1947557_1947569:+
 ## 6 1:1947625_1947635:+</code></pre>
-<p>##now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more…</p>
+</div>
+<div id="now-you-have-your-count-matrix---you-can-perform-operations-on-sample-groups-to-filter-visualize-data-annotate-your-peaks-and-more" class="section level3">
+<h3 class="hasAnchor">
+<a href="#now-you-have-your-count-matrix---you-can-perform-operations-on-sample-groups-to-filter-visualize-data-annotate-your-peaks-and-more" class="anchor"></a>Now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more…</h3>
 </div>
 </div>
   </div>
