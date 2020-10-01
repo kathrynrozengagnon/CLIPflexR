@@ -61,23 +61,19 @@ The CondaSysReq package provides a simple workflow to install self-contained Con
 
 This approach also allows us to capture the current Conda environment using the same tools we capture R library versions by means of the Renv package.
 
-First we need to install the Herper package.
-
-### Set GITHUB PAT ... not needed in future
-
-As Herper is not public yet you will need to add a GITHUB_PAT to your environment to install. Please contact [Kathryn Rozen-Gagnon](mailto:krozen@rockfeller.edu) for access... This will not be necessary once Herper becomes public.
-
-Once access is provided, you can generate your GITHUB pat by visiting the settings -> Developer Settings ->  Personal access tokens and creating a personal access token. Copy the long string of your personal access token replace **MYGITHUBPAT** below.
-
-```{r setGH,echo=TRUE,eval=FALSE}
-Sys.setenv(GITHUB_PAT="MYGITHUBPAT")
-```
+First we need to install the [Herper package](https://github.com/RockefellerUniversity/Herper).
 
 ### Install Herper:
-
-```{r installHerper,echo=TRUE,eval=FALSE}
+If you are running >=  R version 4.0:
+```{r installHerper4,echo=TRUE,eval=FALSE}
 library(devtools)
 install_github("RockefellerUniversity/Herper")
+```
+
+If you are running <  R version 4.0:
+```{r installHerper3.5,echo=TRUE,eval=FALSE}
+library(devtools)
+install_github("RockefellerUniversity/Herper@3.5")
 ```
 
 We can now use the Herper package to create the required Conda environment and requirments for the CLIPflexR package.

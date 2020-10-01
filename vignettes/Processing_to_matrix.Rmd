@@ -22,10 +22,10 @@ library(rtracklayer)
 
 This is an alternative to the CTK processing pipeline for CLIP data, and returns a peak matrix with genomic locations of peaks and counts in each peak by sample
 
-## Initial processing and quality control
+##Initial processing and quality control
 
 ### Decompress fastq files
-Use compressed fastq files as input; R-wrapped decompression function using bzip2.
+Use compressed fastq files as input; R-wrapped decompression function using bzip2.  
 [CLIPflexR documentation](../reference/decompress.html)
 
 
@@ -56,7 +56,7 @@ FqFile
 ```
 
 ### You can look at the quality of your data  **(wrapping FASTX's quality stats)**
-Get quality statistics from your run using R-wrapped **fastx_quality_stats** [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastq_statistics_usage)
+Get quality statistics from your run using R-wrapped **fastx_quality_stats** from  [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastq_statistics_usage).  
 [CLIPflexR documentation](../reference/fastx_quality_stats.html)
 
 
@@ -97,8 +97,8 @@ head(stats)
 ```
 
 ### Quality filter **(wrapping FastX's quality filter)**
-Filtering fastq files using R-wrapped **fastq_quality_filter** from  [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastq_quality_filter_usage).
-**qEncoding**: Quality encoding, default =  33 (corresponds to Illumina and Sanger quality scores); **minimumQuality**: minimum quality score to keep, default = 20. Only keep reads with quality score greater than this threshold. **minimumPercentOfRead**: minimum percent of bases that must have [-q] minimumQuality.
+Filtering fastq files using R-wrapped **fastq_quality_filter** from  [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastq_quality_filter_usage).  
+**qEncoding**: Quality encoding, default =  33 (corresponds to Illumina and Sanger quality scores); **minimumQuality**: minimum quality score to keep, default = 20. Only keep reads with quality score greater than this threshold. **minimumPercentOfRead**: minimum percent of bases that must have [-q] minimumQuality.  
 [CLIPflexR documentation](../reference/fastq_quality_filter.html)
 
 
@@ -116,8 +116,8 @@ FqFile_QF
 ```
 
 ### Fastx_collapser **(wrapping FASTX's fastx_collapser)**
-Collapse duplicate sequences into unique reads using R-wrapped **fastx_collapser** from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_collapser_usage.).
-**qEncoding**: Quality encoding, default =  33 (corresponds to Illumina and Sanger quality scores).
+Collapse duplicate sequences into unique reads using R-wrapped **fastx_collapser** from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_collapser_usage.).  
+**qEncoding**: Quality encoding, default =  33 (corresponds to Illumina and Sanger quality scores).  
 [CLIPflexR documentation](../reference/fastx_collapser.html)
 
 
@@ -134,11 +134,11 @@ coll_FqFile_QF
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG092419_S1_L001_R1_001_collapse.fasta"
 ```
 
-## Follow these steps to process standard CLIP libraries
+##Follow these steps to process standard CLIP libraries
 
 ### De-multiplex samples **(wrapping FASTX's barcode splitter)**
-De-multiplex samples by indices using R-wrapped **fastx_barcode_splitter** from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_barcode_splitter_usage).
-**mismatches**: number of mismatches allowed in barcode sequence, 0 (default); **bcFile**: barcode file, see example below. 
+De-multiplex samples by indices using R-wrapped **fastx_barcode_splitter** from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_barcode_splitter_usage).  
+**mismatches**: number of mismatches allowed in barcode sequence, 0 (default); **bcFile**: barcode file, see example below.  
 [CLIPflexR documentation](../reference/fastx_barcode_splitter.html)
 
 
@@ -165,7 +165,7 @@ samples_split_std <- fastx_barcode_splitter(coll_FqFile_QF[[2]], bcFile = BCfile
 ```
 
 ```
-## fastx_collapser command is cat /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG092419_S1_L001_R1_001_collapse.fasta | /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/fastx_barcode_splitter.pl --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_BC.txt --bol --mismatches 0 --prefix 'KRG092419_S1_L001_R1_001_collapse_'
+## fastx_collapser command is cat /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG092419_S1_L001_R1_001_collapse.fasta | /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/fastx_barcode_splitter.pl --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_BC.txt --bol --mismatches 0 --prefix 'KRG092419_S1_L001_R1_001_collapse_'
 ```
 
 ```
@@ -212,8 +212,8 @@ head(std_samples_stats)
 ```
 
 ### Now remove the 5' index, linker, and random barcode sequences **(wrapping CTK's stripBarcode.pl)**
-Strip random barcodes/linkers with specific length from reads using R-wrapped **stripBarcode.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl).
-**linkerlength**: barcode length; **inputformat**: format of input sequences, fasta (default).
+Strip random barcodes/linkers with specific length from reads using R-wrapped **stripBarcode.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl).  
+**linkerlength**: barcode length; **inputformat**: format of input sequences, fasta (default).  
 [CLIPflexR documentation](../reference/ctk_stripBarcode.html)
 
 
@@ -267,8 +267,8 @@ samples_split_std_rm5
 ```
 
 ### Now remove the 3' linker **(wrapping FASTX's clipper)**
-Trimming 3'-end adapter sequences  using R-wrapped **fastx_clipper** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage).
-**adaptor**: clip this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).
+Trimming 3'-end adapter sequences  using R-wrapped **fastx_clipper** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage).  
+**adaptor**: clip this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).  
 [CLIPflexR documentation](../reference/fastx_clipper.html)
 
 
@@ -320,13 +320,13 @@ samples_split_std_rm5_rm3
 ## [[14]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_aegypti_mIgG_Exp7D_rm5_clip.fa"
 ```
-### These reads are now ready to map to your genome
+###These reads are now ready to map to your genome
 
-## Follow these steps to process BrdU-CLIP libraries
+##Follow these steps to process BrdU-CLIP libraries
 
-### First strip random barcode sequences (UMI) from the 5' end of reads **(wrapping CTK's stripBarcode.pl)**
-Strip random barcodes/linkers with specific length from reads using R-wrapped **stripBarcode.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl).
-**linkerlength**: barcode length; **inputformat**: format of input sequences. (fasta/fastq).
+###First strip random barcode sequences (UMI) from the 5' end of reads **(wrapping CTK's stripBarcode.pl)**
+Strip random barcodes/linkers with specific length from reads using R-wrapped **stripBarcode.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#stripBarcode.pl).  
+**linkerlength**: barcode length; **inputformat**: format of input sequences (fasta/fastq).   
 [CLIPflexR documentation](../reference/ctk_stripBarcode.html)
 
 
@@ -340,8 +340,8 @@ BrdU_rm5
 ```
 
 ### De-multiplex samples **(wrapping FASTX's barcode splitter)**
-De-multiplex samples by indices using R-wrapped **fastx_barcode_splitter** from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_barcode_splitter_usage).
-**mismatches**: number of mismatches allowed in barcode sequence, 0 (default); **bcFile**: barcode file see example above. 
+De-multiplex samples by indices using R-wrapped **fastx_barcode_splitter** from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_barcode_splitter_usage).  
+**mismatches**: number of mismatches allowed in barcode sequence, 0 (default); **bcFile**: barcode file see example above.   
 [CLIPflexR documentation](../reference/fastx_barcode_splitter.html)
 
 
@@ -351,7 +351,7 @@ samples_split_BrdU <- fastx_barcode_splitter(BrdU_rm5, bcFile = BCfile[[1]], ver
 ```
 
 ```
-## fastx_collapser command is cat /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG091819_S1_L001_R1_001_collapse_rm5.fasta | /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/fastx_barcode_splitter.pl --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_BC.txt --bol --mismatches 0 --prefix 'KRG091819_S1_L001_R1_001_collapse_rm5_'
+## fastx_collapser command is cat /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG091819_S1_L001_R1_001_collapse_rm5.fasta | /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/fastx_barcode_splitter.pl --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_BC.txt --bol --mismatches 0 --prefix 'KRG091819_S1_L001_R1_001_collapse_rm5_'
 ```
 
 ```
@@ -406,11 +406,16 @@ head(BrdU_samples_stats)
 ## 6 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_mIgG_Exp6B
 ```
 
-### Trim 3 "not G" (DDD) and index (6nt) from the 5' end of reads **(wrapping  FASTX's fastx_trimmer)**
-Trimming 5'-end adapter sequences using R-wrapped **fastx_trimmer** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_trimmer_usage).
-**read_start**: read starts at this base, 10 (default);  **read_end** read ends at this base, NULL (default)
+###Trim 3 "not G" (DDD) and index (6nt) from the 5' end of reads **(wrapping  FASTX's fastx_trimmer)**
+Trimming 5'-end adapter sequences using R-wrapped **fastx_trimmer** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_trimmer_usage).    
+**read_start**: read starts at this base, 10 (default); **read_end**: read ends at this base, NULL (default).    
 [CLIPflexR documentation](../reference/fastx_trimmer.html)
 
+
+```r
+BrdU_split_rm5 <- lapply(samples_split_BrdU, fastx_trimmer, read_start = 10)
+BrdU_split_rm5
+```
 
 ```
 ## [[1]]
@@ -463,10 +468,15 @@ Trimming 5'-end adapter sequences using R-wrapped **fastx_trimmer** function fro
 ```
 
 ### Fastx_clipper **(wrapping FASTX's fastx_clipper)**
-Trimming 3'-end adapter sequences using R-wrapped **fastx_clipper** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage).
-**adaptor**: clip this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).
+Trimming 3'-end adapter sequences using R-wrapped **fastx_clipper** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage).  
+**adaptor**: clip this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).  
 [CLIPflexR documentation](../reference/fastx_clipper.html)
 
+
+```r
+BrdU_split_rm5_rm3 <- lapply(BrdU_split_rm5, fastx_clipper, length = 18, adaptor="GTGTCAGTCACTTCCAGCGG")
+BrdU_split_rm5_rm3
+```
 
 ```
 ## [[1]]
@@ -519,12 +529,12 @@ Trimming 3'-end adapter sequences using R-wrapped **fastx_clipper** function fro
 ```
 These reads are now ready to map to your genome
 
-## Build a Bowtie2 genome index and align to genome using Rbowtie2.
-Build Bowtie2 index of reference genome, AaegL5 in this vignette.
-[Index documentation](../reference/bowtie2_index.html); see also [CTK processing vignette](StandardandBrdU_Processing_CTK_editJD.html)
+##Build a Bowtie2 genome index and align to genome using Rbowtie2.
+Build Bowtie2 index of reference genome, AaegL5 in this vignette.  
+[Index documentation](../reference/bowtie2_index.html); see also [CTK processing vignette](StandardandBrdU_Processing_CTK_editJD.html).  
 
-Align reads to genome by bowtie.
-**format**: format of input sequences, fasta (default) or fastq; **threads**: number of threads used, 1 (default); **maxMismatches**: number of mismatches allowed, 1 (default) or 0; **seedSubString**: length of seed substrings, 18 (default), must be >3 & <32; **report_k**: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.
+Align reads to genome by bowtie.  
+**format**: format of input sequences, fasta (default) or fastq; **threads**: number of threads used, 1 (default); **maxMismatches**: number of mismatches allowed, 1 (default) or 0; **seedSubString**: length of seed substrings, 18 (default), must be >3 & <32; **report_k**: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.  
 [Alignment documentation](../reference/bowtie_align.html)
 
 
@@ -580,9 +590,9 @@ bams
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bam"
 ```
 
-## Convert to beds, find peaks, and build count matrix
+##Convert to beds, find peaks, and build count matrix
 
-### Convert to beds
+###Convert to beds
 [CLIPflexR documentation](../reference/bamtobed_index.html)
 
 
@@ -605,10 +615,10 @@ beds
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bed"
 ```
 
-### Make tag directories and findpeaks **(wrapping HOMER's MakeTagDirectory and findpeaks)**
+###Make tag directories and findpeaks **(wrapping HOMER's MakeTagDirectory and findpeaks)**
 Call significant peaks in each sample using R-wrapped **homer_peaks** from [HOMER makeTagDirectory](http://homer.ucsd.edu/homer/ngs/tagDir.html) &
-[HOMER findpeaks](http://homer.ucsd.edu/homer/ngs/peaks.html).
-**style**: type of HOMER peak calling, "factor" (default); **foldEnrichmentOverLocal**: fold enrichment over local tag count, 2 (default); **localSize**:region to check for local tag enrichment, 10000 (default); **strand**: find peaks using tags on "seperate" (default); **minDist**: minimum distance between peaks, 50 (default); **size**: peak size, 10 (default); **fragLength**: approximate fragment length, 10 (default);  **genomeSize**: NULL=2e9 (default, human or mouse), or set for your genome
+[HOMER findpeaks](http://homer.ucsd.edu/homer/ngs/peaks.html).  
+**style**: type of HOMER peak calling, "factor" (default); **foldEnrichmentOverLocal**: fold enrichment over local tag count, 2 (default); **localSize**:region to check for local tag enrichment, 10000 (default); **strand**: find peaks using tags on "seperate" (default); **minDist**: minimum distance between peaks, 50 (default); **size**: peak size, 10 (default); **fragLength**: approximate fragment length, 10 (default);  **genomeSize**: NULL=2e9 (default, human or mouse), or set for your genome.  
 [CLIPflexR documentation](../reference/homer_peaks.html)
 
 
@@ -617,7 +627,7 @@ Call significant peaks in each sample using R-wrapped **homer_peaks** from [HOME
 peaks <- lapply(beds, homer_peaks, fragLength=25)
 ```
 
-### Make count matrix of peaks, starting with reading in HOMER peak files and making a matrix that indicated which peaks were called in each sample
+###Make count matrix of peaks, starting with reading in HOMER peak files and making a matrix that indicated which peaks were called in each sample
 
 
 ```r
@@ -669,7 +679,7 @@ head(peakmat)
 ## [6,]                                                                          FALSE
 ```
 
-### The next step is to countFromBed  to append the number of reads at each peak location, by sample
+###The next step is to countFromBed  to append the number of reads at each peak location, by sample
 [CLIPflexR documentation](../reference/countFromBed.html)
 
 
@@ -780,4 +790,4 @@ head(peaksDF)
 ## 6 1:1947625_1947635:+
 ```
 
-### Now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more...
+##now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more...
