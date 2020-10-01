@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
       </span>
     </div>
 
@@ -137,28 +137,28 @@
 <p>One solution to the meet these system requirements is to create a Conda environment containing all the required software.</p>
 <p>The CondaSysReq package provides a simple workflow to install self-contained Conda environments associated to packages using the Reticulate library.</p>
 <p>This approach also allows us to capture the current Conda environment using the same tools we capture R library versions by means of the Renv package.</p>
-<p>First we need to install the CondaSysReqs package.</p>
+<p>First we need to install the Herper package.</p>
 </div>
 <div id="set-github-pat-not-needed-in-future" class="section level3">
 <h3 class="hasAnchor">
 <a href="#set-github-pat-not-needed-in-future" class="anchor"></a>Set GITHUB PAT … not needed in future</h3>
-<p>As CondaSysReqs is not public yet you will need to add a GITHUB_PAT to your environment to install. Please contact <a href="mailto:krozen@rockfeller.edu">Kathryn Rozen-Gagnon</a> for access… This will not be necessary once CondaSysReqs becomes public.</p>
+<p>As Herper is not public yet you will need to add a GITHUB_PAT to your environment to install. Please contact <a href="mailto:krozen@rockfeller.edu">Kathryn Rozen-Gagnon</a> for access… This will not be necessary once Herper becomes public.</p>
 <p>Once access is provided, you can generate your GITHUB pat by visiting the settings -&gt; Developer Settings -&gt; Personal access tokens and creating a personal access token. Copy the long string of your personal access token replace <strong>MYGITHUBPAT</strong> below.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>GITHUB_PAT<span class="op">=</span><span class="st">"MYGITHUBPAT"</span><span class="op">)</span></pre></div>
 </div>
-<div id="install-condasysreqs" class="section level3">
+<div id="install-herper" class="section level3">
 <h3 class="hasAnchor">
-<a href="#install-condasysreqs" class="anchor"></a>Install CondaSysReqs:</h3>
+<a href="#install-herper" class="anchor"></a>Install Herper:</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
-<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/CondaSysReqs"</span><span class="op">)</span></pre></div>
-<p>We can now use the CondaSysReqs package to create the required Conda environment and requirments for the CLIPflexR package.</p>
+<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/Herper"</span><span class="op">)</span></pre></div>
+<p>We can now use the Herper package to create the required Conda environment and requirments for the CLIPflexR package.</p>
 <p>The below code will install the required external software to a Conda environment within the default location (same path as the Reticulate package’s Conda environments).</p>
 <p>The path to the Conda executable and the name of the Conda environment:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">CondaSysReqs</span><span class="op">)</span>
-<span class="va">CondaInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/CondaSysReqs/man/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"CLIPflexR"</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">Herper</span><span class="op">)</span>
+<span class="va">CondaInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Herper/man/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"CLIPflexR"</span><span class="op">)</span>
 <span class="va">CondaInfo</span><span class="op">$</span><span class="va">pathToConda</span>
 <span class="va">CondaInfo</span><span class="op">$</span><span class="va">environment</span></pre></div>
 <p>The installed Conda environment may be accessed out of R just as with a standard environment.</p>
@@ -170,7 +170,7 @@
 <p>The <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation"><strong>ctk toolkit</strong></a> is installed as part of the <strong>CLIPflexR</strong> <strong>install_ctk()</strong> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit">
 <span class="fu">CLIPflexR</span><span class="fu">::</span><span class="fu"><a href="../reference/install_ctk.html">install_ctk</a></span><span class="op">(</span><span class="op">)</span></pre></div>
-<p>This function installs CTK and it’s perl library dependencies to a user specified directory or if a Conda environment has been created with CondaSysReqs to within the same Conda Environment associated to the package.</p>
+<p>This function installs CTK and it’s perl library dependencies to a user specified directory or if a Conda environment has been created with Herper to within the same Conda Environment associated to the package.</p>
 </div>
 <div id="using-the-ctk-pipeline-in-clipflexr-" class="section level3">
 <h3 class="hasAnchor">
@@ -179,19 +179,19 @@
 <p>First we load the CLIPflexR package and review the loading messages informing us of any established conda paths.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR">CLIPflexR</a></span><span class="op">)</span></pre></div>
-<pre><code>## CLIPflexR_0.1.18 conda env found at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.18</code></pre>
-<pre><code>## ctk found  at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk</code></pre>
-<pre><code>## czplib found  at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib</code></pre>
+<pre><code>## CLIPflexR_0.1.19 conda env found at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19</code></pre>
+<pre><code>## ctk found  at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk</code></pre>
+<pre><code>## czplib found  at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/lib/czplib</code></pre>
 <p>We can also list the important paths from the environmental options set by CLIPflexR.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.condaEnv"</span><span class="op">)</span></pre></div>
-<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.18"</code></pre>
+<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19"</code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.ctk"</span><span class="op">)</span></pre></div>
-<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk"</code></pre>
+<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk"</code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.czplib"</span><span class="op">)</span></pre></div>
-<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib"</code></pre>
+<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/lib/czplib"</code></pre>
 <p>Now that these are installed, all functions with the CLIPflexR package will use these by default without further configuration of paths or environmental variables.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR">CLIPflexR</a></span><span class="op">)</span>
@@ -199,8 +199,8 @@
 <span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_fastqFilter.html">ctk_fastqFilter</a></span><span class="op">(</span><span class="va">Fox3_Std</span>,
                                      outFile <span class="op">=</span> <span class="st">"SRR1107535_Test.fastq"</span>,
                                      qsFilter<span class="op">=</span><span class="st">"mean:0-29:20"</span>,verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></pre></div>
-<pre><code>## fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl</code></pre>
-<pre><code>## fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Users/runner/work/_temp/Library/CLIPflexR/extdata/Fox3_Std_small.fq.gz  SRR1107535_Test.fastq</code></pre>
+<pre><code>## fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq_filter.pl</code></pre>
+<pre><code>## fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Users/runner/work/_temp/Library/CLIPflexR/extdata/Fox3_Std_small.fq.gz  SRR1107535_Test.fastq</code></pre>
 </div>
 </div>
   </div>
