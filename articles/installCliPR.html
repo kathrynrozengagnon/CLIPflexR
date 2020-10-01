@@ -137,22 +137,19 @@
 <p>One solution to the meet these system requirements is to create a Conda environment containing all the required software.</p>
 <p>The CondaSysReq package provides a simple workflow to install self-contained Conda environments associated to packages using the Reticulate library.</p>
 <p>This approach also allows us to capture the current Conda environment using the same tools we capture R library versions by means of the Renv package.</p>
-<p>First we need to install the Herper package.</p>
-</div>
-<div id="set-github-pat-not-needed-in-future" class="section level3">
-<h3 class="hasAnchor">
-<a href="#set-github-pat-not-needed-in-future" class="anchor"></a>Set GITHUB PAT … not needed in future</h3>
-<p>As Herper is not public yet you will need to add a GITHUB_PAT to your environment to install. Please contact <a href="mailto:krozen@rockfeller.edu">Kathryn Rozen-Gagnon</a> for access… This will not be necessary once Herper becomes public.</p>
-<p>Once access is provided, you can generate your GITHUB pat by visiting the settings -&gt; Developer Settings -&gt; Personal access tokens and creating a personal access token. Copy the long string of your personal access token replace <strong>MYGITHUBPAT</strong> below.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html">Sys.setenv</a></span><span class="op">(</span>GITHUB_PAT<span class="op">=</span><span class="st">"MYGITHUBPAT"</span><span class="op">)</span></pre></div>
+<p>First we need to install the <a href="https://github.com/RockefellerUniversity/Herper">Herper package</a>.</p>
 </div>
 <div id="install-herper" class="section level3">
 <h3 class="hasAnchor">
 <a href="#install-herper" class="anchor"></a>Install Herper:</h3>
-<div class="sourceCode" id="cb5"><pre class="downlit">
+<p>If you are running &gt;= R version 4.0:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
 <span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/Herper"</span><span class="op">)</span></pre></div>
+<p>If you are running &lt; R version 4.0:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
+<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/Herper@3.5"</span><span class="op">)</span></pre></div>
 <p>We can now use the Herper package to create the required Conda environment and requirments for the CLIPflexR package.</p>
 <p>The below code will install the required external software to a Conda environment within the default location (same path as the Reticulate package’s Conda environments).</p>
 <p>The path to the Conda executable and the name of the Conda environment:</p>
