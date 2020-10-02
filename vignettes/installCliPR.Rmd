@@ -30,14 +30,8 @@ install.packages("devtools")
 devtools::install_github("kathrynrozengagnon/CLIPflexR")
 ```
 
-### Installing Rfastp... will be stable dependency once CLIPflexR is released.
+### Installing Rfastp
 We also can install the Rfastp package which may use to pre-process FastQ/FastA and de-duplicate BAM files as an alternative to the standard CTK/FASTX workflow.
-
-If you are running <  R version 4.0, use  the following  lines to install the [Github Rfastp package](https://github.com/RockefellerUniversity/Rfastp):
-
-```{r installrfastp_git,echo=TRUE,eval=FALSE}
-devtools::install_github("RockefellerUniversity/rfastp")
-```
 
 If you are running >= R version 4.0, you can install the [Bioconductor development Rfastp package](https://bioconductor.org/packages/Rfastp/):
 
@@ -49,6 +43,12 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
 BiocManager::install(version='devel')
 
 BiocManager::install("Rfastp")
+```
+
+If you are running <  R version 4.0, use  the following  lines to install the [Github Rfastp package](https://github.com/RockefellerUniversity/Rfastp):
+
+```{r installrfastp_git,echo=TRUE,eval=FALSE}
+devtools::install_github("RockefellerUniversity/rfastp")
 ```
 
 ### Installing CTK software requirements.
