@@ -51,7 +51,7 @@ If you are running <  R version 4.0, use  the following  lines to install the [G
 devtools::install_github("RockefellerUniversity/rfastp")
 ```
 
-### Installing CTK software requirements.
+### Installing CTK software requirements
 
 The CTK toolkit requires many external softwares to be available on the system path for use within their pipeline scripts. 
 
@@ -63,7 +63,7 @@ This approach also allows us to capture the current Conda environment using the 
 
 First we need to install the [Herper package](https://github.com/RockefellerUniversity/Herper).
 
-### Install Herper:
+### Installing Herper
 If you are running >=  R version 4.0:
 ```{r installHerper4,echo=TRUE,eval=FALSE}
 library(devtools)
@@ -102,7 +102,7 @@ ls /Users/thomascarroll/Library/r-miniconda/envs/clipr*/bin/ \
 dir("/Users/thomascarroll/Library/r-miniconda/envs/clipR_0.1.17/bin/",pattern="fastx|homer")
 ```
 
-### Installing CTK software.
+### Installing CTK software
 
 The [**ctk toolkit**](https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation) is installed as part of the **CLIPflexR** **install_ctk()** function.
 
@@ -119,7 +119,7 @@ dir("/Users/thomascarroll/Library/r-miniconda/envs/clipR_0.1.17/bin/ctk",pattern
 ```
 
 
-### Using the CTK pipeline in CLIPflexR.
+### Using the CTK pipeline in CLIPflexR
 
 Once we have installed the requirements for CTK we can make use of the tools within CLIPflexR very easily.
 
