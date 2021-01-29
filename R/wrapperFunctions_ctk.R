@@ -22,7 +22,8 @@
 #' @param barcodeEndWith Filter sequences based on the ending nucleotides in the barcode
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
@@ -44,10 +45,10 @@ ctk_stripBarcode <- function(filesToRun,
                              inputFormat="fasta",
                              barcodeStartWith=NULL,
                              barcodeEndWith=NULL,
-                             stderr=paste0(getwd(),"stripBarcode_stderr"),
-                             stdout=paste0(getwd(),"stripBarcode_stdout"),
+                             stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_stripBarcode_stderr.txt")),
+                             stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_stripBarcode_stdout.txt")),
                              useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                             additionalArgumements=NULL,verbose=FALSE){
+                             additionalArgumements=NULL,verbose=FALSE, writelog  =T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -86,23 +87,17 @@ ctk_stripBarcode <- function(filesToRun,
   if(!is.null(PATHTOPERLLIB)){
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
-  # cmd2 <- paste0(exportPATH," ",
-  #                cmd," ",
-  #                " -len ",linkerlength," -v ",
-  #                " ",fileToRun," ",
-  #                paste(fileToRun,"_rm5",sep=""))
-  # #"temp.rm")
-  # temp <- system(cmd2,wait = TRUE,intern = TRUE)
+  
   if (grepl("fa|fasta|fastq",file_ext(outFile))) {
     outFile <- outFile
   } else { outFile <- paste0(outFile,  "fa")}
   args <- c(cmd,
-    paste0("-len ",linkerlength),
-    paste0("-format ",inputFormat),
-    ifelse(!is.null(barcodeStartWith),paste0("-barcode-start-with ",barcodeStartWith),""),
-    ifelse(!is.null(barcodeEndWith),paste0("-barcode-end-with ",barcodeEndWith),""),
-    fileToRun,
-    gsub("\\.gz$","",outFile))
+            paste0("-len ",linkerlength),
+            paste0("-format ",inputFormat),
+            ifelse(!is.null(barcodeStartWith),paste0("-barcode-start-with ",barcodeStartWith),""),
+            ifelse(!is.null(barcodeEndWith),paste0("-barcode-end-with ",barcodeEndWith),""),
+            fileToRun,
+            gsub("\\.gz$","",outFile))
   args <- args[args != ""]
   if(verbose){
     
@@ -110,19 +105,24 @@ ctk_stripBarcode <- function(filesToRun,
     message("stripBarcode.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")}
     if(file_ext(outFile) == "gz"){
       R.utils::gzip(gsub("\\.gz$","",outFile),
                     destname=outFile)
     }
   }
-
-    return(outFile)
-  }
+  
+  return(outFile)
+}
 
 
 #' Wrapper function for ctk's CIMS
@@ -154,7 +154,8 @@ ctk_stripBarcode <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' \dontrun{
 #' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
@@ -165,23 +166,23 @@ ctk_stripBarcode <- function(filesToRun,
 #' @export
 ctk_cims <- function(filesToRun,
                      mutationBedFile,
-                             outFile=paste(file_path_sans_ext(fileToRun),"CIMS","txt",sep="."),
-                             sb="CIMS.pl",
-                             perl="perl",
-                             PATHTOPERLLIB=NULL,
-                             bigFile=FALSE,
-                             mutationSize=1,
-                             permutations=5,
-                             trackMutationPos=FALSE,
-                             noSparseCorrect=FALSE,
-                             FDR=1,
-                             mfr=0,
-                             cacheDir=paste0(filesToRun,
-                                             "_cache",paste(sample(letters,10),collapse="")),
-                             stderr=paste0(getwd(),"stripBarcode_stderr"),
-                             stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                             additionalArgumements=NULL,verbose=FALSE){
+                     outFile=paste(file_path_sans_ext(fileToRun),"CIMS","txt",sep="."),
+                     sb="CIMS.pl",
+                     perl="perl",
+                     PATHTOPERLLIB=NULL,
+                     bigFile=FALSE,
+                     mutationSize=1,
+                     permutations=5,
+                     trackMutationPos=FALSE,
+                     noSparseCorrect=FALSE,
+                     FDR=1,
+                     mfr=0,
+                     cacheDir=paste0(filesToRun,
+                                     "_cache",paste(sample(letters,10),collapse="")),
+                     stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_cims_stderr.txt")),
+                     stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_cims_stdout.txt")),
+                     useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                     additionalArgumements=NULL,verbose=FALSE, writelog  =T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -203,43 +204,35 @@ ctk_cims <- function(filesToRun,
   if(!file.exists(fileToRun)) stop("File does not exist")
   
   # exportPATH <- ifelse(!is.null(PATHTOPERLLIB),paste0("export PERL5LIB=",PATHTOPERLLIB,";"),"")
-    on.exit((function(perl5libPathOld,pathOld) {
-      if(!is.na(perl5libPathOld)){
-        Sys.setenv("PERL5LIB"=perl5libPathOld)
-      }else{
-        Sys.unsetenv("PERL5LIB")
-      }
-      if(!is.na(pathOld)){
-        Sys.setenv("PATH"=pathOld)
-      }else{
-        Sys.unsetenv("PATH")
-      }
-    })(perl5libPathOld,pathOld))
-    
+  on.exit((function(perl5libPathOld,pathOld) {
+    if(!is.na(perl5libPathOld)){
+      Sys.setenv("PERL5LIB"=perl5libPathOld)
+    }else{
+      Sys.unsetenv("PERL5LIB")
+    }
+    if(!is.na(pathOld)){
+      Sys.setenv("PATH"=pathOld)
+    }else{
+      Sys.unsetenv("PATH")
+    }
+  })(perl5libPathOld,pathOld))
+  
   if(!is.null(PATHTOPERLLIB)){
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
-  # cmd2 <- paste0(exportPATH," ",
-  #                cmd," ",
-  #                " -len ",linkerlength," -v ",
-  #                " ",fileToRun," ",
-  #                paste(fileToRun,"_rm5",sep=""))
-  # #"temp.rm")
-  # temp <- system(cmd2,wait = TRUE,intern = TRUE)
-
-
+  
   args <- c(cmd,
-    paste0("-w ",mutationSize),
-    paste0("-n ",permutations),
-    paste0("-FDR ",FDR),
-    paste0("-mkr ",mfr),
-    paste0("-c ",cacheDir),
-    ifelse(bigFile,"-big",""),
-    ifelse(trackMutationPos,"-p",""),
-    ifelse(noSparseCorrect,"---no-sparse-correct",""),
-    fileToRun,
-    mutationBedFile,
-    outFile
+            paste0("-w ",mutationSize),
+            paste0("-n ",permutations),
+            paste0("-FDR ",FDR),
+            paste0("-mkr ",mfr),
+            paste0("-c ",cacheDir),
+            ifelse(bigFile,"-big",""),
+            ifelse(trackMutationPos,"-p",""),
+            ifelse(noSparseCorrect,"---no-sparse-correct",""),
+            fileToRun,
+            mutationBedFile,
+            outFile
   )
   args <- args[args!=""]
   if(verbose){
@@ -248,12 +241,17 @@ ctk_cims <- function(filesToRun,
     message("CIMS.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
-    # unlink(cacheDir,recursive = TRUE)
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")}
+    
   }
   return(outFile)
 }
@@ -284,7 +282,8 @@ ctk_cims <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
@@ -304,10 +303,10 @@ ctk_cits <- function(filesToRun,
                      gap=25,
                      cacheDir=paste0(filesToRun,
                                      "_cache",paste(sample(letters,10),collapse="")),
-                     stderr=paste0(getwd(),"stripBarcode_stderr"),
-                     stdout=paste0(getwd(),"stripBarcode_stdout"),
+                     stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_cits_stderr.txt")),
+                     stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_cits_stdout.txt")),
                      useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                     additionalArgumements=NULL,verbose=FALSE){
+                     additionalArgumements=NULL,verbose=FALSE, writelog=T){
   
   
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -332,18 +331,6 @@ ctk_cits <- function(filesToRun,
     })(perl5libPathOld))
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
-  # cmd2 <- paste0(exportPATH," ",
-  #                cmd," ",
-  #                " -len ",linkerlength," -v ",
-  #                " ",fileToRun," ",
-  #                paste(fileToRun,"_rm5",sep=""))
-  # #"temp.rm")
-  # temp <- system(cmd2,wait = TRUE,intern = TRUE)
-  
-  # PATHTOPERLLIB=NULL,
-  # bigFile=FALSE,
-  # pCutOff=0.01,
-  # multiTest=TRUE,
   
   args <- c(cmd,
             paste0("-p ",pCutOff),
@@ -361,11 +348,16 @@ ctk_cits <- function(filesToRun,
     message("CITS.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")}
     # unlink(cacheDir,recursive = TRUE)
   }
   return(outFile)
@@ -393,23 +385,24 @@ ctk_cits <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 #' ctk_getMutationType(mutations)
 #' @return Path to unzipped file
 #' @export
 ctk_getMutationType <- function(filesToRun,
-                     outFile=paste(file_path_sans_ext(fileToRun),mutationType,"bed",sep="."),
-                     sb="getMutationType.pl",
-                     perl="perl",
-                     PATHTOPERLLIB=NULL,
-                     mutationType="del",
-                     summaryStat=FALSE,
-                     stderr=paste0(getwd(),"stripBarcode_stderr"),
-                     stdout=paste0(getwd(),"stripBarcode_stdout"),
-                     useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                     additionalArgumements=NULL,verbose=FALSE){
+                                outFile=paste(file_path_sans_ext(fileToRun),mutationType,"bed",sep="."),
+                                sb="getMutationType.pl",
+                                perl="perl",
+                                PATHTOPERLLIB=NULL,
+                                mutationType="del",
+                                summaryStat=FALSE,
+                                stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_getMutationType_stderr.txt")),
+                                stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_getMutationType_stdout.txt")),
+                                useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                                additionalArgumements=NULL,verbose=FALSE, writelog  =T){
   
   
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -434,20 +427,12 @@ ctk_getMutationType <- function(filesToRun,
     })(perl5libPathOld))
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
-  # cmd2 <- paste0(exportPATH," ",
-  #                cmd," ",
-  #                " -len ",linkerlength," -v ",
-  #                " ",fileToRun," ",
-  #                paste(fileToRun,"_rm5",sep=""))
-  # #"temp.rm")
-  # temp <- system(cmd2,wait = TRUE,intern = TRUE)
-  
   
   args <- c(cmd,
-    paste0("-t ",mutationType),
-    ifelse(summaryStat,paste0("--summary ",paste(file_path_sans_ext(fileToRun),mutationType,"summary",sep=".")),""),
-    fileToRun,
-    outFile
+            paste0("-t ",mutationType),
+            ifelse(summaryStat,paste0("--summary ",paste(file_path_sans_ext(fileToRun),mutationType,"summary",sep=".")),""),
+            fileToRun,
+            outFile
   )
   args <- args[args!=""]
   
@@ -457,11 +442,16 @@ ctk_getMutationType <- function(filesToRun,
     message("getMutationType.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")}
   }
   return(outFile)
 }
@@ -493,26 +483,27 @@ ctk_getMutationType <- function(filesToRun,
 #' @param outputFormat Output format (fastq | fasta)
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' @return Path to unzipped file
 #' @export
 ctk_fastqFilter <- function(filesToRun,
-                             outFile=file.path(dirname(fileToRun),paste("FF_",basename(fileToRun),sep="")),
-                             sb="fastq_filter.pl",
-                             perl="perl",
-                             PATHTOPERLLIB=NULL,
-                             fastqFormat="sanger",
-                             indexPosition=NULL,
-                             qsFilter=NULL,
-                             maxN=NULL,
-                             outputFormat="fastq",
-                             stderr=paste0(getwd(),"stripBarcode_stderr"),
-                             stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                             additionalArgumements=NULL,verbose=FALSE){
+                            outFile=file.path(dirname(fileToRun),paste("FF_",basename(fileToRun),sep="")),
+                            sb="fastq_filter.pl",
+                            perl="perl",
+                            PATHTOPERLLIB=NULL,
+                            fastqFormat="sanger",
+                            indexPosition=NULL,
+                            qsFilter=NULL,
+                            maxN=NULL,
+                            outputFormat="fastq",
+                            stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_fastqFilter_stderr.txt")),
+                            stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_fastqFilter_stdout.txt")),
+                            useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                            additionalArgumements=NULL,verbose=FALSE, writelog  =T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -574,11 +565,16 @@ ctk_fastqFilter <- function(filesToRun,
     message("fastq_filter.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")}
   }
   return(outFile)
 }
@@ -604,7 +600,8 @@ ctk_fastqFilter <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
@@ -616,14 +613,14 @@ ctk_fastqFilter <- function(filesToRun,
 #' @return Path to unzipped file
 #' @export
 ctk_fastq2collapse <- function(filesToRun,
-                            outFile=file.path(dirname(fileToRun),paste("Collapsed_",basename(fileToRun),sep="")),
-                            sb="fastq2collapse.pl",
-                            perl="perl",
-                            PATHTOPERLLIB=NULL,
-                            stderr=paste0(getwd(),"stripBarcode_stderr"),
-                            stdout=paste0(getwd(),"stripBarcode_stdout"),
-                            useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                            additionalArgumements=NULL,verbose=FALSE){
+                               outFile=file.path(dirname(fileToRun),paste("Collapsed_",basename(fileToRun),sep="")),
+                               sb="fastq2collapse.pl",
+                               perl="perl",
+                               PATHTOPERLLIB=NULL,
+                               stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_fastq2collapse_stderr.txt")),
+                               stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_fastq2collapse_stdout.txt")),
+                               useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                               additionalArgumements=NULL,verbose=FALSE, writelog  =T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -662,13 +659,7 @@ ctk_fastq2collapse <- function(filesToRun,
   if(!is.null(PATHTOPERLLIB)){
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
-  # cmd2 <- paste0(exportPATH," ",
-  #                cmd," ",
-  #                " -len ",linkerlength," -v ",
-  #                " ",fileToRun," ",
-  #                paste(fileToRun,"_rm5",sep=""))
-  # #"temp.rm")
-  # temp <- system(cmd2,wait = TRUE,intern = TRUE)
+  
   args <- c(cmd,
             fileToRun,
             gsub("\\.gz$","",outFile))
@@ -680,11 +671,16 @@ ctk_fastq2collapse <- function(filesToRun,
     message("fastq_filter.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")}
     if(file_ext(outFile) == "gz"){
       R.utils::gzip(gsub("\\.gz$","",outFile),
                     destname=outFile)
@@ -721,7 +717,8 @@ ctk_fastq2collapse <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -748,19 +745,11 @@ ctk_parseAlignment <- function(filesToRun,
                                indelToEnd=5,
                                splitDel=FALSE,
                                indelInScore=FALSE,
-                               stderr=paste0(getwd(),"stripBarcode_stderr"),
-                               stdout=paste0(getwd(),"stripBarcode_stdout"),
+                               stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_parseAlignment_stderr.txt")),
+                               stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_parseAlignment_stdout.txt")),
                                useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                               additionalArgumements=NULL,verbose=FALSE){
-  # args <- c(cmd,
-  #           ifelse(!is.null(mutationFile),paste0("--mutation-file ",mutationFile),""),
-  #           ifelse(!is.null(mapQual),paste0("--map-qual ",mapQual),""),
-  #           ifelse(!is.null(minLen),paste0("--min-len ",minLen),""),
-  #           paste0("--indel-to-end ",indelToEnd),
-  #           ifelse(!splitDel,paste0("--split-del "),""),
-  #           ifelse(!indelInScore,paste0("--indel-in-score "),""),
-  #           fileToRun,
-  #           gsub("\\.gz$","",outFile))
+                               additionalArgumements=NULL,verbose=FALSE, writelog  =T){
+  
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -800,7 +789,7 @@ ctk_parseAlignment <- function(filesToRun,
   if(!is.null(PATHTOPERLLIB)){
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
-
+  
   args <- c(cmd,
             ifelse(!is.null(mutationFile),paste0("--mutation-file ",mutationFile),""),
             ifelse(!is.null(mapQual),paste0("--map-qual ",mapQual),""),
@@ -818,11 +807,17 @@ ctk_parseAlignment <- function(filesToRun,
     message("fastq_filter.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")
+      }
     if(file_ext(outFile) == "gz"){
       R.utils::gzip(gsub("\\.gz$","",outFile),
                     destname=outFile)
@@ -862,7 +857,8 @@ ctk_parseAlignment <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen.
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -880,24 +876,24 @@ ctk_parseAlignment <- function(filesToRun,
 #' @return Path to unzipped file
 #' @export
 ctk_tag2collapse <- function(filesToRun,
-                               outFile=file.path(dirname(filesToRun),paste0("TC_",basename(filesToRun))),
-                               sb="tag2collapse.pl",
-                               perl="perl",
-                               PATHTOPERLLIB=NULL,
-                               keepMaxScore=TRUE,
-                               keepTagName=TRUE,
-                               weight=TRUE,
-                               bigFile=TRUE,
-                               weightInName=TRUE,
-                               randomBarcode=TRUE,
-                               seqErrorModel=NULL,
-                               outputSeqError=NULL,
-                               em=NULL,
-                               stderr=paste0(getwd(),"stripBarcode_stderr"),
-                               stdout=paste0(getwd(),"stripBarcode_stdout"),
-                               useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                               additionalArgumements=NULL,verbose=FALSE){
-
+                             outFile=file.path(dirname(filesToRun),paste0("TC_",basename(filesToRun))),
+                             sb="tag2collapse.pl",
+                             perl="perl",
+                             PATHTOPERLLIB=NULL,
+                             keepMaxScore=TRUE,
+                             keepTagName=TRUE,
+                             weight=TRUE,
+                             bigFile=FALSE,
+                             weightInName=TRUE,
+                             randomBarcode=TRUE,
+                             seqErrorModel=TRUE,
+                             outputSeqError=NULL,
+                             em=NULL,
+                             stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2collapse_stderr.txt")),
+                             stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2collapse_stdout.txt")),
+                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                             additionalArgumements=NULL,verbose=FALSE, writelog = T){
+  
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
   cmd <- sb
@@ -937,8 +933,8 @@ ctk_tag2collapse <- function(filesToRun,
   }
   
   args <- c(cmd,
-            ifelse(keepMaxScore,paste0("--keep-max-score "),""),
             ifelse(keepTagName,paste0("--keep-tag-name "),""),
+            ifelse(keepMaxScore,paste0("--keep-max-score "),""),
             ifelse(!is.null(outputSeqError),paste0("--output-seq-error ",outputSeqError),""),
             ifelse(!is.null(em),paste0("-EM ",em),paste0("-EM -1")),
             ifelse(!is.null(seqErrorModel),paste0("--seq-error-model ",seqErrorModel),""),
@@ -947,20 +943,27 @@ ctk_tag2collapse <- function(filesToRun,
             ifelse(randomBarcode,paste0("--random-barcode  "),""),
             ifelse(weightInName,paste0("--weight-in-name  "),""),
             fileToRun,
-            outFile)
+            outFile)        
+  
   
   args <- args[args!=""]
   if(verbose){
     
-    message("fastq_filter.pl command is ",cmd)
-    message("fastq_filter.pl arguments are ",paste0(args,sep=" ",collapse=" "))
+    message("tag2collapse.pl command is ",cmd)
+    message("tag2collapse.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")
+      }
     if(file_ext(outFile) == "gz"){
       R.utils::gzip(gsub("\\.gz$","",outFile),
                     destname=outFile)
@@ -993,7 +996,8 @@ ctk_tag2collapse <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' \dontrun{
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
@@ -1020,25 +1024,14 @@ ctk_joinWrapper <- function(file1,
                             field1,
                             field2,
                             mode,
-                             outFile=file.path(dirname(file1),paste0("Unique_",basename(file1))),
-                             sb="joinWrapper.py",
-                             python="python",
-                             stderr=paste0(getwd(),"stripBarcode_stderr"),
-                             stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                             additionalArgumements=NULL,verbose=FALSE){
-  # args <- c(cmd,
-  #           ifelse(keepMaxScore,paste0("--keep-max-score ",keepMaxScore),""),
-  #           ifelse(keepTagName,paste0("--keep-tag-name ",keepTagName),""),
-  #           ifelse(!is.null(outputSeqError),paste0("--output-seq-error ",outputSeqError),""),
-  #           ifelse(!is.null(em),paste0("-EM ",em),paste0("-EM -1")),
-  #           ifelse(!is.null(bigFile),paste0("-big  "),""),
-  #           ifelse(!is.null(weight),paste0("-weight  "),""),
-  #           ifelse(!is.null(randomBarcode),paste0("--random-barcode  "),""),
-  #           ifelse(!is.null(weightInName),paste0("--weight-in-name  "),""),
-  #           fileToRun,
-  #           outFile)
-  # 
+                            outFile=file.path(dirname(file1),paste0("Unique_",basename(file1))),
+                            sb="joinWrapper.py",
+                            python="python",
+                            stderr=file.path(dirname(file1),paste0(basename(file1),"_ctk_joinWrapper_stderr.txt")),
+                            stdout=file.path(dirname(file1),paste0(basename(file1),"_ctk_joinWrapper_stdout.txt")),
+                            useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                            additionalArgumements=NULL,verbose=FALSE, writelog = T){
+  
   pathOld <- Sys.getenv("PATH",unset = NA)
   # perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
   cmd <- sb
@@ -1052,7 +1045,7 @@ ctk_joinWrapper <- function(file1,
   }
   
   if(!is.null(getOption("CLIPflexR.ctk")) & useClipRConda) cmd <- paste(file.path(system.file("extdata/",package="CLIPflexR"),cmd),sep = " ")
-
+  
   fileToRun <- file1
   
   if(!file.exists(fileToRun) | !file.exists(file2)) stop("File/s do not exist")
@@ -1068,7 +1061,7 @@ ctk_joinWrapper <- function(file1,
   })(pathOld))
   
   
-
+  
   args <- c(cmd,
             file1,
             file2,
@@ -1080,19 +1073,21 @@ ctk_joinWrapper <- function(file1,
   args <- args[args!=""]
   if(verbose){
     
-    message("fastq_filter.pl command is ",cmd)
-    message("fastq_filter.pl arguments are ",paste0(args,sep=" ",collapse=" "))
+    message("joinWrapper.py command is ",cmd)
+    message("joinWrapper.py arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(python,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
-    # if(file_ext(outFile) == "gz"){
-    #   R.utils::gzip(gsub("\\.gz$","",outFile),
-    #                 destname=outFile)
-    # }
+    if(writelog){
+      system2(python,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(python,
+                args,
+                stdout="",
+                stderr="")
+      }
   }
   
   return(outFile)
@@ -1119,7 +1114,8 @@ ctk_joinWrapper <- function(file1,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -1139,27 +1135,16 @@ ctk_joinWrapper <- function(file1,
 #' @return Path to unzipped file
 #' @export
 ctk_bed2rgb <- function(filesToRun,
-                             outFile=paste0(file_path_sans_ext(filesToRun),".RGB.",file_ext(filesToRun)),
-                             sb="bed2rgb.pl",
-                             perl="perl",
-                             PATHTOPERLLIB=NULL,
-                             col="blue",
-                             stderr=paste0(getwd(),"stripBarcode_stderr"),
-                             stdout=paste0(getwd(),"stripBarcode_stdout"),
-                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                             additionalArgumements=NULL,verbose=FALSE){
-  # args <- c(cmd,
-  #           ifelse(keepMaxScore,paste0("--keep-max-score ",keepMaxScore),""),
-  #           ifelse(keepTagName,paste0("--keep-tag-name ",keepTagName),""),
-  #           ifelse(!is.null(outputSeqError),paste0("--output-seq-error ",outputSeqError),""),
-  #           ifelse(!is.null(em),paste0("-EM ",em),paste0("-EM -1")),
-  #           ifelse(!is.null(bigFile),paste0("-big  "),""),
-  #           ifelse(!is.null(weight),paste0("-weight  "),""),
-  #           ifelse(!is.null(randomBarcode),paste0("--random-barcode  "),""),
-  #           ifelse(!is.null(weightInName),paste0("--weight-in-name  "),""),
-  #           fileToRun,
-  #           outFile)
-  # 
+                        outFile=paste0(file_path_sans_ext(filesToRun),".RGB.",file_ext(filesToRun)),
+                        sb="bed2rgb.pl",
+                        perl="perl",
+                        PATHTOPERLLIB=NULL,
+                        col="blue",
+                        stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_bed2rgb_stderr.txt")),
+                        stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_bed2rgb_stdout.txt")),
+                        useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                        additionalArgumements=NULL,verbose=FALSE, writelog = T){
+  
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
   cmd <- sb
@@ -1198,7 +1183,7 @@ ctk_bed2rgb <- function(filesToRun,
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
   
-
+  
   args <- c(cmd,
             paste0("-col ",col),
             fileToRun,
@@ -1207,15 +1192,21 @@ ctk_bed2rgb <- function(filesToRun,
   args <- args[args!=""]
   if(verbose){
     
-    message("fastq_filter.pl command is ",cmd)
-    message("fastq_filter.pl arguments are ",paste0(args,sep=" ",collapse=" "))
+    message("bed2rgb.pl command is ",cmd)
+    message("bed2rgb.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")
+      }
     if(file_ext(outFile) == "gz"){
       R.utils::gzip(gsub("\\.gz$","",outFile),
                     destname=outFile)
@@ -1262,7 +1253,8 @@ ctk_bed2rgb <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -1283,31 +1275,31 @@ ctk_bed2rgb <- function(filesToRun,
 #' @return Path to unzipped file
 #' @export
 ctk_tag2profile <- function(filesToRun,
-                        outFile=paste0(file_path_sans_ext(filesToRun),".out"),
-                        outFile2=NULL,
-                        sb="tag2profile.pl",
-                        perl="perl",
-                        PATHTOPERLLIB=NULL,
-                        bigFile=FALSE,
-                        weight=FALSE,
-                        weightAvg=FALSE,
-                        ss=TRUE,
-                        exact=TRUE,
-                        nz=FALSE,
-                        ext5=NULL,
-                        ext3=NULL,
-                        chromLen=NULL,
-                        region=NULL,
-                        minBlockSize=2000000,
-                        windowSize=100,
-                        stepSize=20,
-                        outputFormat="bedgraph",
-                        normalization="none",
-                        stderr=paste0(getwd(),"stripBarcode_stderr"),
-                        stdout=paste0(getwd(),"stripBarcode_stdout"),
-                        useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                        additionalArgumements=NULL,verbose=FALSE){
-
+                            outFile=paste0(file_path_sans_ext(filesToRun),".out"),
+                            outFile2=NULL,
+                            sb="tag2profile.pl",
+                            perl="perl",
+                            PATHTOPERLLIB=NULL,
+                            bigFile=FALSE,
+                            weight=FALSE,
+                            weightAvg=FALSE,
+                            ss=TRUE,
+                            exact=TRUE,
+                            nz=FALSE,
+                            ext5=NULL,
+                            ext3=NULL,
+                            chromLen=NULL,
+                            region=NULL,
+                            minBlockSize=2000000,
+                            windowSize=100,
+                            stepSize=20,
+                            outputFormat="bedgraph",
+                            normalization="none",
+                            stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2profile_stderr.txt")),
+                            stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2profile_stdout.txt")),
+                            useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                            additionalArgumements=NULL,verbose=FALSE, writelog = T){
+  
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -1347,7 +1339,7 @@ ctk_tag2profile <- function(filesToRun,
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
   
- 
+  
   args <- c(cmd,
             ifelse(bigFile,"-big ",""),
             ifelse(weight,"-weight ",""),
@@ -1371,15 +1363,21 @@ ctk_tag2profile <- function(filesToRun,
   args <- args[args!=""]
   if(verbose){
     
-    message("fastq_filter.pl command is ",cmd)
-    message("fastq_filter.pl arguments are ",paste0(args,sep=" ",collapse=" "))
+    message("tag2profile.pl command is ",cmd)
+    message("tag2profile.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )}  else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")
+      }
     if(file_ext(outFile) == "gz"){
       R.utils::gzip(gsub("\\.gz$","",outFile),
                     destname=outFile)
@@ -1426,7 +1424,8 @@ ctk_tag2profile <- function(filesToRun,
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -1447,30 +1446,30 @@ ctk_tag2profile <- function(filesToRun,
 #' @return Path to unzipped file
 #' @export
 ctk_tag2peak <- function(filesToRun,
-                            outFile=paste0(file_path_sans_ext(filesToRun),".peak.bed"),
-                            outBoundary=paste0(file_path_sans_ext(filesToRun),".boundary.bed"),
-                            outHalfPH=paste0(file_path_sans_ext(filesToRun),".halfPF.bed"),
-                            sb="tag2peak.pl",
-                            perl="perl",
-                            PATHTOPERLLIB=NULL,
-                            bigFile=FALSE,
-                            ss=TRUE,
-                           valleySeeking=TRUE,
-                           valleyDepth=0.9,
-                           genes=NULL,
-                           multiTest=FALSE,
-                           useExpr=FALSE,
-                           skipOutOfRangePeaks=FALSE,
-                           pCutOff=0.01,
-                           minPH=2,
-                           maxPH=-1,
-                           gap=-1,
-                           peakPrefix="Peak",
-                           stderr=paste0(getwd(),"stripBarcode_stderr"),
-                          stdout=paste0(getwd(),"stripBarcode_stdout"),
-                          useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                          additionalArgumements=NULL,verbose=FALSE){
-
+                         outFile=paste0(file_path_sans_ext(filesToRun),".peak.bed"),
+                         outBoundary=paste0(file_path_sans_ext(filesToRun),".boundary.bed"),
+                         outHalfPH=paste0(file_path_sans_ext(filesToRun),".halfPF.bed"),
+                         sb="tag2peak.pl",
+                         perl="perl",
+                         PATHTOPERLLIB=NULL,
+                         bigFile=FALSE,
+                         ss=TRUE,
+                         valleySeeking=TRUE,
+                         valleyDepth=0.9,
+                         genes=NULL,
+                         multiTest=FALSE,
+                         useExpr=FALSE,
+                         skipOutOfRangePeaks=FALSE,
+                         pCutOff=0.01,
+                         minPH=2,
+                         maxPH=-1,
+                         gap=-1,
+                         peakPrefix="Peak",
+                         stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2peak_stderr.txt")),
+                         stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2peak_stdout.txt")),
+                         useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                         additionalArgumements=NULL,verbose=FALSE, writelog = T){
+  
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -1530,20 +1529,26 @@ ctk_tag2peak <- function(filesToRun,
             fileToRun,
             outFile)
   
-
+  
   
   args <- args[args!=""]
   if(verbose){
     
-    message("fastq_filter.pl command is ",cmd)
-    message("fastq_filter.pl arguments are ",paste0(args,sep=" ",collapse=" "))
+    message("tag2peak.pl command is ",cmd)
+    message("tag2peak.pl arguments are ",paste0(args,sep=" ",collapse=" "))
   }
   if(!file.exists(outFile)){
-    system2(perl,
-            args,
-            stdout=stdout,
-            stderr=stderr
-    )
+    if(writelog){
+      system2(perl,
+              args,
+              stdout=stdout,
+              stderr=stderr
+      )} else {
+        system2(perl,
+                args,
+                stdout="",
+                stderr="")
+      }
     if(file_ext(outFile) == "gz"){
       R.utils::gzip(gsub("\\.gz$","",outFile),
                     destname=outFile)
