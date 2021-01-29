@@ -3,14 +3,14 @@ if(getRversion() >= "2.15.1")  utils::globalVariables(c("seq","Seq","SeqExtended
                                                         "baseDir"))
 
 
-file_path_sans_ext <- function (x, compression = FALSE) 
+file_path_sans_ext <- function (x, compression = FALSE)
 {
-  if (compression) 
+  if (compression)
     x <- sub("[.](gz|bz2|xz)$", "", x)
   sub("([^.]+)\\.[[:alnum:]]+$", "\\1", x)
 }
 
-file_ext <- function (x) 
+file_ext <- function (x)
 {
   pos <- regexpr("\\.([[:alnum:]]+)$", x)
   ifelse(pos > -1L, substring(x, pos + 1L), "")
@@ -53,15 +53,15 @@ bamtobed <- function(file,
                      filtDup=FALSE){
   if(!file.exists(file))stop("No BAM file found at", file)
   if(!file.exists(outFile)){
-  temp <- readGAlignments(file,
-                          param=ScanBamParam(what = "qname"))
-  names(temp) <- mcols(temp)$qname
-  temp <- granges(temp)
-  
-  if(filtDup) temp <- temp[!duplicated(temp),]
-  export.bed(temp,
-             con = outFile)
-}
+    temp <- readGAlignments(file,
+                            param=ScanBamParam(what = "qname"))
+    names(temp) <- mcols(temp)$qname
+    temp <- granges(temp)
+    
+    if(filtDup) temp <- temp[!duplicated(temp),]
+    export.bed(temp,
+               con = outFile)
+  }
   return(outFile)
 }
 
@@ -125,9 +125,9 @@ decompress <- function(fileToDecompress,
 #' com <- compress(decom,overwrite=TRUE)
 #' @export
 compress <- function(fileToCompress,
-                       keep=TRUE,
-                       methodCompress="gunzip",
-                       overwrite=FALSE){
+                     keep=TRUE,
+                     methodCompress="gunzip",
+                     overwrite=FALSE){
   fileExt <- switch(methodCompress,gunzip="gz",bunzip2="bz2")
   cmd <- switch(fileExt,gz=gunzip,bz=bunzip2,bz2=bunzip2)
   
@@ -142,29 +142,29 @@ compress <- function(fileToCompress,
 
 
 readinpeaks <- function(peaks,verbose=FALSE,sep="\t",header=FALSE){
-if(verbose) message("Reading in peaks....",appendLF = FALSE)
-if(is(peaks,"GRanges")){
-  peaks <- peaks
-  peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))
-}else if(is(peaks,"character")){
-  if(!file.exists(peaks))stop(paste0("The file ",peaks," does not exist"))
-  peaks <- read.table(peaks,sep=sep,header=header)
-  if(!header){
-    if(ncol(peaks) == 3)    colnames(peaks) <- c("seqnames","start","end")  ##not sure about this case
-    if(ncol(peaks) >= 6)    colnames(peaks)[1:6] <- c("peakID", "seqnames","start","end","strand","score")
+  if(verbose) message("Reading in peaks....",appendLF = FALSE)
+  if(is(peaks,"GRanges")){
+    peaks <- peaks
+    peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))
+  }else if(is(peaks,"character")){
+    if(!file.exists(peaks))stop(paste0("The file ",peaks," does not exist"))
+    peaks <- read.table(peaks,sep=sep,header=header)
+    if(!header){
+      if(ncol(peaks) == 3)    colnames(peaks) <- c("seqnames","start","end")  ##not sure about this case
+      if(ncol(peaks) >= 6)    colnames(peaks)[1:6] <- c("peakID", "seqnames","start","end","strand","score")
+    }
+    peaks <- makeGRangesFromDataFrame(peaks,
+                                      keep.extra.columns=TRUE,
+                                      ignore.strand=FALSE,
+                                      seqinfo=NULL,
+                                      seqnames.field="seqnames",
+                                      start.field="start",
+                                      end.field="end",
+                                      strand.field="strand",
+                                      starts.in.df.are.0based=FALSE)
+    peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))
+    
   }
-  peaks <- makeGRangesFromDataFrame(peaks,
-                                    keep.extra.columns=TRUE,
-                                    ignore.strand=FALSE,
-                                    seqinfo=NULL,
-                                    seqnames.field="seqnames",
-                                    start.field="start",
-                                    end.field="end",
-                                    strand.field="strand",
-                                    starts.in.df.are.0based=FALSE)
-  peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))
-  
-}
   if(verbose) message("...done")
   if(verbose) message("Read in ",length(peaks)," peaks")
   
@@ -190,7 +190,7 @@ if(is(peaks,"GRanges")){
 #' @param add3 Bp to add to 3' of resized peak.
 #' @param verbose Print messages.
 #' @param bedHeader TRUE if peak file contains column headers.
-#' @param bedSep Seperator in BED file.
+#' @param bedSep Separator in BED file.
 #' @return Path to unzipped file.
 #' @importFrom R.utils bunzip2 gunzip
 #' @examples  
@@ -202,7 +202,7 @@ if(is(peaks,"GRanges")){
 fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=FALSE,bedHeader=TRUE,bedSep="\t"){
   
   peaks <- readinpeaks(peaks,verbose=verbose,header = bedHeader,sep=bedSep)
-
+  
   swd <- FaFile(fasta)
   if(!file.exists(index(swd)))indexFa(swd)
   fastaLens <- seqlengths(swd)
@@ -325,60 +325,76 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
     if(verbose) message("Search for ",pattern[i])
     peaks_Sites <- validPeaks
     fixedInRegion <- vmatchPattern(pattern=pattern[i],subject=myRes) %>% unlist()
-    
-    
-    startOfPmatch <- resize(fixedInRegion,width=1,fix="start") %>% unname %>% as.character
-    
-    ##
-    ## Pos is made from names from original sequence we scanned in..which came from extened peak coordnates. 
-    ##  or..Names contains extended position and strand information because myRes did in its name.
-    ##
-    pos <- matrix(unlist(strsplit(gsub(".*:","",names(fixedInRegion)),"_")),ncol=3,byrow =T)
-    seq <- gsub(":.*","",names(fixedInRegion))
-    
-    ###
-    ## Here we lose strand information from our GRanges!! 
-    ## sitesGRpos are from Pos strand based on name... but they dont have strand information in them !! 
-    ## That why we need to reverse complement.
-    ## We could add back strand information somewhere here but doesnt matter as we take care of it ourselves
-    
-    ## I checked a few sites in IGV from original FASTA and all good! And now we can remember why too :)
-    ###
-    sitesGRpos <- GRanges(seq[pos[,3] =="+"],
-                          IRanges(as.numeric(pos[pos[,3] =="+",1])+start(fixedInRegion[pos[,3] =="+"])-1,
-                                  as.numeric(pos[pos[,3] =="+",1])+end(fixedInRegion[pos[,3] =="+"])-1),startOfPmatch=startOfPmatch[pos[,3] =="+"])
-    sitesGRpos$PeakID <- names(fixedInRegion[pos[,3] =="+"])
-    
-    sitesGRneg <- GRanges(seq[pos[,3] =="-"],
-                          IRanges(as.numeric(pos[pos[,3] =="-",2])-end(fixedInRegion[pos[,3] =="-"])+1,
-                                  as.numeric(pos[pos[,3] =="-",2])-start(fixedInRegion[pos[,3] =="-"])+1),startOfPmatch=startOfPmatch[pos[,3] =="-"])
-    sitesGRneg$PeakID <- names(fixedInRegion[pos[,3] =="-"])
-    
-    ## So we need to reverse complement based on
-    sitesFA <- c(fetchSequencesForCLIP(sitesGRpos,resize=NULL,fasta),reverseComplement(fetchSequencesForCLIP(sitesGRneg,resize=NULL,fasta)))
-    sitesFAExtended <- c(fetchSequencesForCLIP(sitesGRpos,resize=NULL,fasta,add5=add5,add3=add3),
-                         reverseComplement(fetchSequencesForCLIP(sitesGRneg,resize=NULL,fasta,add5=add5,add3=add3))
-    )
-    sitesGR <- suppressWarnings(c(sitesGRpos,sitesGRneg))
-    
-    # getSeq(Rsamtools:::FaFile(fasta),sitesGR)
-    sitesGR$Seq <- sitesFA
-    sitesGR$SeqExtended <- sitesFAExtended
-    sitesGR$siteOfPattern <- granges(sitesGR) %>% unname %>% as.character
-    sitesGR$centerOfPattern <-  resize(sitesGR,width=1,fix="center") %>% unname %>% as.character
-    dfSitesGR <- as.data.frame(sitesGR)
-    # peaks_Sites$extendedRanges <- resize(granges(peaks_Sites), reSize, fix="center", use.names=TRUE)
-    # peaks_Sites$peakNames <- paste0(seqnames(peaks_Sites$extendedRanges),":",start(peaks_Sites$extendedRanges),"-",end(peaks_Sites$extendedRanges))
-    peaks_SitesDF <- as.data.frame(peaks_Sites,row.names = NULL)
-    
-    mergePeaksAndSites[[i]] <- merge(peaks_SitesDF,dfSitesGR,by.x="extendedPeak",by.y="PeakID",all=FALSE)
-    patternCallList[[i]] <- mergePeaksAndSites[[i]] %>% dplyr::select(Seq,SeqExtended,startOfPmatch,centerOfPattern,siteOfPattern,originalPeak,extendedPeak)
-    rm(peaks_SitesDF)
-    rm(peaks_Sites)
-  }
-  #if(verbose) message("....finished search")
+    if(!isEmpty(fixedInRegion)) {
+      
+      startOfPmatch <- resize(fixedInRegion,width=1,fix="start") %>% unname %>% as.character
+      pos <- matrix(unlist(strsplit(gsub(".*:","",names(fixedInRegion)),"_")),ncol=3,byrow =T)
+      seq <- gsub(":.*","",names(fixedInRegion))
+      
+      sitesGRpos <- GRanges(seq[pos[,3] =="+"],
+                            IRanges(as.numeric(pos[pos[,3] =="+",1])+start(fixedInRegion[pos[,3] =="+"])-1,
+                                    as.numeric(pos[pos[,3] =="+",1])+end(fixedInRegion[pos[,3] =="+"])-1),startOfPmatch=startOfPmatch[pos[,3] =="+"])
+      sitesGRpos$PeakID <- names(fixedInRegion[pos[,3] =="+"])
+      
+      sitesGRneg <- GRanges(seq[pos[,3] =="-"],
+                            IRanges(as.numeric(pos[pos[,3] =="-",2])-end(fixedInRegion[pos[,3] =="-"])+1,
+                                    as.numeric(pos[pos[,3] =="-",2])-start(fixedInRegion[pos[,3] =="-"])+1),startOfPmatch=startOfPmatch[pos[,3] =="-"])
+      sitesGRneg$PeakID <- names(fixedInRegion[pos[,3] =="-"])
+      if(isEmpty(sitesGRpos)) { sitesFA <-  Biostrings::reverseComplement(fetchSequencesForClIP(sitesGRneg,reSize=NULL,fasta))
+      sitesFAExtended <- Biostrings::reverseComplement(fetchSequencesForClIP(sitesGRneg,reSize=NULL,fasta,add5=add5,add3=add3))
+      sitesGR <- sitesGRneg
+      
+      sitesGR$Seq <- sitesFA
+      sitesGR$SeqExtended <- sitesFAExtended
+      sitesGR$siteOfPattern <- granges(sitesGR) %>% unname %>% as.character
+      sitesGR$centerOfPattern <-  GenomicRanges::resize(sitesGR,width=1,fix="center") %>% unname %>% as.character
+      dfSitesGR <- as.data.frame(sitesGR)
+      peaks_SitesDF <- as.data.frame(peaks_Sites)
+      
+      mergePeaksAndSites[[i]] <- merge(peaks_SitesDF,dfSitesGR,by.x="extendedPeak",by.y="PeakID",all=FALSE)
+      patternCallList[[i]] <- mergePeaksAndSites[[i]] %>% dplyr::select(Seq,SeqExtended,startOfPmatch,centerOfPattern,siteOfPattern,originalPeak,extendedPeak)
+      rm(peaks_SitesDF)
+      rm(peaks_Sites)
+      } 
+      else if(isEmpty(sitesGRneg)) {
+        sitesFA <- fetchSequencesForClIP(sitesGRpos,reSize=NULL,fasta)
+        sitesFAExtended <- fetchSequencesForClIP(sitesGRpos,reSize=NULL,fasta,add5=add5,add3=add3)
+        sitesGR <- sitesGRpos
+        
+        sitesGR$Seq <- sitesFA
+        sitesGR$SeqExtended <- sitesFAExtended
+        sitesGR$siteOfPattern <- granges(sitesGR) %>% unname %>% as.character
+        sitesGR$centerOfPattern <-  GenomicRanges::resize(sitesGR,width=1,fix="center") %>% unname %>% as.character
+        dfSitesGR <- as.data.frame(sitesGR)
+        peaks_SitesDF <- as.data.frame(peaks_Sites)
+        
+        mergePeaksAndSites[[i]] <- merge(peaks_SitesDF,dfSitesGR,by.x="extendedPeak",by.y="PeakID",all=FALSE)
+        patternCallList[[i]] <- mergePeaksAndSites[[i]] %>% dplyr::select(Seq,SeqExtended,startOfPmatch,centerOfPattern,siteOfPattern,originalPeak,extendedPeak)
+        rm(peaks_SitesDF)
+        rm(peaks_Sites)
+      } else {
+        sitesFA <- c(fetchSequencesForClIP(sitesGRpos,reSize=NULL,fasta),reverseComplement(fetchSequencesForClIP(sitesGRneg,reSize=NULL,fasta)))
+        sitesFAExtended <- c(fetchSequencesForClIP(sitesGRpos,reSize=NULL,fasta,add5=add5,add3=add3),
+                             reverseComplement(fetchSequencesForClIP(sitesGRneg,reSize=NULL,fasta,add5=add5,add3=add3))
+        )
+        sitesGR <- suppressWarnings(c(sitesGRpos,sitesGRneg))
+        
+        sitesGR$Seq <- sitesFA
+        sitesGR$SeqExtended <- sitesFAExtended
+        sitesGR$siteOfPattern <- granges(sitesGR) %>% unname %>% as.character
+        sitesGR$centerOfPattern <-  GenomicRanges::resize(sitesGR,width=1,fix="center") %>% unname %>% as.character
+        dfSitesGR <- as.data.frame(sitesGR)
+        peaks_SitesDF <- as.data.frame(peaks_Sites)
+        
+        mergePeaksAndSites[[i]] <- merge(peaks_SitesDF,dfSitesGR,by.x="extendedPeak",by.y="PeakID",all=FALSE)
+        patternCallList[[i]] <- mergePeaksAndSites[[i]] %>% dplyr::select(Seq,SeqExtended,startOfPmatch,centerOfPattern,siteOfPattern,originalPeak,extendedPeak)
+        rm(peaks_SitesDF)
+        rm(peaks_Sites)}} 
+    else { message(pattern[i], "not found")}}
+  if(verbose) message("....finished search")
   names(mergePeaksAndSites) <- names(patternCallList) <- as.character(pattern)
   return(list(mergePeaksAndSites,patternCallList))
+  
 }
 
 
@@ -437,6 +453,7 @@ bowtie2_index <- function(genomeFasta,
 #' @param seedSubString length of seed substrings
 #' @param threads Number of threads to use
 #' @param report_k number of alignments to report
+#' @param keepSAM keep bowtie2 SAM output file, default = T
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -455,9 +472,8 @@ bowtie2_index <- function(genomeFasta,
 #' @export
 bowtie_align <- function(fq,index,
                          bam=file.path(dirname(fq),
-                                       paste0("Sorted_",basename(fq),".bam")),
-                         format="fasta",maxMismatches=1,seedSubString=18,threads=1,report_k=NULL
-) {
+                                       paste0("Sorted_",gsub("\\.fa|\\.fasta|\\.fastq","",basename(fq)),".bam")),
+                         format="fasta", keepSAM = T, maxMismatches=1,seedSubString=18,threads=1,report_k=NULL) {
   
   if(format == "fasta"){
     optionFormat <- "-f"
@@ -500,7 +516,13 @@ bowtie_align <- function(fq,index,
                                bam))
     unlink(gsub("\\.bam$",".temp.bam",
                 bam)) # remove temp.bam
+    unlink(gsub("\\.bam$",".temp.bam.bai",
+                bam))
     indexBam(bam)
+    if(!keepSAM) {
+      unlink(gsub("\\.bam$",".sam",
+                  bam))
+    }
     
   }
   return(bam)
