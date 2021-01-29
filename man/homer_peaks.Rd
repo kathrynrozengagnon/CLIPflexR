@@ -3,12 +3,12 @@
 \docType{methods}
 \name{homer_peaks}
 \alias{homer_peaks}
-\title{Wrapper function for Homer's makeTagDirectory and findpeaks}
+\title{Wrapper function for Homer's makeTagDirectory and findPeaks}
 \usage{
 homer_peaks(
   fileTofqs,
   maketagdir = "makeTagDirectory",
-  findpeaks = "findpeaks",
+  findpeaks = "findPeaks",
   format = "bed",
   createSingleTagsTSV = TRUE,
   tagdir = file.path(dirname(fileTofqs), gsub("\\\\.bed", "",
@@ -76,7 +76,7 @@ homer_peaks(
 Path to unzipped file
 }
 \description{
-Wrapper function for Homer's makeTagDirectory and findpeaks
+Wrapper function for Homer's makeTagDirectory and findPeaks
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")

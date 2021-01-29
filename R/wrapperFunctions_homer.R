@@ -1,6 +1,6 @@
-#' Wrapper function for Homer's makeTagDirectory and findpeaks
+#' Wrapper function for Homer's makeTagDirectory and findPeaks
 #'
-#' Wrapper function for Homer's makeTagDirectory and findpeaks
+#' Wrapper function for Homer's makeTagDirectory and findPeaks
 #'
 #'
 #' @docType methods
@@ -43,7 +43,7 @@
 #' bed <- bamtobed(bam)
 #' homer_peaks(bed)
 #' @export
-homer_peaks <- function(fileTofqs, maketagdir = "makeTagDirectory", findpeaks = "findpeaks", 
+homer_peaks <- function(fileTofqs, maketagdir = "makeTagDirectory", findpeaks = "findPeaks", 
                         format = "bed", createSingleTagsTSV = TRUE, tagdir = file.path(dirname(fileTofqs), 
                                                                                        gsub("\\.bed", "", make.names(basename(fileTofqs)))), 
                         style = "factor", foldEnrichmentOverLocal = 2, localSize = 10000, 

@@ -892,19 +892,19 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
   if (verbose) message("done")
 }
 
-#' unbam
+#' extract_unmapped
 #'
-#' Turns a BAM to a FASTA file
+#' Extracts unmapped reads from BAM and writes them to a FASTA file
 #'
 #'
 #' @docType methods
-#' @name unbam
-#' @rdname unbam
+#' @name extract_unmapped
+#' @rdname extract_unmapped
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param bam BAM file to turn to FASTA
-#' @param outfa PATH to output FASTA
+#' @param bam BAM file
+#' @param outfa PATH to output FASTA (default is same directory as input BAM)
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(testFasta)
@@ -917,11 +917,12 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
-#' unbam(bam)
+#' unmapped <- extract_unmapped(bam)
+#' unmapped
 #' @return Path to FASTA file
 #' @import GenomicAlignments Biostrings
 #' @export
-unbam <- function(bam,outfa=NULL){
+extract_unmapped <- function(bam,outfa=NULL){
   inBAM <- scanBam(bam,param=ScanBamParam(what = c("qname","seq"),flag = scanBamFlag(isUnmappedQuery = TRUE)))
   if(is.null(outfa)) outfa <- gsub(".bam","_unmapped.fa",bam)
   toWrite <- inBAM[[1]]$seq
@@ -964,7 +965,7 @@ unbam <- function(bam,outfa=NULL){
 chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,verbose=TRUE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
   if(verbose) message("Extracting unmapped reads to FASTA..",appendLF = FALSE)
-  fastas <- bplapply(bams,unbam,BPPARAM=bpparam)
+  fastas <- bplapply(bams,extract_unmapped,BPPARAM=bpparam)
   if(verbose) message("done")
   if(verbose) message("Creating indicies from FASTA files..",appendLF = FALSE)
   indicies <- bplapply(fastas,bowtie2_index,BPPARAM=bpparam)
