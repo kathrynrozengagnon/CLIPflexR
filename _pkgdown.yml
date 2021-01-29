@@ -60,7 +60,7 @@ reference:
       Useful R functions for CLIP processing/analyses.
     contents:      
       - bamtobed
-      - unbam
+      - extract_unmapped
       - countFromBed
       - CLIP_bw2
       - annotatePeaksWithPatterns

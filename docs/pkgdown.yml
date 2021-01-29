@@ -1,9 +1,9 @@
-pandoc: 1.19.2.1
+pandoc: 2.7.3
 pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   Processing_to_matrix: Processing_to_matrix.html
   StandardandBrdU_Processing_CTK: StandardandBrdU_Processing_CTK.html
   installCliPR: installCliPR.html
-last_built: 2020-09-05T02:53Z
+last_built: 2021-01-29T21:58Z
 

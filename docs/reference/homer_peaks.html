@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper function for Homer's makeTagDirectory and findpeaks — homer_peaks • CLIPflexR</title>
+<title>Wrapper function for Homer's makeTagDirectory and findPeaks — homer_peaks • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 
 
 
-<meta property="og:title" content="Wrapper function for Homer's makeTagDirectory and findpeaks — homer_peaks" />
+<meta property="og:title" content="Wrapper function for Homer's makeTagDirectory and findPeaks — homer_peaks" />
 
-<meta property="og:description" content="Wrapper function for Homer's makeTagDirectory and findpeaks" />
+<meta property="og:description" content="Wrapper function for Homer's makeTagDirectory and findPeaks" />
 
 
 
@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
       </span>
     </div>
 
@@ -126,21 +126,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wrapper function for Homer's makeTagDirectory and findpeaks</h1>
+    <h1>Wrapper function for Homer's makeTagDirectory and findPeaks</h1>
     <small class="dont-index">Source: <a href='https://github.com/kathrynrozengagnon/CLIPflexR/blob/master/R/wrapperFunctions_homer.R'><code>R/wrapperFunctions_homer.R</code></a></small>
     <div class="hidden name"><code>homer_peaks.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Wrapper function for Homer's makeTagDirectory and findpeaks</p>
+    <p>Wrapper function for Homer's makeTagDirectory and findPeaks</p>
     
     </div>
 
     <pre class="usage"><span class='fu'>homer_peaks</span>(
   <span class='no'>fileTofqs</span>,
   <span class='kw'>maketagdir</span> <span class='kw'>=</span> <span class='st'>"makeTagDirectory"</span>,
-  <span class='kw'>findpeaks</span> <span class='kw'>=</span> <span class='st'>"findpeaks"</span>,
+  <span class='kw'>findpeaks</span> <span class='kw'>=</span> <span class='st'>"findPeaks"</span>,
   <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"bed"</span>,
   <span class='kw'>createSingleTagsTSV</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>tagdir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileTofqs</span>), <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span>(<span class='st'>"\\.bed"</span>, <span class='st'>""</span>,
@@ -153,11 +153,14 @@
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>fragLength</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>genomeSize</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"homer_stats_stderr"</span>),
-  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span>(), <span class='st'>"homer_stats_stdout"</span>),
+  <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileTofqs</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileTofqs</span>),
+    <span class='st'>"_homer_stderr.txt"</span>)),
+  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileTofqs</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileTofqs</span>),
+    <span class='st'>"_homer_stderr.txt"</span>)),
   <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"CLIPflexR.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
   <span class='kw'>additionalArgumements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>writelog</span> <span class='kw'>=</span> <span class='no'>T</span>
 )</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -237,7 +240,11 @@
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Print more message to screen.</p></td>
+      <td><p>Print messages to screen.</p></td>
+    </tr>
+    <tr>
+      <th>writelog</th>
+      <td><p>write stderr/stdout logs, TRUE (default) or FALSE</p></td>
     </tr>
     </table>
     
@@ -248,7 +255,7 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>testFasta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hg19Small.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
 <span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>testFQ</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_filter.html'>fastq_quality_filter</a></span>(<span class='no'>FqFile</span>)
 <span class='no'>FqFile_QFCollapsed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_collapser.html'>fastx_collapser</a></span>(<span class='no'>FqFile_QF</span>)
@@ -256,7 +263,7 @@
 <span class='no'>FqFile_QFColStpClipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile_QFColStripped</span>)
 <span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStpClipped</span>,<span class='no'>myIndex</span>)
 <span class='no'>bed</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bamtobed.html'>bamtobed</a></span>(<span class='no'>bam</span>)
-<span class='fu'>homer_peaks</span>(<span class='no'>bed</span>)</div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/Sorted_QF_Fox3_Std_small_collapse_rm5_clip.fasta/peaks.txt"</div></pre>
+<span class='fu'>homer_peaks</span>(<span class='no'>bed</span>)</div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Sorted_QF_Fox3_Std_small_collapse_rm5_clip/peaks.txt"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

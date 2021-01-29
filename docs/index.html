@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
       </span>
     </div>
 
@@ -94,42 +94,42 @@
 <div id="how-to-install-clipflexr" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-to-install-clipflexr" class="anchor"></a>How to install CLIPflexR</h3>
-<div class="sourceCode"><pre class="sourceCode R"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kathrynrozengagnon/CLIPflexR"</span>)
-devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"RockefellerUniversity/Herper"</span>)
-Herper<span class="op">::</span><span class="kw">install_CondaSysReqs</span>(<span class="st">"CLIPflexR"</span>)
-CLIPflexR<span class="op">::</span><span class="kw">install_ctk</span>()</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"devtools"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"kathrynrozengagnon/CLIPflexR"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">"RockefellerUniversity/Herper"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>Herper<span class="op">::</span><span class="kw">install_CondaSysReqs</span>(<span class="st">"CLIPflexR"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>CLIPflexR<span class="op">::</span><span class="kw">install_ctk</span>()</span></code></pre></div>
 </div>
 </div>
 <div id="path-to-conda-tools-and-ctkczplib" class="section level2">
 <h2 class="hasAnchor">
 <a href="#path-to-conda-tools-and-ctkczplib" class="anchor"></a>Path to Conda tools and CTK/czplib</h2>
-<div class="sourceCode"><pre class="sourceCode R"><code class="sourceCode r"><span class="kw">library</span>(CLIPflexR)
-
-## CLIPflexR_0.1.18 conda env found at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18
-
-## ctk found  at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk
-
-## czplib found  at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib
-
-<span class="kw">getOption</span>(<span class="st">"CLIPflexR.condaEnv"</span>)
-
-## [1] "/Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18"
-
-<span class="kw">getOption</span>(<span class="st">"CLIPflexR.ctk"</span>)
-
-## [1] "/Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk"
-
-<span class="kw">getOption</span>(<span class="st">"CLIPflexR.czplib"</span>)
-
-## [1] "/Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib"</code></pre></div>
-<div id="see-our-vignettes-for-installing-clipflexr-or-processing-clip-data-using-ctk-or-clipflexr--you-can-also-mix-and-match" class="section level3">
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(CLIPflexR)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co">## CLIPflexR_0.1.18 conda env found at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">## ctk found  at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">## czplib found  at /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="kw">getOption</span>(<span class="st">"CLIPflexR.condaEnv"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">## [1] "/Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18"</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="kw">getOption</span>(<span class="st">"CLIPflexR.ctk"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14"></a></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">## [1] "/Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk"</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="kw">getOption</span>(<span class="st">"CLIPflexR.czplib"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18"></a></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="co">## [1] "/Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/lib/czplib"</span></span></code></pre></div>
+<div id="see-our-vignettes-for-installing-clipflexr-or-processing-clip-data-using-ctk-or-clipflexr-you-can-also-mix-and-match" class="section level3">
 <h3 class="hasAnchor">
-<a href="#see-our-vignettes-for-installing-clipflexr-or-processing-clip-data-using-ctk-or-clipflexr--you-can-also-mix-and-match" class="anchor"></a>See our vignettes for <a href="https://kathrynrozengagnon.github.io/CLIPflexR/articles/installCliPR.html">installing CLIPflexR</a>, or processing CLIP data using <a href="https://kathrynrozengagnon.github.io/CLIPflexR/articles/StandardandBrdU_Processing_CTK.html">CTK</a> or <a href="https://kathrynrozengagnon.github.io/CLIPflexR/articles/Processing_to_matrix.html">CLIPflexR</a>. You can also mix and match!</h3>
+<a href="#see-our-vignettes-for-installing-clipflexr-or-processing-clip-data-using-ctk-or-clipflexr-you-can-also-mix-and-match" class="anchor"></a>See our vignettes for <a href="https://kathrynrozengagnon.github.io/CLIPflexR/articles/installCliPR.html">installing CLIPflexR</a>, or processing CLIP data using <a href="https://kathrynrozengagnon.github.io/CLIPflexR/articles/StandardandBrdU_Processing_CTK.html">CTK</a> or <a href="https://kathrynrozengagnon.github.io/CLIPflexR/articles/Processing_to_matrix.html">CLIPflexR</a>. You can also mix and match!</h3>
 </div>
-<div id="please-bear-with-us-while-we-update-examples-and-vignettes-more-coming-soon-" class="section level3">
+<div id="please-bear-with-us-while-we-update-examples-and-vignettes-more-coming-soon" class="section level3">
 <h3 class="hasAnchor">
-<a href="#please-bear-with-us-while-we-update-examples-and-vignettes-more-coming-soon-" class="anchor"></a>Please bear with us while we update examples and vignettes, more coming soon….</h3>
+<a href="#please-bear-with-us-while-we-update-examples-and-vignettes-more-coming-soon" class="anchor"></a>Please bear with us while we update examples and vignettes, more coming soon….</h3>
 </div>
 <div id="report-issues" class="section level3">
 <h3 class="hasAnchor">

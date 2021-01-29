@@ -917,8 +917,7 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 #' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
-#' unmapped <- extract_unmapped(bam)
-#' unmapped
+#' extract_unmapped(bam)
 #' @return Path to FASTA file
 #' @import GenomicAlignments Biostrings
 #' @export

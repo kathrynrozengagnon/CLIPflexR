@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>unbam — unbam • CLIPflexR</title>
+<title>extract_unmapped — extract_unmapped • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 
 
 
-<meta property="og:title" content="unbam — unbam" />
+<meta property="og:title" content="extract_unmapped — extract_unmapped" />
 
-<meta property="og:description" content="Turns a BAM to a FASTA file" />
+<meta property="og:description" content="Extracts unmapped reads from BAM and writes them to a FASTA file" />
 
 
 
@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.18</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
       </span>
     </div>
 
@@ -126,29 +126,29 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>unbam</h1>
+    <h1>extract_unmapped</h1>
     <small class="dont-index">Source: <a href='https://github.com/kathrynrozengagnon/CLIPflexR/blob/master/R/Functions.R'><code>R/Functions.R</code></a></small>
-    <div class="hidden name"><code>unbam.Rd</code></div>
+    <div class="hidden name"><code>extract_unmapped.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Turns a BAM to a FASTA file</p>
+    <p>Extracts unmapped reads from BAM and writes them to a FASTA file</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>unbam</span>(<span class='no'>bam</span>, <span class='kw'>outfa</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>extract_unmapped</span>(<span class='no'>bam</span>, <span class='kw'>outfa</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>bam</th>
-      <td><p>BAM file to turn to FASTA</p></td>
+      <td><p>BAM file</p></td>
     </tr>
     <tr>
       <th>outfa</th>
-      <td><p>PATH to output FASTA</p></td>
+      <td><p>PATH to output FASTA (default is same directory as input BAM)</p></td>
     </tr>
     </table>
     
@@ -159,14 +159,15 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>testFasta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hg19Small.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 <span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)
 <span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>)
 <span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>,<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>FqFile_QF</span>,<span class='st'>".gz"</span>))
-<span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq2collapse.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.18/bin/ctk/fastq2collapse.pl  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/QF_FF_Fox3_Std_small_clip.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/Collapsed_QF_FF_Fox3_Std_small_clip.fq </span></div><div class='input'><span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)
+<span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq2collapse.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq2collapse.pl  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/QF_FF_Fox3_Std_small_clip.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Collapsed_QF_FF_Fox3_Std_small_clip.fq </span></div><div class='input'><span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)
 <span class='no'>bam</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span>(<span class='no'>FqFile_QFColStripped</span>,<span class='no'>myIndex</span>)
-<span class='fu'>unbam</span>(<span class='no'>bam</span>)</div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/RtmpWB5Yi7/temp_libpath13c674a15f58d/CLIPflexR/extdata/Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa_unmapped.fa"</div></pre>
+<span class='no'>unmapped</span> <span class='kw'>&lt;-</span> <span class='fu'>extract_unmapped</span>(<span class='no'>bam</span>)
+<span class='no'>unmapped</span></div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa_unmapped.fa"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

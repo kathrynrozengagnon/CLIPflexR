@@ -30,8 +30,7 @@ FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
 bam <- bowtie_align(FqFile_QFColStripped,myIndex)
-unmapped <- extract_unmapped(bam)
-unmapped
+extract_unmapped(bam)
 }
 \author{
 Kathryn Rozen-Gagnon
