@@ -27,7 +27,8 @@
 #' @param stdout Path to stdout file.
 #' @param useClipRConda Boolean on whether to use conda environment install by Herper
 #' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print more message to screen.
+#' @param verbose Print messages to screen.
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @return Path to unzipped file
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
@@ -42,13 +43,13 @@
 #' bed <- bamtobed(bam)
 #' homer_peaks(bed)
 #' @export
-homer_peaks <- function (fileTofqs, maketagdir = "makeTagDirectory", findpeaks = "findpeaks", 
-                         format = "bed", createSingleTagsTSV = TRUE, tagdir = file.path(dirname(fileTofqs), 
-                                                                                        gsub("\\.bed", "", make.names(basename(fileTofqs)))), 
-                         style = "factor", foldEnrichmentOverLocal = 2, localSize = 10000, 
-                         strand = "seperate", minDist = 50, size = 10, fragLength = 10, genomeSize =  NULL, stderr = paste0(getwd(), "/homer_stderr"), 
-                         stdout = paste0(getwd(), "/homer_stdout"), useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), 
-                                                                                           FALSE, TRUE), additionalArgumements = NULL, verbose = FALSE) {
+homer_peaks <- function(fileTofqs, maketagdir = "makeTagDirectory", findpeaks = "findpeaks", 
+                        format = "bed", createSingleTagsTSV = TRUE, tagdir = file.path(dirname(fileTofqs), 
+                                                                                       gsub("\\.bed", "", make.names(basename(fileTofqs)))), 
+                        style = "factor", foldEnrichmentOverLocal = 2, localSize = 10000, 
+                        strand = "seperate", minDist = 50, size = 10, fragLength = 10, genomeSize =  NULL, stderr = file.path(dirname(fileTofqs),paste0(basename(fileTofqs), "_homer_stderr.txt")), 
+                        stdout = file.path(dirname(fileTofqs),paste0(basename(fileTofqs), "_homer_stderr.txt")), useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), 
+                                                                                                                                        FALSE, TRUE), additionalArgumements = NULL, verbose = FALSE, writelog  = T) {
   cmd <- maketagdir
   if (useClipRConda) 
     cmd <- file.path(getOption("CLIPflexR.condaEnv"), "bin", 
@@ -67,7 +68,10 @@ homer_peaks <- function (fileTofqs, maketagdir = "makeTagDirectory", findpeaks =
       message("makeTagDirectory arguments are ", paste0(args, 
                                                         sep = " ", collapse = " "))
     }
-    system2(cmd, args, stdout = paste0(stdout,"_", baseNAME , "_tagdir"), stderr = paste0(stderr, "_", baseNAME , "_tagdir"))
+    if(writelog) {
+      system2(cmd, args, stdout = stdout, stderr = stderr)}  else {
+        system2(cmd, args, stdout = "", stderr = "")
+      }
   }
   cmd <- findpeaks
   if (useClipRConda) 
@@ -86,6 +90,9 @@ homer_peaks <- function (fileTofqs, maketagdir = "makeTagDirectory", findpeaks =
     message("findPeaks command is ", cmd)
     message("findPeaks arguments are ", paste0(args, sep = " ", collapse = " "))
   }
-  system2(cmd, args, stdout = paste0(stdout, "_", baseNAME, "_findpeaks"), stderr = paste0(stderr, "_", baseNAME, "_findpeaks"))
+  if(writelog) {
+    system2(cmd, args, stdout = stdout, stderr = stderr)}  else {
+      system2(cmd, args, stdout = "", stderr = "")
+    }
   return(file.path(tagDir, "peaks.txt"))
 }
