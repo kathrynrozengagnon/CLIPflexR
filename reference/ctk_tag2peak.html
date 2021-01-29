@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kathrynrozengagnon/CLIPflexR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -156,11 +156,14 @@
   maxPH <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>,
   gap <span class='op'>=</span> <span class='op'>-</span><span class='fl'>1</span>,
   peakPrefix <span class='op'>=</span> <span class='st'>"Peak"</span>,
-  stderr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"stripBarcode_stderr"</span><span class='op'>)</span>,
-  stdout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"stripBarcode_stdout"</span><span class='op'>)</span>,
+  stderr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='va'>fileToRun</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span><span class='op'>(</span><span class='va'>fileToRun</span><span class='op'>)</span>,
+    <span class='st'>"_ctk_tag2peak_stderr.txt"</span><span class='op'>)</span><span class='op'>)</span>,
+  stdout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='va'>fileToRun</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span><span class='op'>(</span><span class='va'>fileToRun</span><span class='op'>)</span>,
+    <span class='st'>"_ctk_tag2peak_stdout.txt"</span><span class='op'>)</span><span class='op'>)</span>,
   useClipRConda <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"CLIPflexR.condaEnv"</span><span class='op'>)</span><span class='op'>)</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
   additionalArgumements <span class='op'>=</span> <span class='cn'>NULL</span>,
-  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  writelog <span class='op'>=</span> <span class='cn'>T</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -264,7 +267,11 @@
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Print more message to screen.</p></td>
+      <td><p>Print messages to screen</p></td>
+    </tr>
+    <tr>
+      <th>writelog</th>
+      <td><p>write stderr/stdout logs, TRUE (default) or FALSE</p></td>
     </tr>
     </table>
 
@@ -290,9 +297,9 @@
 <span class='va'>parsedAlignment</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ctk_parseAlignment.html'>ctk_parseAlignment</a></span><span class='op'>(</span><span class='va'>bam</span><span class='op'>)</span>
 <span class='va'>myCollaped</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ctk_tag2collapse.html'>ctk_tag2collapse</a></span><span class='op'>(</span><span class='va'>parsedAlignment</span>,weight<span class='op'>=</span><span class='cn'>FALSE</span>,randomBarcode<span class='op'>=</span><span class='cn'>FALSE</span>,
 weightInName<span class='op'>=</span><span class='cn'>FALSE</span>,verbose<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/tag2collapse.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/tag2collapse.pl  --keep-max-score   --keep-tag-name   -EM -1  -big    /Users/runner/work/_temp/Library/CLIPflexR/extdata/Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.bed  /Users/runner/work/_temp/Library/CLIPflexR/extdata/TC_Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.bed </span></div><div class='input'><span class='va'>myrgbBed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ctk_bed2rgb.html'>ctk_bed2rgb</a></span><span class='op'>(</span><span class='va'>myCollaped</span>,col<span class='op'>=</span><span class='st'>"128,0,0"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>tag2collapse.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/tag2collapse.pl</span></div><div class='output co'>#&gt; <span class='message'>tag2collapse.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/tag2collapse.pl  --keep-tag-name   --keep-max-score   -EM -1  --seq-error-model TRUE  /Users/runner/work/_temp/Library/CLIPflexR/extdata/Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.bed  /Users/runner/work/_temp/Library/CLIPflexR/extdata/TC_Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.bed </span></div><div class='input'><span class='va'>myrgbBed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ctk_bed2rgb.html'>ctk_bed2rgb</a></span><span class='op'>(</span><span class='va'>myCollaped</span>,col<span class='op'>=</span><span class='st'>"128,0,0"</span><span class='op'>)</span>
 <span class='fu'><a href='ctk_tag2profile.html'>ctk_tag2profile</a></span><span class='op'>(</span><span class='va'>myrgbBed</span>,verbose<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/tag2profile.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/tag2profile.pl  -ss   -exact   -minBlockSize 2000000  -w 100  -s 20  -of bedgraph  -normalize none  /Users/runner/work/_temp/Library/CLIPflexR/extdata/TC_Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.RGB.bed  /Users/runner/work/_temp/Library/CLIPflexR/extdata/TC_Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.RGB.out </span></div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/CLIPflexR/extdata/TC_Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.RGB.out"</div></pre>
+</div><div class='output co'>#&gt; <span class='message'>tag2profile.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/tag2profile.pl</span></div><div class='output co'>#&gt; <span class='message'>tag2profile.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/tag2profile.pl  -ss   -exact   -minBlockSize 2000000  -w 100  -s 20  -of bedgraph  -normalize none  /Users/runner/work/_temp/Library/CLIPflexR/extdata/TC_Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.RGB.bed  /Users/runner/work/_temp/Library/CLIPflexR/extdata/TC_Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.RGB.out </span></div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/CLIPflexR/extdata/TC_Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.RGB.out"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

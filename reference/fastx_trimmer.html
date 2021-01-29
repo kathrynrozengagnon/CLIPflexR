@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -109,7 +109,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/kathrynrozengagnon/CLIPflexR/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -141,8 +141,11 @@
   read_start <span class='op'>=</span> <span class='fl'>10</span>,
   read_end <span class='op'>=</span> <span class='cn'>NULL</span>,
   outFile <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'>file_path_sans_ext</span><span class='op'>(</span><span class='va'>fileTofqt</span><span class='op'>)</span>, <span class='st'>"_trim."</span>, <span class='fu'>file_ext</span><span class='op'>(</span><span class='va'>fileTofqt</span><span class='op'>)</span><span class='op'>)</span>,
-  stderr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"trimmer_stats_stderr"</span><span class='op'>)</span>,
-  stdout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/getwd.html'>getwd</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"trimmer_stats_stdout"</span><span class='op'>)</span>,
+  writelog <span class='op'>=</span> <span class='cn'>T</span>,
+  stderr <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='va'>fileTofqt</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span><span class='op'>(</span><span class='va'>fileTofqt</span><span class='op'>)</span>,
+    <span class='st'>"_trimmer_stats_stderr.txt"</span><span class='op'>)</span><span class='op'>)</span>,
+  stdout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='va'>fileTofqt</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span><span class='op'>(</span><span class='va'>fileTofqt</span><span class='op'>)</span>,
+    <span class='st'>"_trimmer_stats_stdout.txt"</span><span class='op'>)</span><span class='op'>)</span>,
   useClipRConda <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"CLIPflexR.condaEnv"</span><span class='op'>)</span><span class='op'>)</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
   additionalArgumements <span class='op'>=</span> <span class='cn'>NULL</span>,
   verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
@@ -170,6 +173,10 @@
     <tr>
       <th>outFile</th>
       <td><p>Output file path</p></td>
+    </tr>
+    <tr>
+      <th>writelog</th>
+      <td><p>write stderr/stdout logs, TRUE (default) or FALSE</p></td>
     </tr>
     <tr>
       <th>stderr</th>
