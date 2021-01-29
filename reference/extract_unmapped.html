@@ -169,8 +169,7 @@
 <span class='va'>FqFile_Col</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span><span class='op'>(</span><span class='va'>FqFile_QF</span>,verbose<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq2collapse.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq2collapse.pl  /Users/runner/work/_temp/Library/CLIPflexR/extdata/QF_FF_Fox3_Std_small_clip.fq.gz  /Users/runner/work/_temp/Library/CLIPflexR/extdata/Collapsed_QF_FF_Fox3_Std_small_clip.fq </span></div><div class='input'><span class='va'>FqFile_QFColStripped</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span><span class='op'>(</span><span class='va'>FqFile_Col</span>,linkerlength<span class='op'>=</span><span class='fl'>5</span><span class='op'>)</span>
 <span class='va'>bam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span><span class='op'>(</span><span class='va'>FqFile_QFColStripped</span>,<span class='va'>myIndex</span><span class='op'>)</span>
-<span class='va'>unmapped</span> <span class='op'>&lt;-</span> <span class='fu'>extract_unmapped</span><span class='op'>(</span><span class='va'>bam</span><span class='op'>)</span>
-<span class='va'>unmapped</span>
+<span class='fu'>extract_unmapped</span><span class='op'>(</span><span class='va'>bam</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/CLIPflexR/extdata/Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa_unmapped.fa"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
