@@ -11,11 +11,14 @@ fastx_collapser(
     basename(fileTofxc))),
   fxc = "fastx_collapser",
   qEncoding = 33,
-  stderr = paste0(getwd(), "fastq_collapse_stderr"),
-  stdout = paste0(getwd(), "fastq_collapse_stdout"),
+  stderr = file.path(dirname(fileTofxc), paste0(basename(fileTofxc),
+    "_fastx_collapse_stderr.txt")),
+  stdout = file.path(dirname(fileTofxc), paste0(basename(fileTofxc),
+    "_fastx_collapse_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
-  verbose = FALSE
+  verbose = FALSE,
+  writelog = T
 )
 }
 \arguments{
@@ -35,7 +38,9 @@ fastx_collapser(
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print more message to screen.}
+\item{verbose}{Print messages to screen}
+
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
 }
 \value{
 Path to unzipped file

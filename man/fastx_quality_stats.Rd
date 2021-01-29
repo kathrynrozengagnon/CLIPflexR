@@ -11,8 +11,10 @@ fastx_quality_stats(
     ".txt", basename(fileTofqs))),
   fqs = "fastx_quality_stats",
   qEncoding = 33,
-  stderr = paste0(getwd(), "fastq_quality_stats_stderr"),
-  stdout = paste0(getwd(), "fastq_quality_stats_stdout"),
+  stderr = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
+    "_fastx_quality_stats_stderr.txt")),
+  stdout = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
+    "_fastx_quality_stats_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
@@ -35,7 +37,7 @@ fastx_quality_stats(
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print more message to screen.}
+\item{verbose}{Print messages to screen}
 }
 \value{
 Path to unzipped file

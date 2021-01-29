@@ -11,8 +11,11 @@ fastx_trimmer(
   read_start = 10,
   read_end = NULL,
   outFile = paste0(file_path_sans_ext(fileTofqt), "_trim.", file_ext(fileTofqt)),
-  stderr = file.path(getwd(), "trimmer_stats_stderr"),
-  stdout = file.path(getwd(), "trimmer_stats_stdout"),
+  writelog = T,
+  stderr = file.path(dirname(fileTofqt), paste0(basename(fileTofqt),
+    "_trimmer_stats_stderr.txt")),
+  stdout = file.path(dirname(fileTofqt), paste0(basename(fileTofqt),
+    "_trimmer_stats_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
@@ -28,6 +31,8 @@ fastx_trimmer(
 \item{read_end}{read ending base}
 
 \item{outFile}{Output file path}
+
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
 
 \item{stderr}{Path to stderr file}
 

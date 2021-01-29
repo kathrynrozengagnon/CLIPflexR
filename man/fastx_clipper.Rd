@@ -11,8 +11,11 @@ fastx_clipper(
   fqc = "fastx_clipper",
   length = 18,
   adaptor = "GTGTCAGTCACTTCCAGCGG",
-  stderr = paste0(getwd(), "clipper_stats_stderr"),
-  stdout = paste0(getwd(), "clipper_stats_stdout"),
+  writelog = T,
+  stderr = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
+    "_fastx_clipper_stderr.txt")),
+  stdout = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
+    "_fastx_clipper_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
@@ -29,6 +32,8 @@ fastx_clipper(
 
 \item{adaptor}{Adapter to remove}
 
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+
 \item{stderr}{Path to stderr file.}
 
 \item{stdout}{Path to stdout file.}
@@ -37,7 +42,7 @@ fastx_clipper(
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print more message to screen.}
+\item{verbose}{Print messages to screen}
 }
 \value{
 Path to clipped file

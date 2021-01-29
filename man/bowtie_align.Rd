@@ -8,8 +8,10 @@
 bowtie_align(
   fq,
   index,
-  bam = file.path(dirname(fq), paste0("Sorted_", basename(fq), ".bam")),
+  bam = file.path(dirname(fq), paste0("Sorted_", gsub("\\\\.fa|\\\\.fasta|\\\\.fastq",
+    "", basename(fq)), ".bam")),
   format = "fasta",
+  keepSAM = T,
   maxMismatches = 1,
   seedSubString = 18,
   threads = 1,
@@ -24,6 +26,8 @@ bowtie_align(
 \item{bam}{Output bam name}
 
 \item{format}{Format of reads (fastq or fasta)}
+
+\item{keepSAM}{keep bowtie2 SAM output file, default = T}
 
 \item{maxMismatches}{max mismatches}
 

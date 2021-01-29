@@ -12,8 +12,10 @@ bzip2(
   force = FALSE,
   small = FALSE,
   blockSize = 1,
-  stderr = paste0(getwd(), "gunzip_stderr"),
-  stdout = paste0(getwd(), "gunzip_stdout"),
+  stderr = file.path(dirname(fileToBzip2), paste0(basename(fileToBzip2),
+    "_Bzip2_stderr.txt")),
+  stdout = file.path(dirname(fileToBzip2), paste0(basename(fileToBzip2),
+    "_Bzip2_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
@@ -40,7 +42,7 @@ bzip2(
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print more message to screen.}
+\item{verbose}{Print messages to screen}
 }
 \value{
 Path to unzipped file.

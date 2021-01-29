@@ -16,11 +16,14 @@ ctk_fastqFilter(
   qsFilter = NULL,
   maxN = NULL,
   outputFormat = "fastq",
-  stderr = paste0(getwd(), "stripBarcode_stderr"),
-  stdout = paste0(getwd(), "stripBarcode_stdout"),
+  stderr = file.path(dirname(fileToRun), paste0(basename(fileToRun),
+    "_ctk_fastqFilter_stderr.txt")),
+  stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
+    "_ctk_fastqFilter_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
-  verbose = FALSE
+  verbose = FALSE,
+  writelog = T
 )
 }
 \arguments{
@@ -52,7 +55,9 @@ ctk_fastqFilter(
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print more message to screen.}
+\item{verbose}{Print messages to screen}
+
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
 }
 \value{
 Path to unzipped file

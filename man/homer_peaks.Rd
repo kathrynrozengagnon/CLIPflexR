@@ -21,11 +21,14 @@ homer_peaks(
   size = 10,
   fragLength = 10,
   genomeSize = NULL,
-  stderr = paste0(getwd(), "/homer_stderr"),
-  stdout = paste0(getwd(), "/homer_stdout"),
+  stderr = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
+    "_homer_stderr.txt")),
+  stdout = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
+    "_homer_stderr.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
-  verbose = FALSE
+  verbose = FALSE,
+  writelog = T
 )
 }
 \arguments{
@@ -65,7 +68,9 @@ homer_peaks(
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print more message to screen.}
+\item{verbose}{Print messages to screen.}
+
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
 }
 \value{
 Path to unzipped file

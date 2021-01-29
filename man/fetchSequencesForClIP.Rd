@@ -31,7 +31,7 @@ fetchSequencesForCLIP(
 
 \item{bedHeader}{TRUE if peak file contains column headers.}
 
-\item{bedSep}{Seperator in BED file.}
+\item{bedSep}{Separator in BED file.}
 }
 \value{
 Path to unzipped file.

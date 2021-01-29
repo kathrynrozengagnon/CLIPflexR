@@ -11,11 +11,14 @@ fastq_quality_trimmer(
   fqf = "fastq_quality_trimmer",
   qualityThreshold = 5,
   minimumLength = 20,
-  stderr = paste0(getwd(), "fastq_quality_trimmer_stderr"),
-  stdout = paste0(getwd(), "fastq_quality_trimmer_stdout"),
+  stderr = file.path(dirname(fileTofqf), paste0(basename(fileTofqf),
+    "_fastq_quality_trimmer_stderr.txt")),
+  stdout = file.path(dirname(fileTofqf), paste0(basename(fileTofqf),
+    "_fastq_quality_trimmer_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
-  verbose = FALSE
+  verbose = FALSE,
+  writelog = T
 )
 }
 \arguments{
@@ -37,7 +40,9 @@ fastq_quality_trimmer(
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print more message to screen.}
+\item{verbose}{Print messages to screen}
+
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
 }
 \value{
 Path to unzipped file

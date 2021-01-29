@@ -10,8 +10,10 @@ fastx_barcode_splitter(
   bcFile,
   mismatches = 0,
   fbs = "fastx_barcode_splitter.pl",
-  stderr = paste0(getwd(), "fastx_barcode_splitter_stderr"),
-  stdout = paste0(getwd(), "fastx_barcode_splitter_stdout"),
+  stderr = file.path(dirname(fileTofxc), paste0(basename(fileTofxc),
+    "_fastx_barcode_splitter_stderr.txt")),
+  stdout = file.path(dirname(fileTofxc), paste0(basename(fileTofxc),
+    "_fastx_barcode_splitter_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
   additionalArgumements = NULL,
   verbose = FALSE
@@ -34,7 +36,7 @@ fastx_barcode_splitter(
 
 \item{additionalArgumements}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print more message to screen.}
+\item{verbose}{Print messages to screen}
 }
 \value{
 output3, path to split files
