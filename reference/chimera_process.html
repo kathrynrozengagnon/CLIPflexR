@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -139,9 +139,11 @@
   <span class='va'>bams</span>,
   <span class='va'>knownMiRNAs</span>,
   <span class='va'>genomeIndex</span>,
-  <span class='va'>exclude</span>,
+  exclude <span class='op'>=</span> <span class='cn'>NULL</span>,
   bpparam <span class='op'>=</span> <span class='cn'>NULL</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  removedups <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -149,42 +151,56 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>bams</th>
-      <td><p>BAM files mapped to the genome to process</p></td>
+      <td><p>path to BAM files mapped to the genome, unmapped reads will be extracted for chimera processing.</p></td>
     </tr>
     <tr>
       <th>knownMiRNAs</th>
-      <td><p>FASTA file containing annotated miRNA or other small RNA sequences</p></td>
+      <td><p>path to FASTA file containing annotated miRNA or other small RNA sequence. Known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".</p></td>
     </tr>
     <tr>
       <th>genomeIndex</th>
-      <td><p>Full genome index</p></td>
+      <td><p>path to genome index.</p></td>
     </tr>
     <tr>
       <th>exclude</th>
-      <td><p>Names of miRNAs or small RNA sequences to remove, character vector</p></td>
+      <td><p>names of small RNAs to remove, default is NULL, can be set to character vector to specify; must match names in knownMiRNAs file.</p></td>
     </tr>
     <tr>
       <th>bpparam</th>
-      <td><p>TRUE or FALSE (default)</p></td>
+      <td><p>TRUE or FALSE (default).</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>print messages, TRUE (default) or FALSE</p></td>
+      <td><p>print messages, TRUE or FALSE (default).</p></td>
+    </tr>
+    <tr>
+      <th>removedups</th>
+      <td><p>remove multiple small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>overwrite existing output files, TRUE or FALSE (default).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path</p>
+    <p>path to chimera output table.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Kathryn Rozen-Gagnon</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>testFastq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/SRR1742056.fastq.gz"</span>,package<span class='op'>=</span><span class='st'>"CLIPflexR"</span><span class='op'>)</span>
-<span class='va'>testMiRNA</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/hsa_mature.fa"</span>,package<span class='op'>=</span><span class='st'>"CLIPflexR"</span><span class='op'>)</span>
-<span class='va'>testMiRNA</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/hsa_mature.fa"</span>,package<span class='op'>=</span><span class='st'>"CLIPflexR"</span><span class='op'>)</span>
-</div></pre>
+<span class='va'>FqFile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span><span class='op'>(</span><span class='va'>testFastq</span>,overwrite<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>FaFile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fastq_to_fasta.html'>fastx_qtoa</a></span><span class='op'>(</span><span class='va'>FqFile</span><span class='op'>)</span>
+<span class='va'>FaFile_clip</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span><span class='op'>(</span><span class='va'>FaFile</span>, writelog<span class='op'>=</span><span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='va'>myGenome</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/hg19Small.fa"</span>,package<span class='op'>=</span><span class='st'>"CLIPflexR"</span><span class='op'>)</span>
+<span class='va'>myIndex</span> <span class='op'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span><span class='op'>(</span><span class='va'>myGenome</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Users/runner/work/_temp/Library/CLIPflexR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Users/runner/work/_temp/Library/CLIPflexR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Users/runner/work/_temp/Library/CLIPflexR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Users/runner/work/_temp/Library/CLIPflexR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Users/runner/work/_temp/Library/CLIPflexR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/Users/runner/work/_temp/Library/CLIPflexR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='input'><span class='va'>myBam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span><span class='op'>(</span><span class='va'>FaFile_clip</span>,<span class='va'>myIndex</span>, overwrite<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>miRNAs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/hsa_mature.fa"</span>,package<span class='op'>=</span><span class='st'>"CLIPflexR"</span><span class='op'>)</span>
+<span class='va'>chimera_bed</span> <span class='op'>&lt;-</span> <span class='fu'>chimera_Process</span><span class='op'>(</span><span class='va'>myBam</span>, <span class='va'>miRNAs</span>, <span class='va'>myIndex</span>, exclude<span class='op'>=</span><span class='st'>"hsa-miR-19a-3p"</span>, overwrite<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Warning, the following sample(s) have duplicate read names! </span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

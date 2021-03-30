@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Standard/BrdU-CLIP data analysis using CTK • CLIPflexR</title>
+<title>CTK: Standard/BrdU-CLIP data analysis • CLIPflexR</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Standard/BrdU-CLIP data analysis using CTK">
+<script src="../pkgdown.js"></script><meta property="og:title" content="CTK: Standard/BrdU-CLIP data analysis">
 <meta property="og:description" content="CLIPflexR">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -57,7 +57,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -85,7 +85,7 @@
       </header><script src="StandardandBrdU_Processing_CTK_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Standard/BrdU-CLIP data analysis using CTK</h1>
+      <h1 data-toc-skip>CTK: Standard/BrdU-CLIP data analysis</h1>
                         <h4 class="author">Kathryn Rozen-Gagnon, Ji-Dung Luo and Thomas Carroll</h4>
             
       
@@ -96,6 +96,10 @@
 
     
     
+<div id="this-vignette-shows-how-to-execute-the-ctk-standardbrdu-clip_data_analysis_using_ctk-vignette-using-clipflexr-from-within-r-" class="section level3">
+<h3 class="hasAnchor">
+<a href="#this-vignette-shows-how-to-execute-the-ctk-standardbrdu-clip_data_analysis_using_ctk-vignette-using-clipflexr-from-within-r-" class="anchor"></a>This vignette shows how to execute the <a href="https://zhanglab.c2b2.columbia.edu/index.php/Standard/BrdU-CLIP_data_analysis_using_CTK">CTK “Standard/BrdU-CLIP_data_analysis_using_CTK” vignette</a> using CLIPflexR, from within R.</h3>
+</div>
 <div id="download-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#download-data" class="anchor"></a>Download Data</h2>
@@ -166,6 +170,10 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
                                       inputFormat <span class="op">=</span> <span class="st">"fasta"</span>,
                                            outFile <span class="op">=</span> <span class="st">"SRR1107535_stripped.fastq.gz"</span><span class="op">)</span></code></pre></div>
 </div>
+</div>
+<div id="map-processed-reads-to-genome" class="section level2">
+<h2 class="hasAnchor">
+<a href="#map-processed-reads-to-genome" class="anchor"></a>Map processed reads to genome</h2>
 <div id="make-reference-data-for-mm10" class="section level3">
 <h3 class="hasAnchor">
 <a href="#make-reference-data-for-mm10" class="anchor"></a>Make reference data for mm10</h3>
@@ -178,16 +186,16 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 <span class="va">toWrite</span> <span class="op">&lt;-</span> <span class="fu">DNAStringSet</span><span class="op">(</span><span class="va">listOfSeq</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"Un|random|hap"</span>,<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">listOfSeq</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 <span class="fu">writeXStringSet</span><span class="op">(</span><span class="va">toWrite</span>,file<span class="op">=</span><span class="st">"mm10.fa"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="build-a-bowtie2-genome-index-using-rbowtie2-" class="section level3">
+<div id="build-a-bowtie2-genome-index-using-rbowtie2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#build-a-bowtie2-genome-index-using-rbowtie2-" class="anchor"></a>Build a Bowtie2 genome index using Rbowtie2.</h3>
+<a href="#build-a-bowtie2-genome-index-using-rbowtie2" class="anchor"></a>Build a Bowtie2 genome index using Rbowtie2</h3>
 <p>Build Bowtie2 index of reference genome, mm10 in this vignette.<br><strong>threads</strong>: number of threads used. <a href="../reference/bowtie2_index.html">Index documentation</a>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/bowtie2_index.html">bowtie2_index</a></span><span class="op">(</span><span class="st">"mm10.fa"</span>,threads <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="align-to-genome-using-rbowtie2-" class="section level3">
+<div id="align-to-genome-using-rbowtie2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#align-to-genome-using-rbowtie2-" class="anchor"></a>Align to genome using Rbowtie2.</h3>
+<a href="#align-to-genome-using-rbowtie2" class="anchor"></a>Align to genome using Rbowtie2</h3>
 <p>Align reads to indexed reference genome using Rbowtie2.<br><strong>format</strong>: format of input sequences, fasta (default) or fastq; <strong>threads</strong>: number of threads used, 1 (default); <strong>maxMismatches</strong>: number of mismatches allowed, 1 (default) or 0; <strong>seedSubString</strong>: length of seed substrings, 18 (default), must be &gt;3 &amp; &lt;32; <strong>report_k</strong>: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.<br><a href="../reference/bowtie_align.html">Alignment documentation</a>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/decompress.html">decompress</a></span><span class="op">(</span><span class="va">Fox3_Std_filtered</span><span class="op">)</span>
@@ -200,7 +208,7 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 <div id="parsing-sam-files" class="section level3">
 <h3 class="hasAnchor">
 <a href="#parsing-sam-files" class="anchor"></a>Parsing SAM files</h3>
-<p>Parsing SAM files toget unique mapped reads and mismatches per read using R-wrapped <strong>parseAlignment.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#parseAlignment.pl">CTK</a>.<br><strong>minLen</strong>: miminal mapping length to report, 18 (default); <strong>mapQual</strong>: Minimum map quality, 1 (default MAPQ), keep only uniquely mapped reads when mapQual&gt;=1.<br><a href="../reference/ctk_parseAlignment.html">CLIPflexR documentation</a>.</p>
+<p>Parsing SAM files to get unique mapped reads and mismatches per read using R-wrapped <strong>parseAlignment.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#parseAlignment.pl">CTK</a>.<br><strong>minLen</strong>: miminal mapping length to report, 18 (default); <strong>mapQual</strong>: Minimum map quality, 1 (default MAPQ), keep only uniquely mapped reads when mapQual&gt;=1.<br><a href="../reference/ctk_parseAlignment.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">parsedAlignement</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_parseAlignment.html">ctk_parseAlignment</a></span><span class="op">(</span><span class="va">alignedFile</span>,
                                        minLen <span class="op">=</span> <span class="fl">18</span>,
@@ -224,6 +232,10 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
                                      outputSeqError <span class="op">=</span> <span class="cn">TRUE</span>
                                      <span class="op">)</span></code></pre></div>
 </div>
+</div>
+<div id="call-peaks-visualize" class="section level2">
+<h2 class="hasAnchor">
+<a href="#call-peaks-visualize" class="anchor"></a>Call peaks &amp; visualize</h2>
 <div id="join-tags-and-mutations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#join-tags-and-mutations" class="anchor"></a>Join tags and mutations</h3>
@@ -234,7 +246,7 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 </div>
 <div id="label-bed-file-with-rgb-information" class="section level3">
 <h3 class="hasAnchor">
-<a href="#label-bed-file-with-rgb-information" class="anchor"></a>label bed file with rgb information</h3>
+<a href="#label-bed-file-with-rgb-information" class="anchor"></a>Label bed file with rgb information</h3>
 <p>Add colors to bed file using R-wrapped <strong>bed2rgb.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#bed2rgb.pl">CTK</a>.<br><strong>filesToRun</strong>: taged bed files; <strong>col</strong>: assign color in r,g,b format.<br><a href="../reference/ctk_bed2rgb.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tagcollapsedRGB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_bed2rgb.html">ctk_bed2rgb</a></span><span class="op">(</span>filesToRun <span class="op">=</span> <span class="va">tagcollapsed</span>,col <span class="op">=</span> <span class="st">"128,0,0"</span><span class="op">)</span></code></pre></div>
@@ -260,13 +272,17 @@ Use fastq/gzipped fast files as input. <strong>outFile</strong>: fastq file afte
 <p>Call peaks using R-wrapped <strong>tag2peak.pl</strong> from <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#tag2peak.pl">CTK</a> <em>with</em> statistical assessment. <strong>filesToRun</strong>: RGB labeled tagged bed files; <strong>valleySeeking</strong>: find candidate peaks by valley seeking, TRUE (default);<strong>valleyDepth</strong>: depth of valley, if valley seeking, 0.9 (default), between 0.5 and 1; <strong>bigFile</strong>: set TRUE if the input file is big; <strong>ss</strong>: separate strand, TRUE (default); <strong>genes</strong>: gene locus in bed format.<br><a href="../reference/ctk_tag2peak.html">CLIPflexR documentation</a>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">TxDb.Mmusculus.UCSC.mm10.knownGene</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/BEDFile-class.html">export.bed</a></span><span class="op">(</span><span class="fu">genes</span><span class="op">(</span><span class="va">TxDb.Mmusculus.UCSC.mm10.knownGene</span><span class="op">)</span>,<span class="st">"genes.bed"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/rtracklayer/man/BEDFile-class.html">export.bed</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/GenomicFeatures/man/transcripts.html">genes</a></span><span class="op">(</span><span class="va">TxDb.Mmusculus.UCSC.mm10.knownGene</span><span class="op">)</span>,<span class="st">"genes.bed"</span><span class="op">)</span>
 <span class="va">tagProfile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_tag2peak.html">ctk_tag2peak</a></span><span class="op">(</span>filesToRun <span class="op">=</span> <span class="va">tagcollapsedRGB</span>,
                            outFile <span class="op">=</span> <span class="st">"TC_SRR1107535_stripped.RGB.peakWithStats.bed"</span>,
                            outBoundary <span class="op">=</span><span class="st">"TC_SRR1107535_stripped.RGB.peakBoundary.bed"</span>,
                            outHalfPH <span class="op">=</span> <span class="st">"TC_SRR1107535_stripped.RGB.peakHalf.bed"</span>,
                            valleySeeking <span class="op">=</span> <span class="cn">TRUE</span>,valleyDepth <span class="op">=</span> <span class="fl">0.9</span>,bigFile <span class="op">=</span> <span class="cn">TRUE</span>,ss <span class="op">=</span> <span class="cn">TRUE</span>,genes <span class="op">=</span> <span class="st">"genes.bed"</span><span class="op">)</span></code></pre></div>
 </div>
+</div>
+<div id="use-clipflexr-to-get-peak-sequences-or-search-for-motifs-in-peaks" class="section level2">
+<h2 class="hasAnchor">
+<a href="#use-clipflexr-to-get-peak-sequences-or-search-for-motifs-in-peaks" class="anchor"></a>Use CLIPflexR to get peak sequences or search for motifs in peaks</h2>
 <div id="retrieve-sequence-under-peaks-using-clipflexr-fetchsequencesforclip" class="section level3">
 <h3 class="hasAnchor">
 <a href="#retrieve-sequence-under-peaks-using-clipflexr-fetchsequencesforclip" class="anchor"></a>Retrieve sequence under peaks using CLIPflexR <strong>fetchSequencesForClIP</strong>

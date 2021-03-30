@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -142,8 +142,17 @@
   linkers <span class='op'>=</span> <span class='cn'>NULL</span>,
   length_max <span class='op'>=</span> <span class='cn'>NULL</span>,
   length_min <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mode <span class='op'>=</span> <span class='cn'>NULL</span>,
+  maxMismatches <span class='op'>=</span> <span class='fl'>0</span>,
+  threads <span class='op'>=</span> <span class='fl'>1</span>,
+  report_k <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_all <span class='op'>=</span> <span class='cn'>NULL</span>,
+  soft_clip <span class='op'>=</span> <span class='cn'>NULL</span>,
+  additional_Args <span class='op'>=</span> <span class='st'>"--score-min C,0,0"</span>,
+  seedSubString <span class='op'>=</span> <span class='fl'>18</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>,
   bpparam <span class='op'>=</span> <span class='cn'>NULL</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -151,27 +160,63 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fastas</th>
-      <td><p>FASTA files to process.</p></td>
+      <td><p>path to FASTA files to process.</p></td>
     </tr>
     <tr>
       <th>miRNA_ranges</th>
-      <td><p>BED file containing annotated miRNA or other small RNA genomic ranges</p></td>
+      <td><p>BED file containing annotated miRNA or other small RNA genomic ranges.</p></td>
     </tr>
     <tr>
       <th>genomeIndex</th>
-      <td><p>full genome index</p></td>
+      <td><p>path to genome index.</p></td>
     </tr>
     <tr>
       <th>linkers</th>
-      <td><p>contaminating sequences to remove (default is NULL)</p></td>
+      <td><p>contaminating sequences to remove, default is NULL, set to character string to specify.</p></td>
     </tr>
     <tr>
       <th>length_max</th>
-      <td><p>maximum length required during fasta processing (default is NULL)</p></td>
+      <td><p>maximum length required during fasta processing, default is NULL, set to integer to specify.</p></td>
     </tr>
     <tr>
       <th>length_min</th>
-      <td><p>minimum length required during fasta processing (default is NULL)</p></td>
+      <td><p>minimum length required during fasta processing, default is NULL, set to integer to specify.</p></td>
+    </tr>
+    <tr>
+      <th>mode</th>
+      <td><p>mapping mode, default is NULL to allow custom mapping with default arguments set below (0 mismatches in seed alignment, seed substring length 18, disallow alignments with mismatches); see bowtie_align for other mapping modes.</p></td>
+    </tr>
+    <tr>
+      <th>maxMismatches</th>
+      <td><p>max mismatches in seed alignment (default is 0).</p></td>
+    </tr>
+    <tr>
+      <th>threads</th>
+      <td><p>number of threads to use (default is 1).</p></td>
+    </tr>
+    <tr>
+      <th>report_k</th>
+      <td><p>number of alignments to report, default is NULL (the best alignment is reported), set to integer to specify.</p></td>
+    </tr>
+    <tr>
+      <th>keep_all</th>
+      <td><p>set to TRUE to report all alignments, default is NULL (the best alignment is reported).</p></td>
+    </tr>
+    <tr>
+      <th>soft_clip</th>
+      <td><p>set to TRUE to allow soft clipping, default is no soft clipping.</p></td>
+    </tr>
+    <tr>
+      <th>additional_Args</th>
+      <td><p>any additional mapping arguments, default is "--score-min C,0,0" to disallow alignments with mismatches; run "Rbowtie2::bowtie2_usage()" to see all options; please note that due to a Rbowtie2 bug, the "--no-1mm-upfront" is not available.</p></td>
+    </tr>
+    <tr>
+      <th>seedSubString</th>
+      <td><p>length of seed substrings (default is 18).</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>overwrite existing output files, TRUE or FALSE (default).</p></td>
     </tr>
     <tr>
       <th>bpparam</th>
@@ -179,13 +224,13 @@
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>print messages, TRUE (default) or FALSE</p></td>
+      <td><p>print messages, TRUE or FALSE (default).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path</p>
+    <p>path to count matrix.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Kathryn Rozen-Gagnon</p>

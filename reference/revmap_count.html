@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -139,11 +139,12 @@
   <span class='va'>fastas</span>,
   <span class='va'>knownMiRNAs</span>,
   bpparam <span class='op'>=</span> <span class='cn'>NULL</span>,
-  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
   linkers <span class='op'>=</span> <span class='cn'>NULL</span>,
   length_max <span class='op'>=</span> <span class='cn'>NULL</span>,
   length_min <span class='op'>=</span> <span class='cn'>NULL</span>,
-  removedups <span class='op'>=</span> <span class='cn'>FALSE</span>
+  removedups <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -151,48 +152,57 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fastas</th>
-      <td><p>FASTA files to reverse map</p></td>
+      <td><p>path to FASTA files to reverse map.</p></td>
     </tr>
     <tr>
       <th>knownMiRNAs</th>
-      <td><p>FASTA file containing annotated miRNA or other small RNA sequences</p></td>
+      <td><p>path to FASTA file containing annotated miRNA or other small RNA sequences.</p></td>
     </tr>
     <tr>
       <th>bpparam</th>
-      <td><p>TRUE or FALSE (default)</p></td>
+      <td><p>TRUE or FALSE (default).</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>print messages, TRUE (default) or FALSE</p></td>
+      <td><p>print messages, TRUE or FALSE (default).</p></td>
     </tr>
     <tr>
       <th>linkers</th>
-      <td><p>contaminating sequences to remove</p></td>
+      <td><p>contaminating sequences to remove, default is NULL, set to character string to specify.</p></td>
     </tr>
     <tr>
       <th>length_max</th>
-      <td><p>maximum length required during fasta processing, integer (default is NULL)</p></td>
+      <td><p>maximum length required during fasta processing, default is NULL, set to integer to specify.</p></td>
     </tr>
     <tr>
       <th>length_min</th>
-      <td><p>minimum length required during fasta processing, integer (default is NULL)</p></td>
+      <td><p>minimum length required during fasta processing, default is NULL, set to integer to specify.</p></td>
     </tr>
     <tr>
       <th>removedups</th>
-      <td><p>remove multiple miRNAs or small RNAs mapping to the same read, TRUE or FALSE (FALSE)</p></td>
+      <td><p>remove multiple miRNAs or small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>overwrite existing output files, TRUE or FALSE (default).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>BEDs</p>
+    <p>path to BEDs where small RNAs mapped to reads.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Kathryn Rozen-Gagnon</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>testFastq</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/SRR1742056.fastq.gz"</span>,package<span class='op'>=</span><span class='st'>"CLIPflexR"</span><span class='op'>)</span>
+<span class='va'>FqFile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span><span class='op'>(</span><span class='va'>testFastq</span>,overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>FaFile</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fastq_to_fasta.html'>fastx_qtoa</a></span><span class='op'>(</span><span class='va'>FqFile</span><span class='op'>)</span>
+<span class='va'>FaFile_clip</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span><span class='op'>(</span><span class='va'>FaFile</span>, writelog <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='va'>testMiRNA</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span><span class='op'>(</span><span class='st'>"extdata/hsa_mature.fa"</span>,package<span class='op'>=</span><span class='st'>"CLIPflexR"</span><span class='op'>)</span>
+<span class='va'>revmap</span> <span class='op'>&lt;-</span> <span class='fu'>revmap_count</span><span class='op'>(</span><span class='va'>FaFile_clip</span>, <span class='va'>testMiRNA</span>, 
+linkers<span class='op'>=</span><span class='st'>"GGACGATGC"</span>, length_min<span class='op'>=</span><span class='fl'>18</span>, length_max<span class='op'>=</span><span class='fl'>30</span>, overwrite<span class='op'>=</span><span class='cn'>TRUE</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

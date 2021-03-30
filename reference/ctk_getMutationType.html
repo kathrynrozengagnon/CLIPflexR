@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -148,7 +148,7 @@
   stdout <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='va'>fileToRun</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span><span class='op'>(</span><span class='va'>fileToRun</span><span class='op'>)</span>,
     <span class='st'>"_getMutationType_stdout.txt"</span><span class='op'>)</span><span class='op'>)</span>,
   useClipRConda <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"CLIPflexR.condaEnv"</span><span class='op'>)</span><span class='op'>)</span>, <span class='cn'>FALSE</span>, <span class='cn'>TRUE</span><span class='op'>)</span>,
-  additionalArgumements <span class='op'>=</span> <span class='cn'>NULL</span>,
+  additional_Args <span class='op'>=</span> <span class='cn'>NULL</span>,
   verbose <span class='op'>=</span> <span class='cn'>FALSE</span>,
   writelog <span class='op'>=</span> <span class='cn'>T</span>
 <span class='op'>)</span></pre>
@@ -158,61 +158,61 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>filesToRun</th>
-      <td><p>File to process.</p></td>
+      <td><p>path to file to process (BED).</p></td>
     </tr>
     <tr>
       <th>outFile</th>
-      <td><p>Output file</p></td>
+      <td><p>output file (BED).</p></td>
     </tr>
     <tr>
       <th>sb</th>
-      <td><p>Path to getMutationType.pl from CTK toolkit</p></td>
+      <td><p>path to ctk_getMutationType.pl from CTK toolkit.</p></td>
     </tr>
     <tr>
       <th>perl</th>
-      <td><p>Path to PERL</p></td>
+      <td><p>path to PERL.</p></td>
     </tr>
     <tr>
       <th>PATHTOPERLLIB</th>
-      <td><p>Path to PERL5LIB.</p></td>
+      <td><p>path to PERL5LIB.</p></td>
     </tr>
     <tr>
       <th>mutationType</th>
-      <td><p>mutation size</p></td>
+      <td><p>mutation type, "del" (deletions; default),"ins" (insertions), "sub" (substitutions).</p></td>
     </tr>
     <tr>
       <th>summaryStat</th>
-      <td><p>Create summary file</p></td>
+      <td><p>create summary file, TRUE or FALSE (default).</p></td>
     </tr>
     <tr>
       <th>stderr</th>
-      <td><p>Path to stdout file.</p></td>
+      <td><p>path to stdout file.</p></td>
     </tr>
     <tr>
       <th>stdout</th>
-      <td><p>Path to stdout file.</p></td>
+      <td><p>path to stdout file.</p></td>
     </tr>
     <tr>
       <th>useClipRConda</th>
-      <td><p>Boolean on whether to use conda environment install by Herper</p></td>
+      <td><p>use conda environment installed by Herper, TRUE (default) or FALSE.</p></td>
     </tr>
     <tr>
-      <th>additionalArgumements</th>
-      <td><p>Additional arguments to be passed to system call.</p></td>
+      <th>additional_Args</th>
+      <td><p>additional arguments to be passed to system call.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Print messages to screen</p></td>
+      <td><p>print messages, TRUE or FALSE (default).</p></td>
     </tr>
     <tr>
       <th>writelog</th>
-      <td><p>write stderr/stdout logs, TRUE (default) or FALSE</p></td>
+      <td><p>write stderr/stdout logs, TRUE (default) or FALSE.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to unzipped file</p>
+    <p>path to getMutationType bed file.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Kathryn Rozen-Gagnon</p>

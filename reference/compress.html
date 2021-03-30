@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Compress — compress" />
-<meta property="og:description" content="Wrapper function for Compress" />
+<meta property="og:description" content="Wrapper function for gzip, bzip" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -132,13 +132,13 @@
     </div>
 
     <div class="ref-description">
-    <p>Wrapper function for Compress</p>
+    <p>Wrapper function for gzip, bzip</p>
     </div>
 
     <pre class="usage"><span class='fu'>compress</span><span class='op'>(</span>
   <span class='va'>fileToCompress</span>,
   keep <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  methodCompress <span class='op'>=</span> <span class='st'>"gunzip"</span>,
+  methodCompress <span class='op'>=</span> <span class='st'>"gzip"</span>,
   overwrite <span class='op'>=</span> <span class='cn'>FALSE</span>
 <span class='op'>)</span></pre>
 
@@ -147,25 +147,25 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fileToCompress</th>
-      <td><p>File to bzip.</p></td>
+      <td><p>path to file to compress.</p></td>
     </tr>
     <tr>
       <th>keep</th>
-      <td><p>keep (don't delete) input files.</p></td>
+      <td><p>keep (don't delete) input files, TRUE (default) or FALSE.</p></td>
     </tr>
     <tr>
       <th>methodCompress</th>
-      <td><p>Method to use for compression</p></td>
+      <td><p>method to use for compression.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>overwrite existing output files.</p></td>
+      <td><p>overwrite existing output files, TRUE or FALSE (default).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to unzipped file.</p>
+    <p>path to zipped file.</p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Kathryn Rozen-Gagnon</p>
