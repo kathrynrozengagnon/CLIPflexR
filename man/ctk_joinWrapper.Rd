@@ -19,42 +19,42 @@ ctk_joinWrapper(
   stdout = file.path(dirname(file1), paste0(basename(file1),
     "_ctk_joinWrapper_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{file1}{File 1 to join.}
+\item{file1}{path to file 1 to join (BED or tab delimited text).}
 
-\item{file2}{File 2 to join.}
+\item{file2}{path to file 2 to join (BED or tab delimited text).}
 
-\item{field1}{Field/column for file 1 join.}
+\item{field1}{field/column for file 1 join.}
 
-\item{field2}{Field/column for file 2 join.}
+\item{field2}{field/column for file 2 join.}
 
-\item{mode}{Join mode.}
+\item{mode}{join mode.}
 
-\item{outFile}{Output file}
+\item{outFile}{path to output file.}
 
-\item{sb}{Path to tag2collapse.pl from FastX toolkit}
+\item{sb}{path to joinWrapper.py from Galaxy}
 
-\item{python}{Path to python}
+\item{python}{path to python.}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
-Path to unzipped file
+path to joined file.
 }
 \description{
 Wrapper function for galaxy's joinWrapper
@@ -62,16 +62,15 @@ Wrapper function for galaxy's joinWrapper
 \examples{
 \dontrun{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta)
+myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 FqFile_clipped <- fastx_clipper(FqFile,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 mutationFile <- system.file("extdata/Fox3_Std_small_mutation.txt",package="CLIPflexR")
 parsedAlignment <- ctk_parseAlignment(bam,mutationFile=mutationFile)
 uniqueTags <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,

@@ -17,35 +17,35 @@ fastq_quality_filter(
   stdout = file.path(dirname(fileTofqf), paste0(basename(fileTofqf),
     "_fastq_quality_filter_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{fileTofqf}{File to process.}
+\item{fileTofqf}{path to file to process (fastq).}
 
-\item{outFile}{Output file name.}
+\item{outFile}{output file name.}
 
-\item{fqf}{Path to fastq_quality_filter from FastX toolkit}
+\item{fqf}{path to fastq_quality_filter from FastX toolkit.}
 
-\item{qEncoding}{Quality encoding}
+\item{qEncoding}{quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq; default) or NULL (Phred+64 fastq).}
 
-\item{minimumQuality}{Minimum quality score to keep.}
+\item{minimumQuality}{minimum quality score to keep (default is 20).}
 
-\item{minimumPercentOfRead}{Minimum percent of bases that must have [-q] quality.}
+\item{minimumPercentOfRead}{minimum percent of bases that must have [-q] quality (default is 80).}
 
-\item{stderr}{Path to stderr file.}
+\item{stderr}{path to stderr file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages to screen, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
 Path to unzipped file

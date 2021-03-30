@@ -7,7 +7,8 @@
 \usage{
 fastx_quality_stats(
   fileTofqs,
-  outFile = file.path(dirname(fileTofqs), gsub("\\\\.fastq|fq|fq\\\\.gz|fastq\\\\.gz",
+  outFile = file.path(dirname(fileTofqs),
+    gsub("\\\\.fastq|\\\\.fq|fq\\\\.gz|fastq\\\\.gz|\\\\.fasta|\\\\.fa|fa\\\\.gz|fasta\\\\.gz",
     ".txt", basename(fileTofqs))),
   fqs = "fastx_quality_stats",
   qEncoding = 33,
@@ -16,31 +17,31 @@ fastx_quality_stats(
   stdout = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
     "_fastx_quality_stats_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE
 )
 }
 \arguments{
-\item{fileTofqs}{File to process.}
+\item{fileTofqs}{path to file to process (fastq or fasta - fasta will only return nucleotide distribution).}
 
-\item{outFile}{Output file name.}
+\item{outFile}{output file name.}
 
-\item{fqs}{Path to fastx_quality_stats from FastX toolkit}
+\item{fqs}{path to fastx_quality_stats from FastX toolkit.}
 
-\item{qEncoding}{Quality encoding}
+\item{qEncoding}{quality encoding,  set to either 33 (Sanger Phred+33 encoding/Illumina fastq; default) or NULL (Phred+64 fastq or fasta).}
 
-\item{stderr}{Path to stderr file.}
+\item{stderr}{path to stderr file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages to screen, TRUE or FALSE (default).}
 }
 \value{
-Path to unzipped file
+path to unzipped file.
 }
 \description{
 Wrapper function for fastx_quality_stats

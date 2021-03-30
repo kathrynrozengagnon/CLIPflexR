@@ -15,34 +15,34 @@ fastx_barcode_splitter(
   stdout = file.path(dirname(fileTofxc), paste0(basename(fileTofxc),
     "_fastx_barcode_splitter_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE
 )
 }
 \arguments{
-\item{fileTofxc}{File to process.}
+\item{fileTofxc}{path to file to process (fastq or fasta).}
 
-\item{bcFile}{Barcode file}
+\item{bcFile}{tab-delimited barcode file.}
 
-\item{mismatches}{Number of mismatches allowed.}
+\item{mismatches}{number of mismatches allowed.}
 
-\item{fbs}{Path to fastx_barcode_splitter.pl from FASTX toolkit}
+\item{fbs}{path to fastx_barcode_splitter.pl from FASTX toolkit.}
 
-\item{stderr}{Path to stderr file.}
+\item{stderr}{path to stderr file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages to screen, TRUE or FALSE (default).}
 }
 \value{
-output3, path to split files
+path to split files; files will be written without any extension, in the same format as the input file.
 }
 \description{
-Wrapper function for fastx_barcode_splitter
+Split multiplexed samples by user-defined indics using fastx_barcode_splitter
 }
 \author{
 Kathryn Rozen-Gagnon

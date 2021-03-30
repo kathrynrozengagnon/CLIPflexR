@@ -9,18 +9,18 @@
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileToBzip2 File to bzip.
-#' @param bzip2 Path to bzip2.
-#' @param keep keep (don't delete) input files.
+#' @param fileToBzip2 path to file to bzip.
+#' @param bzip2 path to bzip2.
+#' @param keep keep (don't delete) input files, TRUE (default) or FALSE.
 #' @param force overwrite existing output files.
 #' @param small use less memory (at most 2500k).
-#' @param blockSize  set block size to 100k .. 900k.
-#' @param stderr Path to stderr file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper.
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @return Path to unzipped file.
+#' @param blockSize set block size to 100k .. 900k.
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @return path to bzipped file.
 #' @import Rsamtools GenomicAlignments
 #' @export
 bzip2 <- function(fileToBzip2,bzip2="Bzip2",
@@ -31,7 +31,7 @@ bzip2 <- function(fileToBzip2,bzip2="Bzip2",
                   stderr=file.path(dirname(fileToBzip2),paste0(basename(fileToBzip2),"_Bzip2_stderr.txt")),
                   stdout=file.path(dirname(fileToBzip2),paste0(basename(fileToBzip2),"_Bzip2_stdout.txt")),
                   useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                  additionalArgumements=NULL,
+                  additional_Args=NULL,
                   verbose=FALSE){
   cmd <- bzip2
   
@@ -40,12 +40,12 @@ bzip2 <- function(fileToBzip2,bzip2="Bzip2",
   
   fileWithoutExtension <- file_path_sans_ext(fileToBzip2)
   if(file.exists(fileToBzip2) & !file.exists(fileWithoutExtension)){
-    args <- c(fileWithoutExtension,
+    args <- c(fileToBzip2,
               ifelse(keep,"-k",""),
               ifelse(force,"-f",""),
               ifelse(small,"-s",""),
               paste0("-",blockSize),
-              ifelse(!is.null(additionalArgumements),additionalArgumements,""))
+              ifelse(!is.null(additional_Args),additional_Args,""))
     
     if(verbose){      
       message("Bzip2 command is ",cmd)
@@ -58,7 +58,7 @@ bzip2 <- function(fileToBzip2,bzip2="Bzip2",
             stderr=stderr
     )
   }
-  return(fileWithoutExtension)
+  return(paste0(fileWithoutExtension, ".bz2"))
 }
 
 
@@ -73,18 +73,18 @@ bzip2 <- function(fileToBzip2,bzip2="Bzip2",
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileTofqf File to process.
-#' @param outFile Output file name.
-#' @param fqf Path to fastq_quality_filter from FastX toolkit
-#' @param qEncoding Quality encoding
-#' @param minimumQuality Minimum quality score to keep.
-#' @param minimumPercentOfRead Minimum percent of bases that must have [-q] quality.
-#' @param stderr Path to stderr file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param fileTofqf path to file to process (fastq).
+#' @param outFile output file name.
+#' @param fqf path to fastq_quality_filter from FastX toolkit.
+#' @param qEncoding quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq; default) or NULL (Phred+64 fastq).
+#' @param minimumQuality minimum quality score to keep (default is 20).
+#' @param minimumPercentOfRead minimum percent of bases that must have [-q] quality (default is 80).
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @return Path to unzipped file
 #' @import Rsamtools Rbowtie2  GenomicAlignments
 #' @examples  
@@ -102,7 +102,7 @@ fastq_quality_filter <- function(fileTofqf,
                                  stderr=file.path(dirname(fileTofqf),paste0(basename(fileTofqf),"_fastq_quality_filter_stderr.txt")),
                                  stdout=file.path(dirname(fileTofqf),paste0(basename(fileTofqf),"_fastq_quality_filter_stdout.txt")),
                                  useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                                 additionalArgumements=NULL,
+                                 additional_Args=NULL,
                                  verbose=FALSE, writelog= T){
   cmd <- fqf
   if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
@@ -110,21 +110,15 @@ fastq_quality_filter <- function(fileTofqf,
   
   file_fqf <- outFile
   if(file.exists(fileTofqf) & !file.exists(file_fqf)){
-    if(verbose){
       
       args <- c(
-        paste0("-Q ",qEncoding),
+        ifelse(!is.null(qEncoding), paste0("-Q ",qEncoding),""),
         paste0("-q ",minimumQuality),
         paste0("-p ",minimumPercentOfRead),
-        paste0("-v "),
+        ifelse(verbose, "-v ", ""),
         paste0("-i  ",fileTofqf),
-        paste0("-o ",file_fqf)) } else {
-          args <- c(
-            paste0("-Q ",qEncoding),
-            paste0("-q ",minimumQuality),
-            paste0("-p ",minimumPercentOfRead),
-            paste0("-i  ",fileTofqf),
-            paste0("-o ",file_fqf) )
+        paste0("-o ",file_fqf)) 
+      args <- args[!args %in% ""]
         }
     if(verbose){      
       message("fastq_quality_filter command is ",cmd)
@@ -141,7 +135,6 @@ fastq_quality_filter <- function(fileTofqf,
                 stdout="",
                 stderr="") 
       }
-  }
   return(file_fqf)
 }
 
@@ -157,18 +150,19 @@ fastq_quality_filter <- function(fileTofqf,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileTofqf File to process.
-#' @param outFile Output file name.
-#' @param fqf Path to fastq_quality_trimmer from FastX toolkit
-#' @param qualityThreshold Minimum quality score to keep.
-#' @param minimumLength Minimum percent of bases that must have [-q] quality.
-#' @param stderr Path to stderr file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE
-#' @return Path to unzipped file
+#' @param fileTofqf path to file to process (fastq).
+#' @param outFile output file name.
+#' @param fqf path to fastq_quality_trimmer from FastX toolkit.
+#' @param qualityThreshold minimum quality score to keep.
+#' @param minimumLength minimum percent of bases that must have [-q] quality.
+#' @param qEncoding quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq; default) or NULL (Phred+64 fastq).
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE.
+#' @return path to unzipped file
 #' @import Rsamtools Rbowtie2  GenomicAlignments
 #' @examples  
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
@@ -178,14 +172,14 @@ fastq_quality_filter <- function(fileTofqf,
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' @export
 fastq_quality_trimmer <- function(fileTofqf,
-                                  outFile=file.path(dirname(fileTofqf),paste0("QF_",basename(fileTofqf))),
+                                  outFile=file.path(dirname(fileTofqf),paste0("QT_",basename(fileTofqf))),
                                   fqf="fastq_quality_trimmer",
                                   qualityThreshold=5,
-                                  minimumLength=20,
+                                  minimumLength=20, qEncoding = 33,
                                   stderr=file.path(dirname(fileTofqf),paste0(basename(fileTofqf),"_fastq_quality_trimmer_stderr.txt")),
                                   stdout=file.path(dirname(fileTofqf),paste0(basename(fileTofqf),"_fastq_quality_trimmer_stdout.txt")),
                                   useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                                  additionalArgumements=NULL,
+                                  additional_Args=NULL,
                                   verbose=FALSE, writelog = T){
   cmd <- fqf
   if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
@@ -193,22 +187,15 @@ fastq_quality_trimmer <- function(fileTofqf,
   
   file_fqf <- outFile
   if(file.exists(fileTofqf) & !file.exists(file_fqf)){
-    if (verbose){
       args <- c(
+        ifelse(!is.null(qEncoding), paste0("-Q ",qEncoding),""),
         paste0("-t ",qualityThreshold),
         paste0("-l ",minimumLength),
-        paste0("-v "),
+        ifelse(verbose, "-v ", ""),
         paste0("-i  ",fileTofqf),
         paste0("-o ",gsub("\\.gz$","",outFile))
       )
-      
-    }else {
-      args <- c(
-        paste0("-t ",qualityThreshold),
-        paste0("-l ",minimumLength),
-        paste0("-i  ",fileTofqf),
-        paste0("-o ",gsub("\\.gz$","",outFile))
-      ) 
+      args <- args[!args %in% ""]
     }
     
     
@@ -233,7 +220,6 @@ fastq_quality_trimmer <- function(fileTofqf,
                     destname=outFile)
     }
     
-  }
   return(outFile)
 }
 
@@ -248,16 +234,16 @@ fastq_quality_trimmer <- function(fileTofqf,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileTofqs File to process.
-#' @param outFile Output file name.
-#' @param fqs Path to fastx_quality_stats from FastX toolkit
-#' @param qEncoding Quality encoding
-#' @param stderr Path to stderr file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @return Path to unzipped file
+#' @param fileTofqs path to file to process (fastq or fasta - fasta will only return nucleotide distribution).
+#' @param outFile output file name.
+#' @param fqs path to fastx_quality_stats from FastX toolkit.
+#' @param qEncoding quality encoding,  set to either 33 (Sanger Phred+33 encoding/Illumina fastq; default) or NULL (Phred+64 fastq or fasta).
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @return path to unzipped file.
 #' @import Rsamtools Rbowtie2  GenomicAlignments
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
@@ -266,12 +252,12 @@ fastq_quality_trimmer <- function(fileTofqf,
 #' Fq_Stats <- fastx_quality_stats(FqFile_QF)
 #' @export
 fastx_quality_stats <- function(fileTofqs,
-                                outFile=file.path(dirname(fileTofqs),gsub("\\.fastq|fq|fq\\.gz|fastq\\.gz",".txt",basename(fileTofqs))),
+                                outFile=file.path(dirname(fileTofqs),gsub("\\.fastq|\\.fq|fq\\.gz|fastq\\.gz|\\.fasta|\\.fa|fa\\.gz|fasta\\.gz",".txt",basename(fileTofqs))),
                                 fqs="fastx_quality_stats",qEncoding=33,
                                 stderr=file.path(dirname(fileTofqs),paste0(basename(fileTofqs),"_fastx_quality_stats_stderr.txt")),
                                 stdout=file.path(dirname(fileTofqs),paste0(basename(fileTofqs),"_fastx_quality_stats_stdout.txt")),
                                 useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                                additionalArgumements=NULL,verbose=FALSE){
+                                additional_Args=NULL,verbose=FALSE){
   
   
   cmd <- fqs
@@ -284,10 +270,11 @@ fastx_quality_stats <- function(fileTofqs,
     
     
     args <- c(
-      paste0("-Q ",qEncoding),
+      ifelse(!is.null(qEncoding), paste0("-Q ",qEncoding),""),
       paste0("-i  ",fileTofqs),
       paste0("-o ",file_fqs)
     )
+    args <- args[!args %in% ""]
     if(verbose){      
       message("fastx_quality_stats command is ",cmd)
       message("fastx_quality_stats arguments are ",paste0(args,sep=" ",collapse=" "))
@@ -313,17 +300,17 @@ fastx_quality_stats <- function(fileTofqs,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileTofxc File to process.
-#' @param outFile Output file name.
-#' @param fxc Path to fastx_collapser from FastX toolkit
-#' @param qEncoding Quality encoding
-#' @param stderr Path to stderr file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE
-#' @return Path to unzipped file
+#' @param fileTofxc path to file to process (fastq or fasta).
+#' @param outFile output file name (will be formatted as a fasta).
+#' @param fxc path to fastx_collapser from FastX toolkit.
+#' @param qEncoding quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq; default) or NULL (Phred+64 fastq or fasta)
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE.
+#' @return path to unzipped file
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
@@ -331,12 +318,12 @@ fastx_quality_stats <- function(fileTofqs,
 #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
 #' @export
 fastx_collapser <- function(fileTofxc,
-                            outFile=file.path(dirname(fileTofxc),gsub("\\.fastq|\\.fq","_collapse.fasta",basename(fileTofxc))),
-                            fxc="fastx_collapser",qEncoding=33,
+                            outFile=file.path(dirname(fileTofxc),gsub("\\.fastq|\\.fq|\\.fa|\\.fasta","_collapse.fasta",basename(fileTofxc))),
+                            fxc="fastx_collapser", qEncoding = NULL,
                             stderr=file.path(dirname(fileTofxc),paste0(basename(fileTofxc),"_fastx_collapse_stderr.txt")),
                             stdout=file.path(dirname(fileTofxc),paste0(basename(fileTofxc),"_fastx_collapse_stdout.txt")),
                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                            additionalArgumements=NULL,verbose=FALSE, writelog = T){
+                            additional_Args=NULL,verbose=FALSE, writelog = T){
   
   
   cmd <- fxc
@@ -346,18 +333,13 @@ fastx_collapser <- function(fileTofxc,
   
   file_fqs <- outFile
   if(file.exists(fileTofxc) & !file.exists(file_fqs)){
-    
-    if(verbose) {
+
       args <- c(
-        paste0("-Q ",qEncoding),
-        paste0("-v "),
+        ifelse(!is.null(qEncoding), paste0("-Q ",qEncoding),""),
+        ifelse(verbose, "-v ", ""),
         paste0("-i  ",fileTofxc),
-        paste0("-o ",file_fqs)
-      )} else {
-        args <- c(
-          paste0("-Q ",qEncoding),
-          paste0("-i  ",fileTofxc),
-          paste0("-o ",file_fqs))   
+        paste0("-o ",file_fqs))
+        args <- args[!args %in% ""]
       }
     if(verbose){      
       message("fastx_collapser command is ",cmd)
@@ -372,7 +354,6 @@ fastx_collapser <- function(fileTofxc,
                         args,
                         stdout="",
                         stderr="")            }
-  }
   return(file_fqs)
 }
 
@@ -380,7 +361,7 @@ fastx_collapser <- function(fileTofxc,
 
 #' Wrapper function for fastx_barcode_splitter
 #'
-#' Wrapper function for fastx_barcode_splitter
+#' Split multiplexed samples by user-defined indics using fastx_barcode_splitter
 #'
 #'
 #' @docType methods
@@ -389,23 +370,23 @@ fastx_collapser <- function(fileTofxc,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileTofxc File to process.
-#' @param bcFile Barcode file
-#' @param mismatches Number of mismatches allowed.
-#' @param fbs Path to fastx_barcode_splitter.pl from FASTX toolkit
-#' @param stderr Path to stderr file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @return output3, path to split files
+#' @param fileTofxc path to file to process (fastq or fasta).
+#' @param bcFile tab-delimited barcode file.
+#' @param mismatches number of mismatches allowed.
+#' @param fbs path to fastx_barcode_splitter.pl from FASTX toolkit.
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @return path to split files; files will be written without any extension, in the same format as the input file. 
 #' @export
 fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
                                    fbs="fastx_barcode_splitter.pl",
                                    stderr=file.path(dirname(fileTofxc),paste0(basename(fileTofxc),"_fastx_barcode_splitter_stderr.txt")),
                                    stdout=file.path(dirname(fileTofxc),paste0(basename(fileTofxc),"_fastx_barcode_splitter_stdout.txt")),
                                    useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                                   additionalArgumements=NULL,verbose=FALSE){
+                                   additional_Args=NULL,verbose=FALSE){
   
   cmd <- fbs
   if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
@@ -428,19 +409,13 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
   write.table(samplestats, file = file.path(dirname(fileTofxc),gsub(".txt",  "_stats.txt", basename(bcFile))), col.names = F, row.names = F, sep = "\t",  quote = F)
   BCFILE  <- read.delim(bcFile, header = F, sep =  "\t")
   output2 <- samplestats[samplestats$V1 %in% BCFILE$V1,]
-  output3 <- output2$V3 
+  output3 <- as.character(output2$V3) 
   return(output3)
   if(verbose){
     print(samplestats)   
   }
 }
 
-# cmd2 <- paste0(cmd," ",
-#                " --bcfile ",bcFile," ",
-#                "--bol --mismatches ",mismatches," ",
-#                "--prefix '",prefix,"_' ")
-
-# temp <- system(cmd2,wait = TRUE,intern = TRUE)
 
 
 
@@ -456,32 +431,33 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileTofqs File to process.
-#' @param outFile Output file path
-#' @param fqc Path to fastx_clipper from FastX toolkit
-#' @param length Length for fastx_clipper
-#' @param adaptor Adapter to remove
-#' @param stderr Path to stderr file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @return Path to clipped file
+#' @param fileTofqs path to file to process (fastq or fasta).
+#' @param outFile output file path.
+#' @param fqc path to fastx_clipper from FastX toolkit.
+#' @param length miminum sequence length, default is 18 (set to .
+#' @param adapter adapter to remove (default is "GTGTCAGTCACTTCCAGCGG", specify a string to change adapter sequence).
+#' @param qEncoding quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq) or NULL (Phred+64 fastq or fasta; default).
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @return path to clipped file
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
-#' FqFile_clipped <- fastx_clipper(FqFile,length=20)
+#' FqFile_clipped <- fastx_clipper(FqFile,length=20, adapter = "GTGTCAG")
 #' @export
 fastx_clipper <- function(fileTofqs,
                           outFile=paste0(file_path_sans_ext(fileTofqs),"_clip.",file_ext(fileTofqs)),
                           fqc="fastx_clipper",length=18,
-                          adaptor="GTGTCAGTCACTTCCAGCGG", writelog = T,
+                          adapter="GTGTCAGTCACTTCCAGCGG", qEncoding = NULL, writelog = T,
                           stderr=file.path(dirname(fileTofqs),paste0(basename(fileTofqs),"_fastx_clipper_stderr.txt")),
                           stdout=file.path(dirname(fileTofqs),paste0(basename(fileTofqs),"_fastx_clipper_stdout.txt")),
                           useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                          additionalArgumements=NULL,verbose=FALSE){
+                          additional_Args=NULL,verbose=FALSE){
   
   
   cmd <- fqc
@@ -491,19 +467,14 @@ fastx_clipper <- function(fileTofqs,
   
   file_fqs <- outFile
   if(file.exists(fileTofqs) & !file.exists(file_fqs)){
-    if(verbose) {
       args <- c(
+        ifelse(!is.null(qEncoding), paste0("-Q ",qEncoding),""),
         paste0("-l ",length),
-        paste0("-a  ",adaptor),
-        paste0("-v" ),
+        paste0("-a  ",adapter),
+        ifelse(verbose, "-v ", ""),
         paste0("-o ",file_fqs),
         paste0("-i ",fileTofqs))
-    } else { 
-      args <- c(
-        paste0("-l ",length),
-        paste0("-a  ",adaptor),
-        paste0("-o ",file_fqs),
-        paste0("-i ",fileTofqs))
+      args <- args[!args %in% ""]
     }
     if(verbose){      
       message("fastx_clipper command is ",cmd)
@@ -519,7 +490,6 @@ fastx_clipper <- function(fileTofqs,
                         stdout="",
                         stderr="")
               }
-  }
   return(file_fqs)
 }
 
@@ -534,51 +504,50 @@ fastx_clipper <- function(fileTofqs,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileTofqt File to process
-#' @param outFile Output file path
-#' @param fqt Path to fastx_trimmer from FastX toolkit
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
-#' @param read_start read starting base
-#' @param read_end read ending base
-#' @param stderr Path to stderr file
-#' @param stdout Path to stdout file
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call
-#' @param verbose Print more message to screen
-#' @return Path to trimmed file
+#' @param fileTofqt path to file to process (fastq or fasta).
+#' @param outFile output file path.
+#' @param fqt path to fastx_trimmer from FastX toolkit.
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
+#' @param read_start read starting base (default is 10).
+#' @param read_end read ending base (default is NULL, set to integer to trim).
+#' @param qEncoding quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq) or NULL (Phred+64 fastq or fasta; default).
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @return path to trimmed file.
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
-#' FqFile_clipped <- fastx_clipper(FqFile,length=20)
+#' FqFile_trimmed <- fastx_trimmer(FqFile,read_start = 5, read_end = 50)
 #' @export
-fastx_trimmer <- function(fileTofqt,fqt="fastx_trimmer",read_start = 10, read_end = NULL,
+fastx_trimmer <- function(fileTofqt,fqt="fastx_trimmer",read_start = 10, read_end = NULL, qEncoding = NULL, 
                           outFile=paste0(file_path_sans_ext(fileTofqt),"_trim.",file_ext(fileTofqt)), writelog = T,
                           stderr=file.path(dirname(fileTofqt),paste0(basename(fileTofqt),"_trimmer_stats_stderr.txt")),
                           stdout=file.path(dirname(fileTofqt),paste0(basename(fileTofqt),"_trimmer_stats_stdout.txt")),  
                           useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                          additionalArgumements=NULL,verbose=FALSE){
+                          additional_Args=NULL,verbose=FALSE){
   cmd <- fqt
   if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
   
   if(!file.exists(fileTofqt))stop("File does not exist")
-  if (grepl("fa|fasta|fastq",file_ext(outFile))) {
+  if (grepl("fa|fasta|fastq|fq",file_ext(outFile))) {
     outFile <- outFile
   } else { outFile <- paste0(outFile,  "fa")}
   
   file_fqt <- outFile
   if(file.exists(fileTofqt) & !file.exists(file_fqt)){
-    if(verbose) {
       args <- c(
+        ifelse(!is.null(qEncoding), paste0("-Q ",qEncoding),""),
         paste0("-f ",read_start),
-        paste0("-v "),
+        ifelse(verbose, "-v ", ""),
+        ifelse(!is.null(read_end), paste0("-l ",read_end),""),
         paste0("-o ",file_fqt),
-        paste0("-i ",fileTofqt)) } else {
-          args <- c(
-            paste0("-f ",read_start),
-            paste0("-o ",file_fqt),
-            paste0("-i ",fileTofqt))
-        }
+        paste0("-i ",fileTofqt)) 
+      args <- args[!args %in% ""]
+      } 
     if(verbose){      
       message("fastx_trimmer command is ",cmd)
       message("fastx_trimmer arguments are ",paste0(args,sep=" ",collapse=" "))
@@ -593,8 +562,78 @@ fastx_trimmer <- function(fileTofqt,fqt="fastx_trimmer",read_start = 10, read_en
                         stdout="",
                         stderr=""  )        
               }
-    
-  }
   return(file_fqt)
 }
 
+
+#' Wrapper function for fastq_to_fasta
+#'
+#' Wrapper function for fastq_to_fasta
+#'
+#'
+#' @docType methods
+#' @name fastq_to_fasta
+#' @rdname fastq_to_fasta
+#'
+#' @author Kathryn Rozen-Gagnon
+#'
+#' @param fileToc path to file to process (fastq).
+#' @param outFile output file path.
+#' @param fqa path to fastx_trimmer from FastX toolkit.
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
+#' @param discard_N discard reads with unknown nucleotides (N), TRUE (default)  or FALSE.
+#' @param rename replace sequence names with number identifiers, TRUE or FALSE (default).
+#' @param qEncoding quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq; default) or NULL (Phred+64 fastq).
+#' @param stderr path to stderr file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages to screen, TRUE or FALSE (default).
+#' @return path to trimmed file
+#' @examples
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
+#' FqFile_fa <- fastx_qtoa(FqFile)
+#' @export
+fastx_qtoa <- function(fileToc,fqa="fastq_to_fasta",discard_N = T, rename = F,
+                          outFile=paste0(file_path_sans_ext(fileToc),".fa"), writelog = T, qEncoding = 33,
+                          stderr=file.path(dirname(fileToc),paste0(basename(fileToc),"_qtoa_stderr.txt")),
+                          stdout=file.path(dirname(fileToc),paste0(basename(fileToc),"_qtoa_stdout.txt")),  
+                          useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
+                          additional_Args=NULL,verbose=FALSE){
+  cmd <- fqa
+  if(useClipRConda) cmd <- file.path(getOption("CLIPflexR.condaEnv"),"bin",cmd)
+  
+  if(!file.exists(fileToc))stop("File does not exist")
+  if (!grepl("fastq|fq",file_ext(fileToc))) {
+    message("Warning: make sure file is in fastq format")
+  } 
+   file_fqc <- outFile
+  if(file.exists(fileToc) & !file.exists(file_fqc)){
+      args <- c(
+        ifelse(!is.null(qEncoding), paste0("-Q ",qEncoding),""),
+        ifelse(verbose, paste0("-v "), ""),
+        ifelse(!discard_N, paste0("-n "), ""),
+        ifelse(rename, paste0("-r "), ""),
+        paste0("-i ", fileToc),paste0("-o ", file_fqc))
+      args <- args[!args %in% ""]
+      }
+
+    if(verbose){      
+      message("fastx_qtoa command is ",cmd)
+      message("fastx_qtoa arguments are ",paste0(args,sep=" ",collapse=" "))
+    }
+    if(writelog) {
+      system2(cmd,
+              args,
+              stdout=stdout,
+              stderr=stderr)} else {
+                system2(cmd,
+                        args,
+                        stdout="",
+                        stderr=""  )        
+              }
+    
+  return(file_fqc)
+}

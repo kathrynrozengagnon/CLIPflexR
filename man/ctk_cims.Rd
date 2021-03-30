@@ -25,54 +25,54 @@ ctk_cims(
   stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
     "_cims_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{filesToRun}{File to process.}
+\item{filesToRun}{path to file to process (BED).}
 
-\item{mutationBedFile}{Mutation BED file.}
+\item{mutationBedFile}{mutation BED file.}
 
-\item{outFile}{Output file}
+\item{outFile}{path to output file (BED & text).}
 
-\item{sb}{Path to fastx_barcode_splitter.pl from FastX toolkit}
+\item{sb}{path to CIMS.pl from CTK.}
 
-\item{perl}{Path to PERL}
+\item{perl}{path to PERL.}
 
-\item{PATHTOPERLLIB}{Path to PERL5LIB.}
+\item{PATHTOPERLLIB}{path to PERL5LIB.}
 
-\item{bigFile}{big file}
+\item{bigFile}{big file, TRUE or FALSE (default).}
 
-\item{mutationSize}{mutation size}
+\item{mutationSize}{mutation size (default is 1).}
 
-\item{permutations}{number of iterations for permutation}
+\item{permutations}{number of iterations for permutation (default is 5).}
 
-\item{trackMutationPos}{track mutation position relative to read start}
+\item{trackMutationPos}{track mutation position relative to read start, TRUE or FALSE (default).}
 
-\item{noSparseCorrect}{no sparcity correction}
+\item{noSparseCorrect}{no sparcity correction, TRUE or FALSE (default).}
 
-\item{FDR}{threshold of FDR}
+\item{FDR}{threshold of FDR (default is 1).}
 
-\item{mfr}{threshold of m-over-k-ratio}
+\item{mfr}{threshold of m-over-k-ratio (default is 0).}
 
-\item{cacheDir}{Name for cache directory.}
+\item{cacheDir}{name for cache directory.}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
-Path to unzipped file
+path to CIMS text & bed files.
 }
 \description{
 Wrapper function for ctk's CIMS

@@ -18,40 +18,40 @@ ctk_getMutationType(
   stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
     "_getMutationType_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{filesToRun}{File to process.}
+\item{filesToRun}{path to file to process (BED).}
 
-\item{outFile}{Output file}
+\item{outFile}{output file (BED).}
 
-\item{sb}{Path to getMutationType.pl from CTK toolkit}
+\item{sb}{path to ctk_getMutationType.pl from CTK toolkit.}
 
-\item{perl}{Path to PERL}
+\item{perl}{path to PERL.}
 
-\item{PATHTOPERLLIB}{Path to PERL5LIB.}
+\item{PATHTOPERLLIB}{path to PERL5LIB.}
 
-\item{mutationType}{mutation size}
+\item{mutationType}{mutation type, "del" (deletions; default),"ins" (insertions), "sub" (substitutions).}
 
-\item{summaryStat}{Create summary file}
+\item{summaryStat}{create summary file, TRUE or FALSE (default).}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
-Path to unzipped file
+path to getMutationType bed file.
 }
 \description{
 Wrapper function for ctk's getMutationType

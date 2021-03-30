@@ -10,42 +10,45 @@ fastx_clipper(
   outFile = paste0(file_path_sans_ext(fileTofqs), "_clip.", file_ext(fileTofqs)),
   fqc = "fastx_clipper",
   length = 18,
-  adaptor = "GTGTCAGTCACTTCCAGCGG",
+  adapter = "GTGTCAGTCACTTCCAGCGG",
+  qEncoding = NULL,
   writelog = T,
   stderr = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
     "_fastx_clipper_stderr.txt")),
   stdout = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
     "_fastx_clipper_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE
 )
 }
 \arguments{
-\item{fileTofqs}{File to process.}
+\item{fileTofqs}{path to file to process (fastq or fasta).}
 
-\item{outFile}{Output file path}
+\item{outFile}{output file path.}
 
-\item{fqc}{Path to fastx_clipper from FastX toolkit}
+\item{fqc}{path to fastx_clipper from FastX toolkit.}
 
-\item{length}{Length for fastx_clipper}
+\item{length}{miminum sequence length, default is 18 (set to .}
 
-\item{adaptor}{Adapter to remove}
+\item{adapter}{adapter to remove (default is "GTGTCAGTCACTTCCAGCGG", specify a string to change adapter sequence).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{qEncoding}{quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq) or NULL (Phred+64 fastq or fasta; default).}
 
-\item{stderr}{Path to stderr file.}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 
-\item{stdout}{Path to stdout file.}
+\item{stderr}{path to stderr file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{stdout}{path to stdout file.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{verbose}{Print messages to screen}
+\item{additional_Args}{additional arguments to be passed to system call.}
+
+\item{verbose}{print messages to screen, TRUE or FALSE (default).}
 }
 \value{
-Path to clipped file
+path to clipped file
 }
 \description{
 Wrapper function for fastx_clipper
@@ -54,7 +57,7 @@ Wrapper function for fastx_clipper
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
-FqFile_clipped <- fastx_clipper(FqFile,length=20)
+FqFile_clipped <- fastx_clipper(FqFile,length=20, adapter = "GTGTCAG")
 }
 \author{
 Kathryn Rozen-Gagnon

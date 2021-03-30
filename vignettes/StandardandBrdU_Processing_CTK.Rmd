@@ -1,5 +1,5 @@
 ---
-title: "Standard/BrdU-CLIP data analysis using CTK"
+title: "CTK: Standard/BrdU-CLIP data analysis"
 author: "Kathryn Rozen-Gagnon, Ji-Dung Luo and Thomas Carroll"
 output: rmarkdown::html_vignette
 vignette: >
@@ -12,6 +12,7 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE)
 baseDir <- "/Users/thomascarroll/Desktop/Projects/brc/clipRUTest/"
 ```
+### This vignette shows how to execute the [CTK "Standard/BrdU-CLIP_data_analysis_using_CTK" vignette](https://zhanglab.c2b2.columbia.edu/index.php/Standard/BrdU-CLIP_data_analysis_using_CTK) using CLIPflexR, from within R. 
 
 ## Download Data
 Download data from [SRA](https://www.ncbi.nlm.nih.gov/sra). *SRR110753* was selected as an example in this vignette. 
@@ -91,6 +92,7 @@ Fox3_Std_filtered <- ctk_stripBarcode(Fox3_Std_filtered,linkerlength = 5,
                                            outFile = "SRR1107535_stripped.fastq.gz")
 
 ```
+## Map processed reads to genome
 
 ### Make reference data for mm10
 Fetch reference sequences from [BSgenome](https://www.bioconductor.org/packages/release/bioc/html/BSgenome.html).
@@ -104,7 +106,7 @@ toWrite <- DNAStringSet(listOfSeq[!grepl("Un|random|hap",names(listOfSeq))])
 writeXStringSet(toWrite,file="mm10.fa")
 ```
 
-### Build a Bowtie2 genome index using Rbowtie2.
+### Build a Bowtie2 genome index using Rbowtie2
 Build Bowtie2 index of reference genome, mm10 in this vignette.  
 **threads**: number of threads used.
 [Index documentation](../reference/bowtie2_index.html).
@@ -113,7 +115,7 @@ Build Bowtie2 index of reference genome, mm10 in this vignette.
 bowtie2_index("mm10.fa",threads = 6)
 ```
 
-### Align to genome using Rbowtie2.
+### Align to genome using Rbowtie2
 Align reads to indexed reference genome using Rbowtie2.  
 **format**: format of input sequences, fasta (default) or fastq; **threads**: number of threads used, 1 (default); **maxMismatches**: number of mismatches allowed, 1 (default) or 0; **seedSubString**: length of seed substrings, 18 (default), must be >3 & <32; **report_k**: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.  
 [Alignment documentation](../reference/bowtie_align.html).
@@ -128,7 +130,7 @@ alignedFile <- bowtie_align(Fox3_Std_filtered,
 ```
 
 ### Parsing SAM files
-Parsing SAM files toget unique mapped reads and mismatches per read using R-wrapped **parseAlignment.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#parseAlignment.pl).  
+Parsing SAM files to get unique mapped reads and mismatches per read using R-wrapped **parseAlignment.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#parseAlignment.pl).  
 **minLen**: miminal mapping length to report, 18 (default); **mapQual**: Minimum map quality, 1 (default MAPQ), keep only uniquely mapped reads when mapQual>=1.  
 [CLIPflexR documentation](../reference/ctk_parseAlignment.html).
 
@@ -159,6 +161,8 @@ tagcollapsed <- ctk_tag2collapse(parsedAlignement,
              
 ```
 
+## Call peaks & visualize
+
 ### Join tags and mutations
 Get the mutations in unique tags using R-wrapped **selectRow.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#selectRow.pl) (originally wrapped from Galaxy).  
 **file1**: mutation file; **file2**: tagged bed file; **field1**: query column; **field2**: filter column; **mode**: running mode, set N while only print paired rows.  
@@ -169,8 +173,7 @@ tagJoined <- ctk_joinWrapper("mutations.txt",tagcollapsed,field1 = 4,field2 = 4,
                                 outFile="Fox3_3_tag.unique.mutation.txt")
 ```
 
-
-### label bed file with rgb information
+### Label bed file with rgb information
 Add colors to bed file using R-wrapped **bed2rgb.pl** from [CTK](https://zhanglab.c2b2.columbia.edu/index.php/CTK_usage#bed2rgb.pl).  
 **filesToRun**: taged bed files; **col**: assign color in r,g,b format.  
 [CLIPflexR documentation](../reference/ctk_bed2rgb.html).
@@ -211,6 +214,8 @@ tagProfile <- ctk_tag2peak(filesToRun = tagcollapsedRGB,
                            outHalfPH = "TC_SRR1107535_stripped.RGB.peakHalf.bed",
                            valleySeeking = TRUE,valleyDepth = 0.9,bigFile = TRUE,ss = TRUE,genes = "genes.bed")
 ```
+
+## Use CLIPflexR to get peak sequences or search for motifs in peaks
 
 ### Retrieve sequence under peaks using CLIPflexR **fetchSequencesForClIP**
 **peaks**: tagged bed file or GRanges of peaks; **reSize**: resize peak to this width around peak center, 64 (default); **fasta**: reference sequence.  

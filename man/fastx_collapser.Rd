@@ -7,43 +7,43 @@
 \usage{
 fastx_collapser(
   fileTofxc,
-  outFile = file.path(dirname(fileTofxc), gsub("\\\\.fastq|\\\\.fq", "_collapse.fasta",
-    basename(fileTofxc))),
+  outFile = file.path(dirname(fileTofxc), gsub("\\\\.fastq|\\\\.fq|\\\\.fa|\\\\.fasta",
+    "_collapse.fasta", basename(fileTofxc))),
   fxc = "fastx_collapser",
-  qEncoding = 33,
+  qEncoding = NULL,
   stderr = file.path(dirname(fileTofxc), paste0(basename(fileTofxc),
     "_fastx_collapse_stderr.txt")),
   stdout = file.path(dirname(fileTofxc), paste0(basename(fileTofxc),
     "_fastx_collapse_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{fileTofxc}{File to process.}
+\item{fileTofxc}{path to file to process (fastq or fasta).}
 
-\item{outFile}{Output file name.}
+\item{outFile}{output file name (will be formatted as a fasta).}
 
-\item{fxc}{Path to fastx_collapser from FastX toolkit}
+\item{fxc}{path to fastx_collapser from FastX toolkit.}
 
-\item{qEncoding}{Quality encoding}
+\item{qEncoding}{quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq; default) or NULL (Phred+64 fastq or fasta)}
 
-\item{stderr}{Path to stderr file.}
+\item{stderr}{path to stderr file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages to screen, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
-Path to unzipped file
+path to unzipped file
 }
 \description{
 Wrapper function for fastx_collapser

@@ -10,6 +10,7 @@ fastx_trimmer(
   fqt = "fastx_trimmer",
   read_start = 10,
   read_end = NULL,
+  qEncoding = NULL,
   outFile = paste0(file_path_sans_ext(fileTofqt), "_trim.", file_ext(fileTofqt)),
   writelog = T,
   stderr = file.path(dirname(fileTofqt), paste0(basename(fileTofqt),
@@ -17,35 +18,37 @@ fastx_trimmer(
   stdout = file.path(dirname(fileTofqt), paste0(basename(fileTofqt),
     "_trimmer_stats_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE
 )
 }
 \arguments{
-\item{fileTofqt}{File to process}
+\item{fileTofqt}{path to file to process (fastq or fasta).}
 
-\item{fqt}{Path to fastx_trimmer from FastX toolkit}
+\item{fqt}{path to fastx_trimmer from FastX toolkit.}
 
-\item{read_start}{read starting base}
+\item{read_start}{read starting base (default is 10).}
 
-\item{read_end}{read ending base}
+\item{read_end}{read ending base (default is NULL, set to integer to trim).}
 
-\item{outFile}{Output file path}
+\item{qEncoding}{quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq) or NULL (Phred+64 fastq or fasta; default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{outFile}{output file path.}
 
-\item{stderr}{Path to stderr file}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 
-\item{stdout}{Path to stdout file}
+\item{stderr}{path to stderr file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{stdout}{path to stdout file.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{verbose}{Print more message to screen}
+\item{additional_Args}{additional arguments to be passed to system call.}
+
+\item{verbose}{print messages to screen, TRUE or FALSE (default).}
 }
 \value{
-Path to trimmed file
+path to trimmed file.
 }
 \description{
 Wrapper function for fastx_trimmer
@@ -54,7 +57,7 @@ Wrapper function for fastx_trimmer
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
-FqFile_clipped <- fastx_clipper(FqFile,length=20)
+FqFile_trimmed <- fastx_trimmer(FqFile,read_start = 5, read_end = 50)
 }
 \author{
 Kathryn Rozen-Gagnon

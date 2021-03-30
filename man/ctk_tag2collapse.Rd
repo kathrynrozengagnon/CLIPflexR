@@ -25,72 +25,72 @@ ctk_tag2collapse(
   stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
     "_ctk_tag2collapse_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{filesToRun}{File to process.}
+\item{filesToRun}{path to file to process (BED).}
 
-\item{outFile}{Output file}
+\item{outFile}{path to output file}
 
-\item{sb}{Path to tag2collapse.pl from FastX toolkit}
+\item{sb}{path to tag2collapse.pl from CTK.}
 
-\item{perl}{Path to PERL}
+\item{perl}{path to PERL.}
 
-\item{PATHTOPERLLIB}{Path to PERL5LIB.}
+\item{PATHTOPERLLIB}{path to PERL5LIB.}
 
-\item{keepMaxScore}{keep the tag with the most weight (instead of the longest one) as representative}
+\item{keepMaxScore}{keep the tag with the most weight (instead of the longest one) as representative.}
 
-\item{keepTagName}{do not change tag name (no extra information)}
+\item{keepTagName}{do not change tag name (no extra information).}
 
-\item{weight}{consider the weight of each tag}
+\item{weight}{consider the weight of each tag.}
 
 \item{bigFile}{Set to TRUE when files are big.}
 
-\item{weightInName}{find weight in name}
+\item{weightInName}{find weight in name.}
 
-\item{randomBarcode}{random barcode exists, no collapse for different barcodes}
+\item{randomBarcode}{random barcode exists, no collapse for different barcodes.}
 
-\item{seqErrorModel}{sequencing error model to use (alignment or em-local or em-global or fix=0.01)}
+\item{seqErrorModel}{sequencing error model to use (alignment or em-local or em-global or fix=0.01).}
 
-\item{outputSeqError}{output sequencing errors estimated by the EM algorithm}
+\item{outputSeqError}{output sequencing errors estimated by the EM algorithm.}
 
-\item{em}{EM threshold to infer reliability of each collapsed read (when have random linker, -1=no EM)}
+\item{em}{EM threshold to infer reliability of each collapsed read (when have random linker, -1=no EM).}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen.}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
 \item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
 }
 \value{
-Path to unzipped file
+path to collapsed BED file.
 }
 \description{
 Wrapper function for ctk's tag2collapse
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta)
+myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 FqFile_clipped <- fastx_clipper(FqFile,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 parsedAlignment <- ctk_parseAlignment(bam)
-ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
+ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+weightInName = FALSE,verbose = TRUE)
 }
 \author{
 Kathryn Rozen-Gagnon

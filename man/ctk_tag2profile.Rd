@@ -3,7 +3,7 @@
 \docType{methods}
 \name{ctk_tag2profile}
 \alias{ctk_tag2profile}
-\title{Wrapper function for ctk's bed2rgb}
+\title{Wrapper function for ctk's ctk_tag2profile}
 \usage{
 ctk_tag2profile(
   filesToRun,
@@ -32,84 +32,83 @@ ctk_tag2profile(
   stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
     "_ctk_tag2profile_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{filesToRun}{File to process.}
+\item{filesToRun}{path to file to process (BED).}
 
-\item{outFile}{Output file}
+\item{outFile}{path to output file (BED).}
 
-\item{outFile2}{Output 2 file}
+\item{outFile2}{path to output 2 file (BED; specify two output files to separate strands).}
 
-\item{sb}{Path to tag2collapse.pl from FastX toolkit}
+\item{sb}{path to tag2profile.pl from CTK.}
 
-\item{perl}{Path to PERL}
+\item{perl}{path to PERL}
 
-\item{PATHTOPERLLIB}{Path to PERL5LIB.}
+\item{PATHTOPERLLIB}{path to PERL5LIB.}
 
-\item{bigFile}{TRUE when working with a big file}
+\item{bigFile}{TRUE when working with a big file, TRUE or FALSE (default).}
 
-\item{weight}{weight counts according to the score of each tag}
+\item{weight}{weight counts according to the score of each tag, TRUE or FALSE (default).}
 
-\item{weightAvg}{weight average the score of each tag}
+\item{weightAvg}{weight average the score of each tag, TRUE or FALSE (default).}
 
-\item{ss}{separate strand}
+\item{ss}{separate strand, TRUE (default) or FALSE.}
 
-\item{exact}{exact count at each nucleotide}
+\item{exact}{exact count at each nucleotide, TRUE (default) or FALSE.}
 
-\item{nz}{don't print zeroes (works for sgr and bed)}
+\item{nz}{don't print zeroes (works for sgr and bed), TRUE or FALSE (default).}
 
-\item{ext5}{extension of tags at the 5' end}
+\item{ext5}{extension of tags at the 5' end, default is NULL (set to integer to specify).}
 
-\item{ext3}{extension of tags at the 3' end}
+\item{ext3}{extension of tags at the 3' end, default is NULL (set to integer to specify).}
 
-\item{chromLen}{chrom length file}
+\item{chromLen}{chrom length file, default is NULL (set file path to specify).}
 
-\item{region}{a bed file with regions to count tag numbers. If not specified, count in moving windows}
+\item{region}{a bed file with regions to count tag numbers; if not specified  (NULL), count in moving windows}
 
-\item{minBlockSize}{minimum number of lines to read in each block for a big file}
+\item{minBlockSize}{minimum number of lines to read in each block for a big file, default is 2000000.}
 
-\item{windowSize}{Window size}
+\item{windowSize}{window size, default is 100.}
 
-\item{stepSize}{Step size}
+\item{stepSize}{step size, default is 20.}
 
-\item{outputFormat}{output format ([bed] or bedgraph or sgr)}
+\item{outputFormat}{output format, "bed" or "bedgraph" (default) or "sgr".}
 
-\item{normalization}{normalization ([none] or rpkm or multiply={1.3})}
+\item{normalization}{normalization, "none" (default) or "rpkm" or multiply={1.3}).}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{Additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
-Path to unzipped file
+path to BED file.
 }
 \description{
-Wrapper function for ctk's bed2rgb
+Wrapper function for ctk's ctk_tag2profile
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta)
+myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 FqFile_clipped <- fastx_clipper(FqFile,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 parsedAlignment <- ctk_parseAlignment(bam)
 myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 weightInName=FALSE,verbose=TRUE)

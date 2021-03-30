@@ -31,82 +31,81 @@ ctk_tag2peak(
   stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
     "_ctk_tag2peak_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{filesToRun}{File to process.}
+\item{filesToRun}{path to file to process (BED).}
 
-\item{outFile}{Output file}
+\item{outFile}{path to output file (BED).}
 
-\item{outBoundary}{output cluster boundaries}
+\item{outBoundary}{output cluster boundaries.}
 
-\item{outHalfPH}{output half peak height boundaries}
+\item{outHalfPH}{output half peak height boundaries.}
 
-\item{sb}{Path to tag2collapse.pl from FastX toolkit}
+\item{sb}{path to tag2peak.pl from CTK.}
 
-\item{perl}{Path to PERL}
+\item{perl}{path to PERL.}
 
-\item{PATHTOPERLLIB}{Path to PERL5LIB.}
+\item{PATHTOPERLLIB}{path to PERL5LIB.}
 
-\item{bigFile}{big input file}
+\item{bigFile}{big input file, TRUE or FALSE (default).}
 
-\item{ss}{separate the two strands}
+\item{ss}{separate the two strands, TRUE (default) or FALSE.}
 
-\item{valleySeeking}{find candidate peaks by valley seeking}
+\item{valleySeeking}{find candidate peaks by valley seeking.}
 
-\item{valleyDepth}{depth of valley if valley seeking (between 0.5 and 1, default=0.9)}
+\item{valleyDepth}{depth of valley if valley seeking (between 0.5 and 1, default is 0.9).}
 
 \item{genes}{custom gene bed file for scan statistics (will override --dbkey)}
 
-\item{multiTest}{do Bonferroni multiple test correction}
+\item{multiTest}{do Bonferroni multiple test correction.}
 
-\item{useExpr}{use expression levels given in the score column in the gene bed file for normalization}
+\item{useExpr}{use expression levels given in the score column in the gene bed file for normalization.}
 
 \item{skipOutOfRangePeaks}{Remove out of bounds ranges.}
 
-\item{pCutOff}{threshold of p-value to call peak (e.g. 0.01)}
+\item{pCutOff}{threshold of p-value to call peak (e.g. 0.01).}
 
-\item{minPH}{min peak height}
+\item{minPH}{min peak height.}
 
-\item{maxPH}{max peak height}
+\item{maxPH}{max peak height.}
 
-\item{gap}{merge cluster peaks closer than the gap (-1, no merge if < 0)}
+\item{gap}{merge cluster peaks closer than the gap (-1, no merge if < 0).}
 
-\item{peakPrefix}{prefix of peak id (Peak) (so output file will look like Peak1, Peak2, etc)}
+\item{peakPrefix}{prefix of peak id (Peak) (so output file will look like Peak1, Peak2, etc).}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
 \item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
 }
 \value{
-Path to unzipped file
+path to BED file.
 }
 \description{
 Wrapper function for ctk's bed2rgb
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta)
+myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 FqFile_clipped <- fastx_clipper(FqFile,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 parsedAlignment <- ctk_parseAlignment(bam)
 myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 weightInName=FALSE,verbose=TRUE)

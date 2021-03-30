@@ -8,19 +8,25 @@
 revmap_process(fastas, linkers = NULL, length_max = NULL, length_min = NULL)
 }
 \arguments{
-\item{fastas}{FASTA file to process}
+\item{fastas}{path to FASTA file to process.}
 
-\item{linkers}{contaminating seqences to remove (default is NULL)}
+\item{linkers}{contaminating sequences to remove, default is NULL, set to character string to specify.}
 
-\item{length_max}{maximum length required during fasta processing, integer (default is NULL)}
+\item{length_max}{maximum length required during fasta processing, default is NULL, set to integer to specify.}
 
-\item{length_min}{minimum length required during fasta processing, integer (default is NULL)}
+\item{length_min}{minimum length required during fasta processing, default is NULL, set to integer to specify.}
 }
 \value{
-Processed FASTAS
+path to processed FASTA.
 }
 \description{
-Process reads for small RNA counting
+Process reads to remove linker artifacts or filter  by length
+}
+\examples{
+testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+FqFile <- decompress(testFastq,overwrite = TRUE)
+FaFile <- fastx_qtoa(FqFile)
+processed_Fa <-  revmap_process(FaFile, linkers="GGACGATGC", length_min=18, length_max=30)
 }
 \author{
 Kathryn Rozen-Gagnon

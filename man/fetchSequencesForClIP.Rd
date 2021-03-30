@@ -17,24 +17,24 @@ fetchSequencesForCLIP(
 )
 }
 \arguments{
-\item{peaks}{CLIP peaks to process.}
+\item{peaks}{CLIP peaks to process; accepts path to peak files (BED file or BED-formatted tab-delimited text files) or R objects (GRanges or BED-formatted data.frame); peak locations must be unique.}
 
-\item{resize}{Size of window in bp for resizing around peak center.}
+\item{resize}{size of window in bp for resizing around peak center, default is NULL (set by specifying integer).}
 
-\item{fasta}{Genome fasta file.}
+\item{fasta}{path to genome file (fasta).}
 
-\item{add5}{Bp to add to 5' of resized peak.}
+\item{add5}{bp to add to 5' of resized peak, default is 0 (set by specifying integer).}
 
-\item{add3}{Bp to add to 3' of resized peak.}
+\item{add3}{bp to add to 3' of resized peak, default is 0 (set by specifying integer).}
 
-\item{verbose}{Print messages.}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{bedHeader}{TRUE if peak file contains column headers.}
+\item{bedHeader}{if peak file contains column headers, TRUE (default) or FALSE; if TRUE, column names must be "seqnames" (chromosome), "start" (peak start), "end" (peak end), "strand" (peak strand).}
 
-\item{bedSep}{Separator in BED file.}
+\item{bedSep}{separator in BED file.}
 }
 \value{
-Path to unzipped file.
+path to unzipped file.
 }
 \description{
 Retrieve sequences from under peaks/regions

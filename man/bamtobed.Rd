@@ -8,28 +8,28 @@
 bamtobed(file, outFile = gsub("\\\\.bam", ".bed", file), filtDup = FALSE)
 }
 \arguments{
-\item{file}{File to process.}
+\item{file}{path to file to process (BAM).}
 
-\item{outFile}{Name of output file.}
+\item{outFile}{path to output file (BED).}
 
-\item{filtDup}{Output index name}
+\item{filtDup}{output index name.}
 }
 \value{
-Path
+path to BED.
 }
 \description{
 Convert Bam to Bed
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta)
+myIndex <- bowtie2_index(testFasta, overwrite = TRUE)
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile <- decompress(testFQ,overwrite=TRUE)
 FqFile_QF <- fastq_quality_filter(FqFile)
 FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
 FqFile_QFColStpClipped <- fastx_clipper(FqFile_QFColStripped)
-bam <- bowtie_align(FqFile_QFColStpClipped,myIndex)
+bam <- bowtie_align(FqFile_QFColStpClipped,myIndex, overwrite = TRUE)
 bamtobed(bam)
 }
 \author{

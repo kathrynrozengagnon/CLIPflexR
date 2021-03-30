@@ -8,28 +8,27 @@
 extract_unmapped(bam, outfa = NULL)
 }
 \arguments{
-\item{bam}{BAM file}
+\item{bam}{path to BAM file.}
 
-\item{outfa}{PATH to output FASTA (default is same directory as input BAM)}
+\item{outfa}{path to output FASTA (default is same directory as input BAM).}
 }
 \value{
-Path to FASTA file
+path to FASTA file of unmapped reads.
 }
 \description{
 Extracts unmapped reads from BAM and writes them to a FASTA file
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta)
+myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20")
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 FqFile_clipped <- fastx_clipper(FqFile,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
-FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+FqFile_Col <- ctk_fastq2collapse(FqFile_QF)
+FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
+bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 extract_unmapped(bam)
 }
 \author{

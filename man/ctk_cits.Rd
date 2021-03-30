@@ -21,46 +21,46 @@ ctk_cits(
   stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
     "_cits_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{filesToRun}{File to process.}
+\item{filesToRun}{path to file to process (BED).}
 
-\item{outFile}{Output file}
+\item{outFile}{output file (BED).}
 
-\item{sb}{Path to fastx_barcode_splitter.pl from FastX toolkit}
+\item{sb}{path to CITS.pl from CTK.}
 
-\item{perl}{Path to PERL}
+\item{perl}{path to PERL.}
 
-\item{PATHTOPERLLIB}{Path to PERL5LIB.}
+\item{PATHTOPERLLIB}{path to PERL5LIB.}
 
-\item{bigFile}{big file}
+\item{bigFile}{big file, TRUE or FALSE (default).}
 
-\item{pCutOff}{p-value cut off}
+\item{pCutOff}{p-value cut off (default is 0.01).}
 
-\item{multiTest}{perform multiple testing correction.}
+\item{multiTest}{perform multiple testing correction, TRUE (default) or FALSE.}
 
-\item{gap}{gap size}
+\item{gap}{gap size (default is 25).}
 
-\item{cacheDir}{Name for cache directory.}
+\item{cacheDir}{name for cache directory.}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
 \item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
 }
 \value{
-Path to unzipped file
+path to CITS bed file.
 }
 \description{
 Wrapper function for ctk's CITS
@@ -69,8 +69,8 @@ Wrapper function for ctk's CITS
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile <- decompress(testFQ,overwrite=TRUE)
 FqFile_QF <- fastq_quality_filter(FqFile)
-FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
-FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
+FqFile_Col<- fastx_collapser(FqFile_QF)
+FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
 }
 \author{
 Kathryn Rozen-Gagnon

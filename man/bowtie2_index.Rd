@@ -8,18 +8,18 @@
 bowtie2_index(
   genomeFasta,
   outIndex = gsub("\\\\.fa", "", genomeFasta),
-  overwrite = TRUE,
+  overwrite = F,
   threads = 1
 )
 }
 \arguments{
-\item{genomeFasta}{File to process.}
+\item{genomeFasta}{path to file to process.}
 
-\item{outIndex}{Output index name}
+\item{outIndex}{path to output index.}
 
-\item{overwrite}{Overwrite if directory exists.}
+\item{overwrite}{overwrite existing output files, TRUE or FALSE (default).}
 
-\item{threads}{Number of threads to use.}
+\item{threads}{number of threads to use, default is 1.}
 }
 \value{
 Path to index
@@ -29,7 +29,7 @@ Make index for Rbowtie2
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-bowtie2_index(testFasta)
+bowtie2_index(testFasta, overwrite = TRUE)
 }
 \author{
 Kathryn Rozen-Gagnon

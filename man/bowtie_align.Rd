@@ -8,53 +8,78 @@
 bowtie_align(
   fq,
   index,
-  bam = file.path(dirname(fq), paste0("Sorted_", gsub("\\\\.fa|\\\\.fasta|\\\\.fastq",
-    "", basename(fq)), ".bam")),
-  format = "fasta",
+  outbam = "fq",
+  inputFormat = "fasta",
   keepSAM = T,
-  maxMismatches = 1,
+  mode = "genome_map",
+  maxMismatches = 0,
   seedSubString = 18,
   threads = 1,
-  report_k = NULL
+  report_k = NULL,
+  keep_all = NULL,
+  soft_clip = NULL,
+  additional_Args = NULL,
+  overwrite = FALSE
 )
 }
 \arguments{
-\item{fq}{File to process.}
+\item{fq}{path to file to process (fasta or fastq).}
 
-\item{index}{Index name}
+\item{index}{bowtie2 index name without extension.}
 
-\item{bam}{Output bam name}
+\item{outbam}{output bam name, not required if mode is set. If mode is set to "NULL", specify "fq" (default - name of file to process/reads) or "index" (name of index)}
 
-\item{format}{Format of reads (fastq or fasta)}
+\item{inputFormat}{Format of reads, "fastq" or "fasta" (default).}
 
-\item{keepSAM}{keep bowtie2 SAM output file, default = T}
+\item{keepSAM}{keep bowtie2 SAM output file, TRUE (default) or FALSE.}
 
-\item{maxMismatches}{max mismatches}
+\item{mode}{mapping mode, "genome_map" (default - 1 mismatch in seed alignment, seed substring of 18) or "reverse_map" (for mapping short sequences to reads, i.e. miRNAs or chimera analysis, 0 mismatches and a seed substring of 18); set mode=NULL to custom set bowtie2 options using arguments below or additional arguments.}
 
-\item{seedSubString}{length of seed substrings}
+\item{maxMismatches}{max mismatches in seed alignment, (default is 0).}
 
-\item{threads}{Number of threads to use}
+\item{seedSubString}{length of seed substrings (default is 18).}
 
-\item{report_k}{number of alignments to report}
+\item{threads}{number of threads to use (default is 1).}
+
+\item{report_k}{number of alignments to report, default is NULL (the best alignment is reported), set to integer to specify.}
+
+\item{keep_all}{report all alignments, default is NULL (the best alignment is reported), set to TRUE to report all.}
+
+\item{soft_clip}{allow soft clipping, default is NULL (no soft clipping), set to TRUE to to soft clip.}
+
+\item{additional_Args}{any additional mapping arguments not set above, default is NULL, can be set by specifying a single character string with spaces between arguments (see example below); run "Rbowtie2::bowtie2_usage()" to see all options; please note that due to a Rbowtie2 bug, the "--no-1mm-upfront" is not available.}
+
+\item{overwrite}{overwrite existing output files, TRUE or FALSE (default).}
 }
 \value{
-Path to BAM
+path to sorted BAM.
 }
 \description{
 Alignment using Rbowtie2
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta)
+myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
-FqFile <- decompress(FqFile_FF,overwrite=TRUE)
-FqFile_clipped <- fastx_clipper(FqFile,length=20)
+FqFile <- decompress(testFQ,overwrite=TRUE)
+FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter="mean:0-29:20",verbose=TRUE)
+FqFile_clipped <- fastx_clipper(FqFile_FF,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-bowtie_align(FqFile_QFColStripped,myIndex)
+FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
+
+##map reads to genome
+bowtie_align(FqFile_ColStrip,myIndex, inputFormat="fastq", overwrite=TRUE)
+
+##map reads to genome, custom mode
+bowtie_align(FqFile_ColStrip,myIndex, mode=NULL, 
+soft_clip=TRUE, additional_Args="--mp 15 -R 4", inputFormat="fastq", overwrite=TRUE) 
+
+##map miRNAs to reads
+miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
+FaFile_Fa <- fastx_qtoa(FqFile_ColStrip)
+readIndex <- bowtie2_index(FaFile_Fa, overwrite=TRUE)
+bowtie_align(miRNAs,readIndex, mode="reverse_map",overwrite=TRUE)
 }
 \author{
 Kathryn Rozen-Gagnon

@@ -12,29 +12,56 @@ Ranges_count(
   linkers = NULL,
   length_max = NULL,
   length_min = NULL,
+  mode = NULL,
+  maxMismatches = 0,
+  threads = 1,
+  report_k = NULL,
+  keep_all = NULL,
+  soft_clip = NULL,
+  additional_Args = "--score-min C,0,0",
+  seedSubString = 18,
+  overwrite = FALSE,
   bpparam = NULL,
-  verbose = TRUE
+  verbose = FALSE
 )
 }
 \arguments{
-\item{fastas}{FASTA files to process.}
+\item{fastas}{path to FASTA files to process.}
 
-\item{miRNA_ranges}{BED file containing annotated miRNA or other small RNA genomic ranges}
+\item{miRNA_ranges}{BED file containing annotated miRNA or other small RNA genomic ranges.}
 
-\item{genomeIndex}{full genome index}
+\item{genomeIndex}{path to genome index.}
 
-\item{linkers}{contaminating sequences to remove (default is NULL)}
+\item{linkers}{contaminating sequences to remove, default is NULL, set to character string to specify.}
 
-\item{length_max}{maximum length required during fasta processing (default is NULL)}
+\item{length_max}{maximum length required during fasta processing, default is NULL, set to integer to specify.}
 
-\item{length_min}{minimum length required during fasta processing (default is NULL)}
+\item{length_min}{minimum length required during fasta processing, default is NULL, set to integer to specify.}
+
+\item{mode}{mapping mode, default is NULL to allow custom mapping with default arguments set below (0 mismatches in seed alignment, seed substring length 18, disallow alignments with mismatches); see bowtie_align for other mapping modes.}
+
+\item{maxMismatches}{max mismatches in seed alignment (default is 0).}
+
+\item{threads}{number of threads to use (default is 1).}
+
+\item{report_k}{number of alignments to report, default is NULL (the best alignment is reported), set to integer to specify.}
+
+\item{keep_all}{set to TRUE to report all alignments, default is NULL (the best alignment is reported).}
+
+\item{soft_clip}{set to TRUE to allow soft clipping, default is no soft clipping.}
+
+\item{additional_Args}{any additional mapping arguments, default is "--score-min C,0,0" to disallow alignments with mismatches; run "Rbowtie2::bowtie2_usage()" to see all options; please note that due to a Rbowtie2 bug, the "--no-1mm-upfront" is not available.}
+
+\item{seedSubString}{length of seed substrings (default is 18).}
+
+\item{overwrite}{overwrite existing output files, TRUE or FALSE (default).}
 
 \item{bpparam}{TRUE or FALSE (default)}
 
-\item{verbose}{print messages, TRUE (default) or FALSE}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 }
 \value{
-Path
+path to count matrix.
 }
 \description{
 Map unprocessed or processed reads to genome and count small RNAs by location

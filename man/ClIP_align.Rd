@@ -16,23 +16,26 @@ CLIP_align(
 )
 }
 \arguments{
-\item{samID}{sample id in the sample sheet}
+\item{samID}{sample id in the sample sheet.}
 
-\item{res_dir}{result directory}
+\item{res_dir}{result directory.}
 
-\item{genome_idx}{file path of indexed genome}
+\item{genome_idx}{path to indexed genome.}
 
 \item{aligner}{Assign aligner bowtie2/bwa_mem/bwa_alb/subread/subjunc/hisat2}
 
-\item{samSheet}{sample sheet}
+\item{samSheet}{sample sheet.}
 
 \item{thread}{thread used in the processing, default is 4}
 
-\item{bwa}{executable file path of bwa}
+\item{bwa}{executable bwa file path.}
 }
 \value{
-sorted bam file
+path to sorted BAM file.
 }
 \description{
 Align to Genome
+}
+\examples{
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 }

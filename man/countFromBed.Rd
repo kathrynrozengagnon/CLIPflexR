@@ -8,23 +8,23 @@
 countFromBed(Bed, GR, notStranded = TRUE, interFeature = FALSE)
 }
 \arguments{
-\item{Bed}{BED bed files containing mapped reads}
+\item{Bed}{BED bed files containing mapped reads.}
 
-\item{GR}{BED file containing genomic ranges over which to count}
+\item{GR}{genomic ranges object over which to count.}
 
-\item{notStranded}{Stranded or not stranded TRUE (default) or FALSE}
+\item{notStranded}{if strand information should be considered when counting, TRUE (ignore strand) or FALSE (consider strand; default).}
 
-\item{interFeature}{Count reads mapping to multiple features TRUE or FALSE (default)}
+\item{interFeature}{discard reads mapping to multiple features, TRUE or FALSE (default).}
 }
 \value{
-counting matrix
+count matrix.
 }
 \description{
 count from mapped beds to make count matrix
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-bowtie2_index(testFasta)
+bowtie2_index(testFasta, overwrite = TRUE)
 }
 \author{
 Kathryn Rozen-Gagnon

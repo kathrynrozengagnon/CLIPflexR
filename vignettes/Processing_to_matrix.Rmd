@@ -165,11 +165,11 @@ samples_split_std <- fastx_barcode_splitter(coll_FqFile_QF[[2]], bcFile = BCfile
 ```
 
 ```
-## fastx_collapser command is cat /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG092419_S1_L001_R1_001_collapse.fasta | /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/fastx_barcode_splitter.pl --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_BC.txt --bol --mismatches 0 --prefix 'KRG092419_S1_L001_R1_001_collapse_'
+## barcode_splitter command is cat /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG092419_S1_L001_R1_001_collapse.fasta | /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/fastx_barcode_splitter.pl --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_BC.txt --bol --mismatches 0 --prefix '/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_'
 ```
 
 ```
-## fastx_collapser arguments are  --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_BC.txt--bol--mismatches 0 --prefix 'KRG092419_S1_L001_R1_001_collapse_'
+## barcode_splitter arguments are  --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_BC.txt--bol--mismatches 0 --prefix '/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_'
 ```
 
 ```r
@@ -202,13 +202,20 @@ head(std_samples_stats)
 ```
 
 ```
-##           Barcode  Count                                          Location
-## 1 Aag2_Ago1_Exp7A 612767 KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A
-## 2 Aag2_Ago1_Exp7B 579807 KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B
-## 3 Aag2_Ago2_Exp7A 894236 KRG092419_S1_L001_R1_001_collapse_Aag2_Ago2_Exp7A
-## 4 Aag2_Ago2_Exp7B 701068 KRG092419_S1_L001_R1_001_collapse_Aag2_Ago2_Exp7B
-## 5 Aag2_mIgG_Exp7A 310822 KRG092419_S1_L001_R1_001_collapse_Aag2_mIgG_Exp7A
-## 6 Aag2_mIgG_Exp7B  46491 KRG092419_S1_L001_R1_001_collapse_Aag2_mIgG_Exp7B
+##           Barcode  Count
+## 1 Aag2_Ago1_Exp7A 612767
+## 2 Aag2_Ago1_Exp7B 579807
+## 3 Aag2_Ago2_Exp7A 894236
+## 4 Aag2_Ago2_Exp7B 701068
+## 5 Aag2_mIgG_Exp7A 310822
+## 6 Aag2_mIgG_Exp7B  46491
+##                                                                                                                 Location
+## 1 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A
+## 2 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B
+## 3 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago2_Exp7A
+## 4 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago2_Exp7B
+## 5 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_mIgG_Exp7A
+## 6 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_mIgG_Exp7B
 ```
 
 ### Now remove the 5' index, linker, and random barcode sequences **(wrapping CTK's stripBarcode.pl)**
@@ -268,12 +275,12 @@ samples_split_std_rm5
 
 ### Now remove the 3' linker **(wrapping FASTX's clipper)**
 Trimming 3'-end adapter sequences  using R-wrapped **fastx_clipper** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage).  
-**adaptor**: clip this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).  
+**adapter**: clip this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).  
 [CLIPflexR documentation](../reference/fastx_clipper.html)
 
 
 ```r
-samples_split_std_rm5_rm3 <- lapply(samples_split_std_rm5, fastx_clipper, length = 18, adaptor="GTGTCAGTCACTTCCAGCGG")
+samples_split_std_rm5_rm3 <- lapply(samples_split_std_rm5, fastx_clipper, length = 18, adapter="GTGTCAGTCACTTCCAGCGG")
 samples_split_std_rm5_rm3
 ```
 
@@ -351,11 +358,11 @@ samples_split_BrdU <- fastx_barcode_splitter(BrdU_rm5, bcFile = BCfile[[1]], ver
 ```
 
 ```
-## fastx_collapser command is cat /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG091819_S1_L001_R1_001_collapse_rm5.fasta | /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/fastx_barcode_splitter.pl --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_BC.txt --bol --mismatches 0 --prefix 'KRG091819_S1_L001_R1_001_collapse_rm5_'
+## barcode_splitter command is cat /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/QF_KRG091819_S1_L001_R1_001_collapse_rm5.fasta | /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/fastx_barcode_splitter.pl --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_BC.txt --bol --mismatches 0 --prefix '/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_'
 ```
 
 ```
-## fastx_collapser arguments are  --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_BC.txt--bol--mismatches 0 --prefix 'KRG091819_S1_L001_R1_001_collapse_rm5_'
+## barcode_splitter arguments are  --bcfile /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_BC.txt--bol--mismatches 0 --prefix '/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_'
 ```
 
 ```r
@@ -397,13 +404,13 @@ head(BrdU_samples_stats)
 ## 4 Aag2_Ago2_Exp6B 393337
 ## 5 Aag2_mIgG_Exp6A   1688
 ## 6 Aag2_mIgG_Exp6B    926
-##                                                Location
-## 1 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A
-## 2 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B
-## 3 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago2_Exp6A
-## 4 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago2_Exp6B
-## 5 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_mIgG_Exp6A
-## 6 KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_mIgG_Exp6B
+##                                                                                                                     Location
+## 1 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A
+## 2 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B
+## 3 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago2_Exp6A
+## 4 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago2_Exp6B
+## 5 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_mIgG_Exp6A
+## 6 /Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_mIgG_Exp6B
 ```
 
 ### Trim 3 "not G" (DDD) and index (6nt) from the 5' end of reads **(wrapping  FASTX's fastx_trimmer)**
@@ -469,12 +476,12 @@ BrdU_split_rm5
 
 ### Fastx_clipper **(wrapping FASTX's fastx_clipper)**
 Trimming 3'-end adapter sequences using R-wrapped **fastx_clipper** function from [FASTX_toolkit](http://hannonlab.cshl.edu/fastx_toolkit/commandline.html#fastx_clipper_usage).  
-**adaptor**: clip this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).  
+**adapter**: clip this sequence from the 3'-end of reads, "GTGTCAGTCACTTCCAGCGG" (default); **length**: minimum read length, only keep reads with length equal or greater then this threshold, 18 (default).  
 [CLIPflexR documentation](../reference/fastx_clipper.html)
 
 
 ```r
-BrdU_split_rm5_rm3 <- lapply(BrdU_split_rm5, fastx_clipper, length = 18, adaptor="GTGTCAGTCACTTCCAGCGG")
+BrdU_split_rm5_rm3 <- lapply(BrdU_split_rm5, fastx_clipper, length = 18, adapter="GTGTCAGTCACTTCCAGCGG")
 BrdU_split_rm5_rm3
 ```
 
@@ -529,13 +536,13 @@ BrdU_split_rm5_rm3
 ```
 These reads are now ready to map to your genome
 
-## Build a Bowtie2 genome index and align to genome using Rbowtie2
+## Build a Bowtie2 genome index and align to genome using Rbowtie2.
 Build Bowtie2 index of reference genome, AaegL5 in this vignette.  
 [Index documentation](../reference/bowtie2_index.html); see also [CTK processing vignette](StandardandBrdU_Processing_CTK_editJD.html).  
 
 Align reads to genome by bowtie.  
-**format**: format of input sequences, fasta (default) or fastq; **threads**: number of threads used, 1 (default); **maxMismatches**: number of mismatches allowed, 1 (default) or 0; **seedSubString**: length of seed substrings, 18 (default), must be >3 & <32; **report_k**: NULL, look for multiple alignments, report best (default), otherwise report up to n (integer) alignments per read.  
-[Alignment documentation](../reference/bowtie_align.html)
+**format**: format of input sequences, fasta (default) or fastq; **threads**: number of threads used, 1 (default); **mode**: "genome_map" (default, for mapping reads to a genome) or "reverse_map" (for mapping short sequences such as miRNAs to reads); mode can be set to NULL to set parameters manually  
+see [bowtie_align documentation](../reference/bowtie_align.html); see also [Rbowtie2](https://www.bioconductor.org/packages/release/bioc/vignettes/Rbowtie2/inst/doc/Rbowtie2-Introduction.html)
 
 
 ```r
@@ -572,27 +579,27 @@ tomap
 
 ```r
 #map files to genome with default parameters: maxMismatches=1,seedSubString=18,threads=1,report_k=NULL
-bams <- lapply(tomap, bowtie_align, genomeIndex)
+bams <- lapply(tomap, bowtie_align, genomeIndex, mode = "genome_map")
 bams
 ```
 
 ```
 ## [[1]]
-## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.fa.bam"
+## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.bam"
 ## 
 ## [[2]]
-## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.fa.bam"
+## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.bam"
 ## 
 ## [[3]]
-## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.fa.bam"
+## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.bam"
 ## 
 ## [[4]]
-## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bam"
+## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.bam"
 ```
 
-## Convert to beds, find peaks, and build count matrix
+##Convert to beds, find peaks, and build count matrix
 
-### Convert to beds
+###Convert to beds
 [CLIPflexR documentation](../reference/bamtobed_index.html)
 
 
@@ -603,16 +610,16 @@ beds
 
 ```
 ## [[1]]
-## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.fa.bed"
+## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.bed"
 ## 
 ## [[2]]
-## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.fa.bed"
+## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.bed"
 ## 
 ## [[3]]
-## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.fa.bed"
+## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.bed"
 ## 
 ## [[4]]
-## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bed"
+## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.bed"
 ```
 
 ### Make tag directories and findpeaks **(wrapping HOMER's MakeTagDirectory and findpeaks)**
@@ -649,34 +656,34 @@ head(peakmat)
 ```
 
 ```
-##      Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.fa/peaks.txt
-## [1,]                                                                               FALSE
-## [2,]                                                                               FALSE
-## [3,]                                                                               FALSE
-## [4,]                                                                                TRUE
-## [5,]                                                                               FALSE
-## [6,]                                                                                TRUE
-##      Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.fa/peaks.txt
-## [1,]                                                                               FALSE
-## [2,]                                                                               FALSE
-## [3,]                                                                               FALSE
-## [4,]                                                                               FALSE
-## [5,]                                                                                TRUE
-## [6,]                                                                               FALSE
-##      Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.fa/peaks.txt
-## [1,]                                                                          FALSE
-## [2,]                                                                           TRUE
-## [3,]                                                                           TRUE
-## [4,]                                                                          FALSE
-## [5,]                                                                          FALSE
-## [6,]                                                                          FALSE
-##      Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa/peaks.txt
-## [1,]                                                                           TRUE
-## [2,]                                                                          FALSE
-## [3,]                                                                          FALSE
-## [4,]                                                                          FALSE
-## [5,]                                                                           TRUE
-## [6,]                                                                          FALSE
+##      KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip/peaks.txt
+## [1,]                                                                     FALSE
+## [2,]                                                                     FALSE
+## [3,]                                                                     FALSE
+## [4,]                                                                      TRUE
+## [5,]                                                                     FALSE
+## [6,]                                                                      TRUE
+##      KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip/peaks.txt
+## [1,]                                                                     FALSE
+## [2,]                                                                     FALSE
+## [3,]                                                                     FALSE
+## [4,]                                                                     FALSE
+## [5,]                                                                      TRUE
+## [6,]                                                                     FALSE
+##      KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip/peaks.txt
+## [1,]                                                                FALSE
+## [2,]                                                                 TRUE
+## [3,]                                                                 TRUE
+## [4,]                                                                FALSE
+## [5,]                                                                FALSE
+## [6,]                                                                FALSE
+##      KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip/peaks.txt
+## [1,]                                                                 TRUE
+## [2,]                                                                FALSE
+## [3,]                                                                FALSE
+## [4,]                                                                FALSE
+## [5,]                                                                 TRUE
+## [6,]                                                                FALSE
 ```
 
 ### The next step is to countFromBed  to append the number of reads at each peak location, by sample
@@ -712,6 +719,8 @@ colnames(countmat) <- basename(unlist(beds))
 
 #now bind nGRSet, a GRanges with peak ranges and TRUE/FALSE at each peak, with countmat, the number of reads at each peak
 mcols(nGRSet) <- cbind(as.data.frame(mcols(nGRSet)),countmat)
+
+#you can convert this GRanges object to a dataframe
 peaksDF <- as.data.frame(nGRSet)
 peaksDF$peakID <- paste0(peaksDF$seqnames, ":", peaksDF$start, "_", peaksDF$end, ":", peaksDF$strand)
 head(peaksDF)
@@ -725,62 +734,62 @@ head(peaksDF)
 ## 4        1 1386212 1386222    11      +
 ## 5        1 1947557 1947569    13      +
 ## 6        1 1947625 1947635    11      +
-##   Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.fa.peaks.txt
-## 1                                                                               FALSE
-## 2                                                                               FALSE
-## 3                                                                               FALSE
-## 4                                                                                TRUE
-## 5                                                                               FALSE
-## 6                                                                                TRUE
-##   Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.fa.peaks.txt
-## 1                                                                               FALSE
-## 2                                                                               FALSE
-## 3                                                                               FALSE
-## 4                                                                               FALSE
-## 5                                                                                TRUE
-## 6                                                                               FALSE
-##   Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.fa.peaks.txt
-## 1                                                                          FALSE
-## 2                                                                           TRUE
-## 3                                                                           TRUE
-## 4                                                                          FALSE
-## 5                                                                          FALSE
-## 6                                                                          FALSE
-##   Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.peaks.txt
-## 1                                                                           TRUE
-## 2                                                                          FALSE
-## 3                                                                          FALSE
-## 4                                                                          FALSE
-## 5                                                                           TRUE
-## 6                                                                          FALSE
-##   Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.fa.bed
-## 1                                                                             0
-## 2                                                                             0
-## 3                                                                             0
-## 4                                                                             3
-## 5                                                                             3
-## 6                                                                             3
-##   Sorted_KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.fa.bed
-## 1                                                                             0
-## 2                                                                             0
-## 3                                                                             0
-## 4                                                                             1
-## 5                                                                             4
-## 6                                                                             1
-##   Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.fa.bed
-## 1                                                                        0
-## 2                                                                        3
-## 3                                                                        3
-## 4                                                                        0
-## 5                                                                        5
-## 6                                                                        2
-##   Sorted_KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.fa.bed
-## 1                                                                        3
-## 2                                                                        0
-## 3                                                                        3
-## 4                                                                        0
-## 5                                                                        5
-## 6                                                                        0
+##   KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.peaks.txt
+## 1                                                                     FALSE
+## 2                                                                     FALSE
+## 3                                                                     FALSE
+## 4                                                                      TRUE
+## 5                                                                     FALSE
+## 6                                                                      TRUE
+##   KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.peaks.txt
+## 1                                                                     FALSE
+## 2                                                                     FALSE
+## 3                                                                     FALSE
+## 4                                                                     FALSE
+## 5                                                                      TRUE
+## 6                                                                     FALSE
+##   KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.peaks.txt
+## 1                                                                FALSE
+## 2                                                                 TRUE
+## 3                                                                 TRUE
+## 4                                                                FALSE
+## 5                                                                FALSE
+## 6                                                                FALSE
+##   KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.peaks.txt
+## 1                                                                 TRUE
+## 2                                                                FALSE
+## 3                                                                FALSE
+## 4                                                                FALSE
+## 5                                                                 TRUE
+## 6                                                                FALSE
+##   KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6A_trim_clip.bed
+## 1                                                                   0
+## 2                                                                   0
+## 3                                                                   0
+## 4                                                                   3
+## 5                                                                   3
+## 6                                                                   3
+##   KRG091819_S1_L001_R1_001_collapse_rm5_Aag2_Ago1_Exp6B_trim_clip.bed
+## 1                                                                   0
+## 2                                                                   0
+## 3                                                                   0
+## 4                                                                   1
+## 5                                                                   4
+## 6                                                                   1
+##   KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7A_rm5_clip.bed
+## 1                                                              0
+## 2                                                              3
+## 3                                                              3
+## 4                                                              0
+## 5                                                              5
+## 6                                                              2
+##   KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.bed
+## 1                                                              3
+## 2                                                              0
+## 3                                                              3
+## 4                                                              0
+## 5                                                              5
+## 6                                                              0
 ##                peakID
 ## 1   1:301043_301053:+
 ## 2   1:580903_580913:+
@@ -790,4 +799,97 @@ head(peaksDF)
 ## 6 1:1947625_1947635:+
 ```
 
-### Now you have your count matrix - you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more...
+### now you have your count matrix!
+
+### you can perform operations on sample groups to filter, visualize data, annotate your peaks, and more... 
+
+For example, if you are dealing with a custom genome without pre-built genomes and annotation, you can still easily annotate your peaks  
+Here we provide an example using [ChIPseeker](http://bioconductor.org/packages/release/bioc/html/ChIPseeker.html),  which you can also use to visualize genomic annotation (see [ChIPseeker vignette](http://bioconductor.org/packages/devel/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html#:~:text=ChIPseeker%20is%20an%20R%20package,peaks%20binding%20to%20TSS%20regions.&text=Currently%2C%20ChIPseeker%20contains%2017%2C000%20bed%20file%20information%20from%20GEO%20database.) for alternate visualizations)
+
+```r
+#load required packages
+library(ChIPseeker)
+library(GenomicFeatures)
+
+gtffile <- "/Users/kathryn/Aedes-aegypti-LVP_AGWG_BASEFEATURES_AaegL5.2.gtf"  #custom gtf or gff
+ 
+TxDb <- makeTxDbFromGFF(gtffile)
+```
+
+```
+## Import genomic features from the file as a GRanges object ... OK
+## Prepare the 'metadata' data frame ... OK
+## Make the TxDb object ...
+```
+
+```
+## Warning in .get_cds_IDX(type, phase): The "phase" metadata column contains non-NA values for features of
+##   type stop_codon. This information was ignored.
+```
+
+```
+## OK
+```
+
+```r
+allanno <- annotatePeak(nGRSet,
+                              TxDb=TxDb,
+                              sameStrand=FALSE,
+                              genomicAnnotationPriority = c("3UTR", "5UTR", "Exon",
+                                                            "Intron", "Promoter", "Downstream", "Intergenic"),
+                              overlap = "all")
+```
+
+```
+## >> preparing features information...		 2021-03-16 02:33:31 
+## >> identifying nearest features...		 2021-03-16 02:33:31
+```
+
+```
+## Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+##   - in 'x': NIGP01000081, NIGP01000723, NIGP01001312, NIGP01001552, NIGP01001579, NIGP01001581, NIGP01001642, NIGP01001658, NIGP01001735, NIGP01001852, NIGP01002067, NIGP01000332, NIGP01000588, NIGP01001651, NIGP01001665, NIGP01001990, NIGP01000226, NIGP01000358, NIGP01000825, NIGP01000917, NIGP01000946, NIGP01001002, NIGP01001056, NIGP01001101, NIGP01001349, NIGP01001814, NIGP01002025, NIGP01001900
+##   - in 'y': NIGP01000006, NIGP01000009, NIGP01000010, NIGP01000015, NIGP01000025, NIGP01000028, NIGP01000033, NIGP01000036, NIGP01000043, NIGP01000049, NIGP01000051, NIGP01000052, NIGP01000055, NIGP01000056, NIGP01000062, NIGP01000063, NIGP01000064, NIGP01000073, NIGP01000075, NIGP01000076, NIGP01000077, NIGP01000079, NIGP01000080, NIGP01000083, NIGP01000087, NIGP01000094, NIGP01000096, NIGP01000101, NIGP01000102, NIGP01000104, NIGP01000106, NIGP01000107, NIGP01000110, NIGP01000115, NIGP01000116, NIGP01000117, NIGP01000121, NIGP01000123, NIGP01000124, NIGP01000125, NIGP01000129, NIGP01000130, NIGP01000133, NIGP01000134, NIGP01000137, NIGP01000139, NIGP01000144, NIGP01000149, NIGP01000156, NIGP01000158, NIGP01000159, NIGP01000172, NIGP01000177, NIGP01000180, NIGP01000183, NIGP01000184, NIGP01000185, NIGP01000186, NIGP01000187, NIGP01000188, NIGP01000189, NIGP01000197, NIGP01000198, NIGP01000200, NIGP01000201, NIGP01000203, NIGP01000204, NIGP01000205, NIGP01000206, NIGP01000207, NIGP01000210, NIGP01000212, NIGP01000213, NIGP01000216, NIGP01000218, NIGP01000220, NIGP01000221, NIGP01000222, NIGP01000223, NIGP01000225, NIGP01000228, NIGP01000230, NIGP01000236, NIGP01000238, NIGP01000239, NIGP01000240, NIGP01000244, NIGP01000247, NIGP01000248, NIGP01000250, NIGP01000253, NIGP01000254, NIGP01000256, NIGP01000257, NIGP01000262, NIGP01000263, NIGP01000265, NIGP01000267, NIGP01000270, NIGP01000280, NIGP01000281, NIGP01000288, NIGP01000290, NIGP01000292, NIGP01000294, NIGP01000295, NIGP01000297, NIGP01000298, NIGP01000309, NIGP01000310, NIGP01000312, NIGP01000315, NIGP01000319, NIGP01000324, NIGP01000325, NIGP01000329, NIGP01000330, NIGP01000345, NIGP01000349, NIGP01000351, NIGP01000352, NIGP01000356, NIGP01000357, NIGP01000359, NIGP01000363, NIGP01000365, NIGP01000371, NIGP01000374, NIGP01000375, NIGP01000376, NIGP01000377, NIGP01000379, NIGP01000383, NIGP01000386, NIGP01000396, NIGP01000397, NIGP01000407, NIGP01000410, NIGP01000412, NIGP01000413, NIGP01000415, NIGP01000417, NIGP01000421, NIGP01000422, NIGP01000424, NIGP01000428, NIGP01000430, NIGP01000432, NIGP01000434, NIGP01000437, NIGP01000440, NIGP01000441, NIGP01000445, NIGP01000451, NIGP01000452, NIGP01000461, NIGP01000463, NIGP01000465, NIGP01000466, NIGP01000475, NIGP01000481, NIGP01000482, NIGP01000489, NIGP01000490, NIGP01000495, NIGP01000497, NIGP01000501, NIGP01000507, NIGP01000514, NIGP01000515, NIGP01000518, NIGP01000519, NIGP01000520, NIGP01000521, NIGP01000524, NIGP01000525, NIGP01000530, NIGP01000531, NIGP01000532, NIGP01000535, NIGP01000536, NIGP01000537, NIGP01000539, NIGP01000541, NIGP01000552, NIGP01000553, NIGP01000556, NIGP01000557, NIGP01000560, NIGP01000561, NIGP01000566, NIGP01000569, NIGP01000570, NIGP01000571, NIGP01000573, NIGP01000574, NIGP01000579, NIGP01000590, NIGP01000591, NIGP01000596, NIGP01000598, NIGP01000599, NIGP01000600, NIGP01000601, NIGP01000602, NIGP01000604, NIGP01000608, NIGP01000610, NIGP01000612, NIGP01000622, NIGP01000627, NIGP01000630, NIGP01000633, NIGP01000634, NIGP01000635, NIGP01000639, NIGP01000640, NIGP01000648, NIGP01000649, NIGP01000650, NIGP01000651, NIGP01000657, NIGP01000658, NIGP01000660, NIGP01000662, NIGP01000665, NIGP01000666, NIGP01000667, NIGP01000669, NIGP01000673, NIGP01000676, NIGP01000681, NIGP01000684, NIGP01000686, NIGP01000687, NIGP01000690, NIGP01000692, NIGP01000695, NIGP01000699, NIGP01000702, NIGP01000703, NIGP01000706, NIGP01000709, NIGP01000710, NIGP01000712, NIGP01000714, NIGP01000715, NIGP01000716, NIGP01000718, NIGP01000721, NIGP01000724, NIGP01000727, NIGP01000730, NIGP01000734, NIGP01000737, NIGP01000740, NIGP01000745, NIGP01000751, NIGP01000754, NIGP01000756, NIGP01000760, NIGP01000761, NIGP01000775, NIGP01000778, NIGP01000779, NIGP01000781, NIGP01000782, NIGP01000783, NIGP01000791, NIGP01000799, NIGP01000802, NIGP01000806, NIGP01000807, NIGP01000811, NIGP01000812, NIGP01000813, NIGP01000818, NIGP01000821, NIGP01000822, NIGP01000823, NIGP01000826, NIGP01000827, NIGP01000835, NIGP01000843, NIGP01000846, NIGP01000847, NIGP01000848, NIGP01000849, NIGP01000850, NIGP01000856, NIGP01000859, NIGP01000860, NIGP01000861, NIGP01000867, NIGP01000870, NIGP01000882, NIGP01000883, NIGP01000885, NIGP01000892, NIGP01000896, NIGP01000900, NIGP01000904, NIGP01000905, NIGP01000906, NIGP01000910, NIGP01000915, NIGP01000920, NIGP01000921, NIGP01000923, NIGP01000929, NIGP01000932, NIGP01000937, NIGP01000938, NIGP01000939, NIGP01000941, NIGP01000942, NIGP01000944, NIGP01000947, NIGP01000948, NIGP01000952, NIGP01000954, NIGP01000957, NIGP01000958, NIGP01000959, NIGP01000960, NIGP01000976, NIGP01000977, NIGP01000978, NIGP01000980, NIGP01000983, NIGP01000986, NIGP01000991, NIGP01000996, NIGP01001003, NIGP01001006, NIGP01001008, NIGP01001010, NIGP01001013, NIGP01001015, NIGP01001018, NIGP01001022, NIGP01001023, NIGP01001024, NIGP01001031, NIGP01001032, NIGP01001035, NIGP01001039, NIGP01001041, NIGP01001043, NIGP01001046, NIGP01001047, NIGP01001053, NIGP01001055, NIGP01001057, NIGP01001059, NIGP01001061, NIGP01001068, NIGP01001070, NIGP01001072, NIGP01001074, NIGP01001075, NIGP01001081, NIGP01001082, NIGP01001083, NIGP01001085, NIGP01001086, NIGP01001092, NIGP01001097, NIGP01001100, NIGP01001102, NIGP01001108, NIGP01001110, NIGP01001119, NIGP01001126, NIGP01001136, NIGP01001165, NIGP01001173, NIGP01001180, NIGP01001185, NIGP01001186, NIGP01001196, NIGP01001197, NIGP01001208, NIGP01001211, NIGP01001214, NIGP01001216, NIGP01001230, NIGP01001233, NIGP01001237, NIGP01001238, NIGP01001240, NIGP01001243, NIGP01001247, NIGP01001249, NIGP01001254, NIGP01001255, NIGP01001256, NIGP01001262, NIGP01001263, NIGP01001282, NIGP01001285, NIGP01001287, NIGP01001295, NIGP01001296, NIGP01001297, NIGP01001301, NIGP01001311, NIGP01001322, NIGP01001325, NIGP01001329, NIGP01001335, NIGP01001341, NIGP01001343, NIGP01001348, NIGP01001350, NIGP01001352, NIGP01001353, NIGP01001355, NIGP01001363, NIGP01001365, NIGP01001372, NIGP01001373, NIGP01001374, NIGP01001377, NIGP01001382, NIGP01001386, NIGP01001397, NIGP01001398, NIGP01001407, NIGP01001408, NIGP01001414, NIGP01001415, NIGP01001416, NIGP01001417, NIGP01001426, NIGP01001431, NIGP01001438, NIGP01001442, NIGP01001450, NIGP01001455, NIGP01001458, NIGP01001463, NIGP01001464, NIGP01001468, NIGP01001469, NIGP01001476, NIGP01001477, NIGP01001478, NIGP01001480, NIGP01001482, NIGP01001497, NIGP01001501, NIGP01001506, NIGP01001507, NIGP01001509, NIGP01001516, NIGP01001519, NIGP01001520, NIGP01001522, NIGP01001530, NIGP01001531, NIGP01001534, NIGP01001536, NIGP01001546, NIGP01001547, NIGP01001549, NIGP01001551, NIGP01001553, NIGP01001557, NIGP01001562, NIGP01001568, NIGP01001572, NIGP01001573, NIGP01001574, NIGP01001575, NIGP01001576, NIGP01001578, NIGP01001580, NIGP01001587, NIGP01001589, NIGP01001591, NIGP01001593, NIGP01001597, NIGP01001599, NIGP01001603, NIGP01001614, NIGP01001615, NIGP01001617, NIGP01001618, NIGP01001622, NIGP01001624, NIGP01001630, NIGP01001639, NIGP01001640, NIGP01001641, NIGP01001645, NIGP01001646, NIGP01001648, NIGP01001661, NIGP01001671, NIGP01001672, NIGP01001675, NIGP01001676, NIGP01001678, NIGP01001682, NIGP01001690, NIGP01001692, NIGP01001696, NIGP01001699, NIGP01001702, NIGP01001703, NIGP01001705, NIGP01001706, NIGP01001711, NIGP01001712, NIGP01001713, NIGP01001717, NIGP01001719, NIGP01001726, NIGP01001727, NIGP01001728, NIGP01001729, NIGP01001730, NIGP01001732, NIGP01001736, NIGP01001738, NIGP01001743, NIGP01001749, NIGP01001750, NIGP01001752, NIGP01001755, NIGP01001756, NIGP01001758, NIGP01001766, NIGP01001767, NIGP01001769, NIGP01001770, NIGP01001774, NIGP01001784, NIGP01001786, NIGP01001788, NIGP01001789, NIGP01001800, NIGP01001801, NIGP01001810, NIGP01001811, NIGP01001816, NIGP01001817, NIGP01001818, NIGP01001819, NIGP01
+```
+
+```
+## Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+##   - in 'x': NIGP01000081, NIGP01000723, NIGP01001312, NIGP01001552, NIGP01001579, NIGP01001581, NIGP01001642, NIGP01001658, NIGP01001735, NIGP01001852, NIGP01002067, NIGP01000332, NIGP01000588, NIGP01001651, NIGP01001665, NIGP01001990, NIGP01000226, NIGP01000358, NIGP01000825, NIGP01000917, NIGP01000946, NIGP01001002, NIGP01001056, NIGP01001101, NIGP01001349, NIGP01001814, NIGP01002025, NIGP01001900
+##   - in 'y': NIGP01000006, NIGP01000009, NIGP01000010, NIGP01000015, NIGP01000025, NIGP01000028, NIGP01000033, NIGP01000036, NIGP01000043, NIGP01000049, NIGP01000051, NIGP01000052, NIGP01000055, NIGP01000056, NIGP01000062, NIGP01000063, NIGP01000064, NIGP01000073, NIGP01000075, NIGP01000076, NIGP01000077, NIGP01000079, NIGP01000080, NIGP01000083, NIGP01000087, NIGP01000094, NIGP01000096, NIGP01000101, NIGP01000102, NIGP01000104, NIGP01000106, NIGP01000107, NIGP01000110, NIGP01000115, NIGP01000116, NIGP01000117, NIGP01000121, NIGP01000123, NIGP01000124, NIGP01000125, NIGP01000129, NIGP01000130, NIGP01000133, NIGP01000134, NIGP01000137, NIGP01000139, NIGP01000144, NIGP01000149, NIGP01000156, NIGP01000158, NIGP01000159, NIGP01000172, NIGP01000177, NIGP01000180, NIGP01000183, NIGP01000184, NIGP01000185, NIGP01000186, NIGP01000187, NIGP01000188, NIGP01000189, NIGP01000197, NIGP01000198, NIGP01000200, NIGP01000201, NIGP01000203, NIGP01000204, NIGP01000205, NIGP01000206, NIGP01000207, NIGP01000210, NIGP01000212, NIGP01000213, NIGP01000216, NIGP01000218, NIGP01000220, NIGP01000221, NIGP01000222, NIGP01000223, NIGP01000225, NIGP01000228, NIGP01000230, NIGP01000236, NIGP01000238, NIGP01000239, NIGP01000240, NIGP01000244, NIGP01000247, NIGP01000248, NIGP01000250, NIGP01000253, NIGP01000254, NIGP01000256, NIGP01000257, NIGP01000262, NIGP01000263, NIGP01000265, NIGP01000267, NIGP01000270, NIGP01000280, NIGP01000281, NIGP01000288, NIGP01000290, NIGP01000292, NIGP01000294, NIGP01000295, NIGP01000297, NIGP01000298, NIGP01000309, NIGP01000310, NIGP01000312, NIGP01000315, NIGP01000319, NIGP01000324, NIGP01000325, NIGP01000329, NIGP01000330, NIGP01000345, NIGP01000349, NIGP01000351, NIGP01000352, NIGP01000356, NIGP01000357, NIGP01000359, NIGP01000363, NIGP01000365, NIGP01000371, NIGP01000374, NIGP01000375, NIGP01000376, NIGP01000377, NIGP01000379, NIGP01000383, NIGP01000386, NIGP01000396, NIGP01000397, NIGP01000407, NIGP01000410, NIGP01000412, NIGP01000413, NIGP01000415, NIGP01000417, NIGP01000421, NIGP01000422, NIGP01000424, NIGP01000428, NIGP01000430, NIGP01000432, NIGP01000434, NIGP01000437, NIGP01000440, NIGP01000441, NIGP01000445, NIGP01000451, NIGP01000452, NIGP01000461, NIGP01000463, NIGP01000465, NIGP01000466, NIGP01000475, NIGP01000481, NIGP01000482, NIGP01000489, NIGP01000490, NIGP01000495, NIGP01000497, NIGP01000501, NIGP01000507, NIGP01000514, NIGP01000515, NIGP01000518, NIGP01000519, NIGP01000520, NIGP01000521, NIGP01000524, NIGP01000525, NIGP01000530, NIGP01000531, NIGP01000532, NIGP01000535, NIGP01000536, NIGP01000537, NIGP01000539, NIGP01000541, NIGP01000552, NIGP01000553, NIGP01000556, NIGP01000557, NIGP01000560, NIGP01000561, NIGP01000566, NIGP01000569, NIGP01000570, NIGP01000571, NIGP01000573, NIGP01000574, NIGP01000579, NIGP01000590, NIGP01000591, NIGP01000596, NIGP01000598, NIGP01000599, NIGP01000600, NIGP01000601, NIGP01000602, NIGP01000604, NIGP01000608, NIGP01000610, NIGP01000612, NIGP01000622, NIGP01000627, NIGP01000630, NIGP01000633, NIGP01000634, NIGP01000635, NIGP01000639, NIGP01000640, NIGP01000648, NIGP01000649, NIGP01000650, NIGP01000651, NIGP01000657, NIGP01000658, NIGP01000660, NIGP01000662, NIGP01000665, NIGP01000666, NIGP01000667, NIGP01000669, NIGP01000673, NIGP01000676, NIGP01000681, NIGP01000684, NIGP01000686, NIGP01000687, NIGP01000690, NIGP01000692, NIGP01000695, NIGP01000699, NIGP01000702, NIGP01000703, NIGP01000706, NIGP01000709, NIGP01000710, NIGP01000712, NIGP01000714, NIGP01000715, NIGP01000716, NIGP01000718, NIGP01000721, NIGP01000724, NIGP01000727, NIGP01000730, NIGP01000734, NIGP01000737, NIGP01000740, NIGP01000745, NIGP01000751, NIGP01000754, NIGP01000756, NIGP01000760, NIGP01000761, NIGP01000775, NIGP01000778, NIGP01000779, NIGP01000781, NIGP01000782, NIGP01000783, NIGP01000791, NIGP01000799, NIGP01000802, NIGP01000806, NIGP01000807, NIGP01000811, NIGP01000812, NIGP01000813, NIGP01000818, NIGP01000821, NIGP01000822, NIGP01000823, NIGP01000826, NIGP01000827, NIGP01000835, NIGP01000843, NIGP01000846, NIGP01000847, NIGP01000848, NIGP01000849, NIGP01000850, NIGP01000856, NIGP01000859, NIGP01000860, NIGP01000861, NIGP01000867, NIGP01000870, NIGP01000882, NIGP01000883, NIGP01000885, NIGP01000892, NIGP01000896, NIGP01000900, NIGP01000904, NIGP01000905, NIGP01000906, NIGP01000910, NIGP01000915, NIGP01000920, NIGP01000921, NIGP01000923, NIGP01000929, NIGP01000932, NIGP01000937, NIGP01000938, NIGP01000939, NIGP01000941, NIGP01000942, NIGP01000944, NIGP01000947, NIGP01000948, NIGP01000952, NIGP01000954, NIGP01000957, NIGP01000958, NIGP01000959, NIGP01000960, NIGP01000976, NIGP01000977, NIGP01000978, NIGP01000980, NIGP01000983, NIGP01000986, NIGP01000991, NIGP01000996, NIGP01001003, NIGP01001006, NIGP01001008, NIGP01001010, NIGP01001013, NIGP01001015, NIGP01001018, NIGP01001022, NIGP01001023, NIGP01001024, NIGP01001031, NIGP01001032, NIGP01001035, NIGP01001039, NIGP01001041, NIGP01001043, NIGP01001046, NIGP01001047, NIGP01001053, NIGP01001055, NIGP01001057, NIGP01001059, NIGP01001061, NIGP01001068, NIGP01001070, NIGP01001072, NIGP01001074, NIGP01001075, NIGP01001081, NIGP01001082, NIGP01001083, NIGP01001085, NIGP01001086, NIGP01001092, NIGP01001097, NIGP01001100, NIGP01001102, NIGP01001108, NIGP01001110, NIGP01001119, NIGP01001126, NIGP01001136, NIGP01001165, NIGP01001173, NIGP01001180, NIGP01001185, NIGP01001186, NIGP01001196, NIGP01001197, NIGP01001208, NIGP01001211, NIGP01001214, NIGP01001216, NIGP01001230, NIGP01001233, NIGP01001237, NIGP01001238, NIGP01001240, NIGP01001243, NIGP01001247, NIGP01001249, NIGP01001254, NIGP01001255, NIGP01001256, NIGP01001262, NIGP01001263, NIGP01001282, NIGP01001285, NIGP01001287, NIGP01001295, NIGP01001296, NIGP01001297, NIGP01001301, NIGP01001311, NIGP01001322, NIGP01001325, NIGP01001329, NIGP01001335, NIGP01001341, NIGP01001343, NIGP01001348, NIGP01001350, NIGP01001352, NIGP01001353, NIGP01001355, NIGP01001363, NIGP01001365, NIGP01001372, NIGP01001373, NIGP01001374, NIGP01001377, NIGP01001382, NIGP01001386, NIGP01001397, NIGP01001398, NIGP01001407, NIGP01001408, NIGP01001414, NIGP01001415, NIGP01001416, NIGP01001417, NIGP01001426, NIGP01001431, NIGP01001438, NIGP01001442, NIGP01001450, NIGP01001455, NIGP01001458, NIGP01001463, NIGP01001464, NIGP01001468, NIGP01001469, NIGP01001476, NIGP01001477, NIGP01001478, NIGP01001480, NIGP01001482, NIGP01001497, NIGP01001501, NIGP01001506, NIGP01001507, NIGP01001509, NIGP01001516, NIGP01001519, NIGP01001520, NIGP01001522, NIGP01001530, NIGP01001531, NIGP01001534, NIGP01001536, NIGP01001546, NIGP01001547, NIGP01001549, NIGP01001551, NIGP01001553, NIGP01001557, NIGP01001562, NIGP01001568, NIGP01001572, NIGP01001573, NIGP01001574, NIGP01001575, NIGP01001576, NIGP01001578, NIGP01001580, NIGP01001587, NIGP01001589, NIGP01001591, NIGP01001593, NIGP01001597, NIGP01001599, NIGP01001603, NIGP01001614, NIGP01001615, NIGP01001617, NIGP01001618, NIGP01001622, NIGP01001624, NIGP01001630, NIGP01001639, NIGP01001640, NIGP01001641, NIGP01001645, NIGP01001646, NIGP01001648, NIGP01001661, NIGP01001671, NIGP01001672, NIGP01001675, NIGP01001676, NIGP01001678, NIGP01001682, NIGP01001690, NIGP01001692, NIGP01001696, NIGP01001699, NIGP01001702, NIGP01001703, NIGP01001705, NIGP01001706, NIGP01001711, NIGP01001712, NIGP01001713, NIGP01001717, NIGP01001719, NIGP01001726, NIGP01001727, NIGP01001728, NIGP01001729, NIGP01001730, NIGP01001732, NIGP01001736, NIGP01001738, NIGP01001743, NIGP01001749, NIGP01001750, NIGP01001752, NIGP01001755, NIGP01001756, NIGP01001758, NIGP01001766, NIGP01001767, NIGP01001769, NIGP01001770, NIGP01001774, NIGP01001784, NIGP01001786, NIGP01001788, NIGP01001789, NIGP01001800, NIGP01001801, NIGP01001810, NIGP01001811, NIGP01001816, NIGP01001817, NIGP01001818, NIGP01001819, NIGP01
+```
+
+```
+## >> calculating distance from peak to TSS...	 2021-03-16 02:33:31 
+## >> assigning genomic annotation...		 2021-03-16 02:33:31
+```
+
+```
+## Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+##   - in 'x': NIGP01000081, NIGP01000723, NIGP01001312, NIGP01001552, NIGP01001579, NIGP01001581, NIGP01001642, NIGP01001658, NIGP01001735, NIGP01001852, NIGP01002067, NIGP01000332, NIGP01000588, NIGP01001651, NIGP01001665, NIGP01001990, NIGP01000226, NIGP01000358, NIGP01000825, NIGP01000917, NIGP01000946, NIGP01001002, NIGP01001056, NIGP01001101, NIGP01001349, NIGP01001814, NIGP01002025, NIGP01001900
+##   - in 'y': NIGP01000006, NIGP01000009, NIGP01000010, NIGP01000015, NIGP01000025, NIGP01000028, NIGP01000033, NIGP01000036, NIGP01000043, NIGP01000049, NIGP01000051, NIGP01000052, NIGP01000055, NIGP01000056, NIGP01000062, NIGP01000063, NIGP01000064, NIGP01000073, NIGP01000075, NIGP01000076, NIGP01000077, NIGP01000079, NIGP01000080, NIGP01000083, NIGP01000087, NIGP01000094, NIGP01000096, NIGP01000101, NIGP01000102, NIGP01000104, NIGP01000106, NIGP01000107, NIGP01000110, NIGP01000115, NIGP01000116, NIGP01000117, NIGP01000121, NIGP01000123, NIGP01000124, NIGP01000125, NIGP01000129, NIGP01000130, NIGP01000133, NIGP01000134, NIGP01000137, NIGP01000139, NIGP01000144, NIGP01000149, NIGP01000156, NIGP01000158, NIGP01000159, NIGP01000172, NIGP01000177, NIGP01000180, NIGP01000183, NIGP01000184, NIGP01000185, NIGP01000186, NIGP01000187, NIGP01000188, NIGP01000189, NIGP01000197, NIGP01000198, NIGP01000200, NIGP01000201, NIGP01000203, NIGP01000204, NIGP01000205, NIGP01000206, NIGP01000207, NIGP01000210, NIGP01000212, NIGP01000213, NIGP01000216, NIGP01000218, NIGP01000220, NIGP01000221, NIGP01000222, NIGP01000223, NIGP01000225, NIGP01000228, NIGP01000230, NIGP01000236, NIGP01000238, NIGP01000239, NIGP01000240, NIGP01000244, NIGP01000247, NIGP01000248, NIGP01000250, NIGP01000253, NIGP01000254, NIGP01000256, NIGP01000257, NIGP01000262, NIGP01000263, NIGP01000265, NIGP01000267, NIGP01000270, NIGP01000280, NIGP01000281, NIGP01000288, NIGP01000290, NIGP01000292, NIGP01000294, NIGP01000295, NIGP01000297, NIGP01000298, NIGP01000309, NIGP01000310, NIGP01000312, NIGP01000315, NIGP01000319, NIGP01000324, NIGP01000325, NIGP01000329, NIGP01000330, NIGP01000345, NIGP01000349, NIGP01000351, NIGP01000352, NIGP01000356, NIGP01000357, NIGP01000359, NIGP01000363, NIGP01000365, NIGP01000371, NIGP01000374, NIGP01000375, NIGP01000376, NIGP01000377, NIGP01000379, NIGP01000383, NIGP01000386, NIGP01000396, NIGP01000397, NIGP01000407, NIGP01000410, NIGP01000412, NIGP01000413, NIGP01000415, NIGP01000417, NIGP01000421, NIGP01000422, NIGP01000424, NIGP01000428, NIGP01000430, NIGP01000432, NIGP01000434, NIGP01000437, NIGP01000440, NIGP01000441, NIGP01000445, NIGP01000451, NIGP01000452, NIGP01000461, NIGP01000463, NIGP01000465, NIGP01000466, NIGP01000475, NIGP01000481, NIGP01000482, NIGP01000489, NIGP01000490, NIGP01000495, NIGP01000497, NIGP01000501, NIGP01000507, NIGP01000514, NIGP01000515, NIGP01000518, NIGP01000519, NIGP01000520, NIGP01000521, NIGP01000524, NIGP01000525, NIGP01000530, NIGP01000531, NIGP01000532, NIGP01000535, NIGP01000536, NIGP01000537, NIGP01000539, NIGP01000541, NIGP01000552, NIGP01000553, NIGP01000556, NIGP01000557, NIGP01000560, NIGP01000561, NIGP01000566, NIGP01000569, NIGP01000570, NIGP01000571, NIGP01000573, NIGP01000574, NIGP01000579, NIGP01000590, NIGP01000591, NIGP01000596, NIGP01000598, NIGP01000599, NIGP01000600, NIGP01000601, NIGP01000602, NIGP01000604, NIGP01000608, NIGP01000610, NIGP01000612, NIGP01000622, NIGP01000627, NIGP01000630, NIGP01000633, NIGP01000634, NIGP01000635, NIGP01000639, NIGP01000640, NIGP01000648, NIGP01000649, NIGP01000650, NIGP01000651, NIGP01000657, NIGP01000658, NIGP01000660, NIGP01000662, NIGP01000665, NIGP01000666, NIGP01000667, NIGP01000669, NIGP01000673, NIGP01000676, NIGP01000681, NIGP01000684, NIGP01000686, NIGP01000687, NIGP01000690, NIGP01000692, NIGP01000695, NIGP01000699, NIGP01000702, NIGP01000703, NIGP01000706, NIGP01000709, NIGP01000710, NIGP01000712, NIGP01000714, NIGP01000715, NIGP01000716, NIGP01000718, NIGP01000721, NIGP01000724, NIGP01000727, NIGP01000730, NIGP01000734, NIGP01000737, NIGP01000740, NIGP01000745, NIGP01000751, NIGP01000754, NIGP01000756, NIGP01000760, NIGP01000761, NIGP01000775, NIGP01000778, NIGP01000779, NIGP01000781, NIGP01000782, NIGP01000783, NIGP01000791, NIGP01000799, NIGP01000802, NIGP01000806, NIGP01000807, NIGP01000811, NIGP01000812, NIGP01000813, NIGP01000818, NIGP01000821, NIGP01000822, NIGP01000823, NIGP01000826, NIGP01000827, NIGP01000835, NIGP01000843, NIGP01000846, NIGP01000847, NIGP01000848, NIGP01000849, NIGP01000850, NIGP01000856, NIGP01000859, NIGP01000860, NIGP01000861, NIGP01000867, NIGP01000870, NIGP01000882, NIGP01000883, NIGP01000885, NIGP01000892, NIGP01000896, NIGP01000900, NIGP01000904, NIGP01000905, NIGP01000906, NIGP01000910, NIGP01000915, NIGP01000920, NIGP01000921, NIGP01000923, NIGP01000929, NIGP01000932, NIGP01000937, NIGP01000938, NIGP01000939, NIGP01000941, NIGP01000942, NIGP01000944, NIGP01000947, NIGP01000948, NIGP01000952, NIGP01000954, NIGP01000957, NIGP01000958, NIGP01000959, NIGP01000960, NIGP01000976, NIGP01000977, NIGP01000978, NIGP01000980, NIGP01000983, NIGP01000986, NIGP01000991, NIGP01000996, NIGP01001003, NIGP01001006, NIGP01001008, NIGP01001010, NIGP01001013, NIGP01001015, NIGP01001018, NIGP01001022, NIGP01001023, NIGP01001024, NIGP01001031, NIGP01001032, NIGP01001035, NIGP01001039, NIGP01001041, NIGP01001043, NIGP01001046, NIGP01001047, NIGP01001053, NIGP01001055, NIGP01001057, NIGP01001059, NIGP01001061, NIGP01001068, NIGP01001070, NIGP01001072, NIGP01001074, NIGP01001075, NIGP01001081, NIGP01001082, NIGP01001083, NIGP01001085, NIGP01001086, NIGP01001092, NIGP01001097, NIGP01001100, NIGP01001102, NIGP01001108, NIGP01001110, NIGP01001119, NIGP01001126, NIGP01001136, NIGP01001165, NIGP01001173, NIGP01001180, NIGP01001185, NIGP01001186, NIGP01001196, NIGP01001197, NIGP01001208, NIGP01001211, NIGP01001214, NIGP01001216, NIGP01001230, NIGP01001233, NIGP01001237, NIGP01001238, NIGP01001240, NIGP01001243, NIGP01001247, NIGP01001249, NIGP01001254, NIGP01001255, NIGP01001256, NIGP01001262, NIGP01001263, NIGP01001282, NIGP01001285, NIGP01001287, NIGP01001295, NIGP01001296, NIGP01001297, NIGP01001301, NIGP01001311, NIGP01001322, NIGP01001325, NIGP01001329, NIGP01001335, NIGP01001341, NIGP01001343, NIGP01001348, NIGP01001350, NIGP01001352, NIGP01001353, NIGP01001355, NIGP01001363, NIGP01001365, NIGP01001372, NIGP01001373, NIGP01001374, NIGP01001377, NIGP01001382, NIGP01001386, NIGP01001397, NIGP01001398, NIGP01001407, NIGP01001408, NIGP01001414, NIGP01001415, NIGP01001416, NIGP01001417, NIGP01001426, NIGP01001431, NIGP01001438, NIGP01001442, NIGP01001450, NIGP01001455, NIGP01001458, NIGP01001463, NIGP01001464, NIGP01001468, NIGP01001469, NIGP01001476, NIGP01001477, NIGP01001478, NIGP01001480, NIGP01001482, NIGP01001497, NIGP01001501, NIGP01001506, NIGP01001507, NIGP01001509, NIGP01001516, NIGP01001519, NIGP01001520, NIGP01001522, NIGP01001530, NIGP01001531, NIGP01001534, NIGP01001536, NIGP01001546, NIGP01001547, NIGP01001549, NIGP01001551, NIGP01001553, NIGP01001557, NIGP01001562, NIGP01001568, NIGP01001572, NIGP01001573, NIGP01001574, NIGP01001575, NIGP01001576, NIGP01001578, NIGP01001580, NIGP01001587, NIGP01001589, NIGP01001591, NIGP01001593, NIGP01001597, NIGP01001599, NIGP01001603, NIGP01001614, NIGP01001615, NIGP01001617, NIGP01001618, NIGP01001622, NIGP01001624, NIGP01001630, NIGP01001639, NIGP01001640, NIGP01001641, NIGP01001645, NIGP01001646, NIGP01001648, NIGP01001661, NIGP01001671, NIGP01001672, NIGP01001675, NIGP01001676, NIGP01001678, NIGP01001682, NIGP01001690, NIGP01001692, NIGP01001696, NIGP01001699, NIGP01001702, NIGP01001703, NIGP01001705, NIGP01001706, NIGP01001711, NIGP01001712, NIGP01001713, NIGP01001717, NIGP01001719, NIGP01001726, NIGP01001727, NIGP01001728, NIGP01001729, NIGP01001730, NIGP01001732, NIGP01001736, NIGP01001738, NIGP01001743, NIGP01001749, NIGP01001750, NIGP01001752, NIGP01001755, NIGP01001756, NIGP01001758, NIGP01001766, NIGP01001767, NIGP01001769, NIGP01001770, NIGP01001774, NIGP01001784, NIGP01001786, NIGP01001788, NIGP01001789, NIGP01001800, NIGP01001801, NIGP01001810, NIGP01001811, NIGP01001816, NIGP01001817, NIGP01001818, NIGP01001819, NIGP01
+
+## Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+##   - in 'x': NIGP01000081, NIGP01000723, NIGP01001312, NIGP01001552, NIGP01001579, NIGP01001581, NIGP01001642, NIGP01001658, NIGP01001735, NIGP01001852, NIGP01002067, NIGP01000332, NIGP01000588, NIGP01001651, NIGP01001665, NIGP01001990, NIGP01000226, NIGP01000358, NIGP01000825, NIGP01000917, NIGP01000946, NIGP01001002, NIGP01001056, NIGP01001101, NIGP01001349, NIGP01001814, NIGP01002025, NIGP01001900
+##   - in 'y': NIGP01000006, NIGP01000009, NIGP01000010, NIGP01000015, NIGP01000025, NIGP01000028, NIGP01000033, NIGP01000036, NIGP01000043, NIGP01000049, NIGP01000051, NIGP01000052, NIGP01000055, NIGP01000056, NIGP01000062, NIGP01000063, NIGP01000064, NIGP01000073, NIGP01000075, NIGP01000076, NIGP01000077, NIGP01000079, NIGP01000080, NIGP01000083, NIGP01000087, NIGP01000094, NIGP01000096, NIGP01000101, NIGP01000102, NIGP01000104, NIGP01000106, NIGP01000107, NIGP01000110, NIGP01000115, NIGP01000116, NIGP01000117, NIGP01000121, NIGP01000123, NIGP01000124, NIGP01000125, NIGP01000129, NIGP01000130, NIGP01000133, NIGP01000134, NIGP01000137, NIGP01000139, NIGP01000144, NIGP01000149, NIGP01000156, NIGP01000158, NIGP01000159, NIGP01000172, NIGP01000177, NIGP01000180, NIGP01000183, NIGP01000184, NIGP01000185, NIGP01000186, NIGP01000187, NIGP01000188, NIGP01000189, NIGP01000197, NIGP01000198, NIGP01000200, NIGP01000201, NIGP01000203, NIGP01000204, NIGP01000205, NIGP01000206, NIGP01000207, NIGP01000210, NIGP01000212, NIGP01000213, NIGP01000216, NIGP01000218, NIGP01000220, NIGP01000221, NIGP01000222, NIGP01000223, NIGP01000225, NIGP01000228, NIGP01000230, NIGP01000236, NIGP01000238, NIGP01000239, NIGP01000240, NIGP01000244, NIGP01000247, NIGP01000248, NIGP01000250, NIGP01000253, NIGP01000254, NIGP01000256, NIGP01000257, NIGP01000262, NIGP01000263, NIGP01000265, NIGP01000267, NIGP01000270, NIGP01000280, NIGP01000281, NIGP01000288, NIGP01000290, NIGP01000292, NIGP01000294, NIGP01000295, NIGP01000297, NIGP01000298, NIGP01000309, NIGP01000310, NIGP01000312, NIGP01000315, NIGP01000319, NIGP01000324, NIGP01000325, NIGP01000329, NIGP01000330, NIGP01000345, NIGP01000349, NIGP01000351, NIGP01000352, NIGP01000356, NIGP01000357, NIGP01000359, NIGP01000363, NIGP01000365, NIGP01000371, NIGP01000374, NIGP01000375, NIGP01000376, NIGP01000377, NIGP01000379, NIGP01000383, NIGP01000386, NIGP01000396, NIGP01000397, NIGP01000407, NIGP01000410, NIGP01000412, NIGP01000413, NIGP01000415, NIGP01000417, NIGP01000421, NIGP01000422, NIGP01000424, NIGP01000428, NIGP01000430, NIGP01000432, NIGP01000434, NIGP01000437, NIGP01000440, NIGP01000441, NIGP01000445, NIGP01000451, NIGP01000452, NIGP01000461, NIGP01000463, NIGP01000465, NIGP01000466, NIGP01000475, NIGP01000481, NIGP01000482, NIGP01000489, NIGP01000490, NIGP01000495, NIGP01000497, NIGP01000501, NIGP01000507, NIGP01000514, NIGP01000515, NIGP01000518, NIGP01000519, NIGP01000520, NIGP01000521, NIGP01000524, NIGP01000525, NIGP01000530, NIGP01000531, NIGP01000532, NIGP01000535, NIGP01000536, NIGP01000537, NIGP01000539, NIGP01000541, NIGP01000552, NIGP01000553, NIGP01000556, NIGP01000557, NIGP01000560, NIGP01000561, NIGP01000566, NIGP01000569, NIGP01000570, NIGP01000571, NIGP01000573, NIGP01000574, NIGP01000579, NIGP01000590, NIGP01000591, NIGP01000596, NIGP01000598, NIGP01000599, NIGP01000600, NIGP01000601, NIGP01000602, NIGP01000604, NIGP01000608, NIGP01000610, NIGP01000612, NIGP01000622, NIGP01000627, NIGP01000630, NIGP01000633, NIGP01000634, NIGP01000635, NIGP01000639, NIGP01000640, NIGP01000648, NIGP01000649, NIGP01000650, NIGP01000651, NIGP01000657, NIGP01000658, NIGP01000660, NIGP01000662, NIGP01000665, NIGP01000666, NIGP01000667, NIGP01000669, NIGP01000673, NIGP01000676, NIGP01000681, NIGP01000684, NIGP01000686, NIGP01000687, NIGP01000690, NIGP01000692, NIGP01000695, NIGP01000699, NIGP01000702, NIGP01000703, NIGP01000706, NIGP01000709, NIGP01000710, NIGP01000712, NIGP01000714, NIGP01000715, NIGP01000716, NIGP01000718, NIGP01000721, NIGP01000724, NIGP01000727, NIGP01000730, NIGP01000734, NIGP01000737, NIGP01000740, NIGP01000745, NIGP01000751, NIGP01000754, NIGP01000756, NIGP01000760, NIGP01000761, NIGP01000775, NIGP01000778, NIGP01000779, NIGP01000781, NIGP01000782, NIGP01000783, NIGP01000791, NIGP01000799, NIGP01000802, NIGP01000806, NIGP01000807, NIGP01000811, NIGP01000812, NIGP01000813, NIGP01000818, NIGP01000821, NIGP01000822, NIGP01000823, NIGP01000826, NIGP01000827, NIGP01000835, NIGP01000843, NIGP01000846, NIGP01000847, NIGP01000848, NIGP01000849, NIGP01000850, NIGP01000856, NIGP01000859, NIGP01000860, NIGP01000861, NIGP01000867, NIGP01000870, NIGP01000882, NIGP01000883, NIGP01000885, NIGP01000892, NIGP01000896, NIGP01000900, NIGP01000904, NIGP01000905, NIGP01000906, NIGP01000910, NIGP01000915, NIGP01000920, NIGP01000921, NIGP01000923, NIGP01000929, NIGP01000932, NIGP01000937, NIGP01000938, NIGP01000939, NIGP01000941, NIGP01000942, NIGP01000944, NIGP01000947, NIGP01000948, NIGP01000952, NIGP01000954, NIGP01000957, NIGP01000958, NIGP01000959, NIGP01000960, NIGP01000976, NIGP01000977, NIGP01000978, NIGP01000980, NIGP01000983, NIGP01000986, NIGP01000991, NIGP01000996, NIGP01001003, NIGP01001006, NIGP01001008, NIGP01001010, NIGP01001013, NIGP01001015, NIGP01001018, NIGP01001022, NIGP01001023, NIGP01001024, NIGP01001031, NIGP01001032, NIGP01001035, NIGP01001039, NIGP01001041, NIGP01001043, NIGP01001046, NIGP01001047, NIGP01001053, NIGP01001055, NIGP01001057, NIGP01001059, NIGP01001061, NIGP01001068, NIGP01001070, NIGP01001072, NIGP01001074, NIGP01001075, NIGP01001081, NIGP01001082, NIGP01001083, NIGP01001085, NIGP01001086, NIGP01001092, NIGP01001097, NIGP01001100, NIGP01001102, NIGP01001108, NIGP01001110, NIGP01001119, NIGP01001126, NIGP01001136, NIGP01001165, NIGP01001173, NIGP01001180, NIGP01001185, NIGP01001186, NIGP01001196, NIGP01001197, NIGP01001208, NIGP01001211, NIGP01001214, NIGP01001216, NIGP01001230, NIGP01001233, NIGP01001237, NIGP01001238, NIGP01001240, NIGP01001243, NIGP01001247, NIGP01001249, NIGP01001254, NIGP01001255, NIGP01001256, NIGP01001262, NIGP01001263, NIGP01001282, NIGP01001285, NIGP01001287, NIGP01001295, NIGP01001296, NIGP01001297, NIGP01001301, NIGP01001311, NIGP01001322, NIGP01001325, NIGP01001329, NIGP01001335, NIGP01001341, NIGP01001343, NIGP01001348, NIGP01001350, NIGP01001352, NIGP01001353, NIGP01001355, NIGP01001363, NIGP01001365, NIGP01001372, NIGP01001373, NIGP01001374, NIGP01001377, NIGP01001382, NIGP01001386, NIGP01001397, NIGP01001398, NIGP01001407, NIGP01001408, NIGP01001414, NIGP01001415, NIGP01001416, NIGP01001417, NIGP01001426, NIGP01001431, NIGP01001438, NIGP01001442, NIGP01001450, NIGP01001455, NIGP01001458, NIGP01001463, NIGP01001464, NIGP01001468, NIGP01001469, NIGP01001476, NIGP01001477, NIGP01001478, NIGP01001480, NIGP01001482, NIGP01001497, NIGP01001501, NIGP01001506, NIGP01001507, NIGP01001509, NIGP01001516, NIGP01001519, NIGP01001520, NIGP01001522, NIGP01001530, NIGP01001531, NIGP01001534, NIGP01001536, NIGP01001546, NIGP01001547, NIGP01001549, NIGP01001551, NIGP01001553, NIGP01001557, NIGP01001562, NIGP01001568, NIGP01001572, NIGP01001573, NIGP01001574, NIGP01001575, NIGP01001576, NIGP01001578, NIGP01001580, NIGP01001587, NIGP01001589, NIGP01001591, NIGP01001593, NIGP01001597, NIGP01001599, NIGP01001603, NIGP01001614, NIGP01001615, NIGP01001617, NIGP01001618, NIGP01001622, NIGP01001624, NIGP01001630, NIGP01001639, NIGP01001640, NIGP01001641, NIGP01001645, NIGP01001646, NIGP01001648, NIGP01001661, NIGP01001671, NIGP01001672, NIGP01001675, NIGP01001676, NIGP01001678, NIGP01001682, NIGP01001690, NIGP01001692, NIGP01001696, NIGP01001699, NIGP01001702, NIGP01001703, NIGP01001705, NIGP01001706, NIGP01001711, NIGP01001712, NIGP01001713, NIGP01001717, NIGP01001719, NIGP01001726, NIGP01001727, NIGP01001728, NIGP01001729, NIGP01001730, NIGP01001732, NIGP01001736, NIGP01001738, NIGP01001743, NIGP01001749, NIGP01001750, NIGP01001752, NIGP01001755, NIGP01001756, NIGP01001758, NIGP01001766, NIGP01001767, NIGP01001769, NIGP01001770, NIGP01001774, NIGP01001784, NIGP01001786, NIGP01001788, NIGP01001789, NIGP01001800, NIGP01001801, NIGP01001810, NIGP01001811, NIGP01001816, NIGP01001817, NIGP01001818, NIGP01001819, NIGP01
+
+## Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+##   - in 'x': NIGP01000081, NIGP01000723, NIGP01001312, NIGP01001552, NIGP01001579, NIGP01001581, NIGP01001642, NIGP01001658, NIGP01001735, NIGP01001852, NIGP01002067, NIGP01000332, NIGP01000588, NIGP01001651, NIGP01001665, NIGP01001990, NIGP01000226, NIGP01000358, NIGP01000825, NIGP01000917, NIGP01000946, NIGP01001002, NIGP01001056, NIGP01001101, NIGP01001349, NIGP01001814, NIGP01002025, NIGP01001900
+##   - in 'y': NIGP01000006, NIGP01000009, NIGP01000010, NIGP01000015, NIGP01000025, NIGP01000028, NIGP01000033, NIGP01000036, NIGP01000043, NIGP01000049, NIGP01000051, NIGP01000052, NIGP01000055, NIGP01000056, NIGP01000062, NIGP01000063, NIGP01000064, NIGP01000073, NIGP01000075, NIGP01000076, NIGP01000077, NIGP01000079, NIGP01000080, NIGP01000083, NIGP01000087, NIGP01000094, NIGP01000096, NIGP01000101, NIGP01000102, NIGP01000104, NIGP01000106, NIGP01000107, NIGP01000110, NIGP01000115, NIGP01000116, NIGP01000117, NIGP01000121, NIGP01000123, NIGP01000124, NIGP01000125, NIGP01000129, NIGP01000130, NIGP01000133, NIGP01000134, NIGP01000137, NIGP01000139, NIGP01000144, NIGP01000149, NIGP01000156, NIGP01000158, NIGP01000159, NIGP01000172, NIGP01000177, NIGP01000180, NIGP01000183, NIGP01000184, NIGP01000185, NIGP01000186, NIGP01000187, NIGP01000188, NIGP01000189, NIGP01000197, NIGP01000198, NIGP01000200, NIGP01000201, NIGP01000203, NIGP01000204, NIGP01000205, NIGP01000206, NIGP01000207, NIGP01000210, NIGP01000212, NIGP01000213, NIGP01000216, NIGP01000218, NIGP01000220, NIGP01000221, NIGP01000222, NIGP01000223, NIGP01000225, NIGP01000228, NIGP01000230, NIGP01000236, NIGP01000238, NIGP01000239, NIGP01000240, NIGP01000244, NIGP01000247, NIGP01000248, NIGP01000250, NIGP01000253, NIGP01000254, NIGP01000256, NIGP01000257, NIGP01000262, NIGP01000263, NIGP01000265, NIGP01000267, NIGP01000270, NIGP01000280, NIGP01000281, NIGP01000288, NIGP01000290, NIGP01000292, NIGP01000294, NIGP01000295, NIGP01000297, NIGP01000298, NIGP01000309, NIGP01000310, NIGP01000312, NIGP01000315, NIGP01000319, NIGP01000324, NIGP01000325, NIGP01000329, NIGP01000330, NIGP01000345, NIGP01000349, NIGP01000351, NIGP01000352, NIGP01000356, NIGP01000357, NIGP01000359, NIGP01000363, NIGP01000365, NIGP01000371, NIGP01000374, NIGP01000375, NIGP01000376, NIGP01000377, NIGP01000379, NIGP01000383, NIGP01000386, NIGP01000396, NIGP01000397, NIGP01000407, NIGP01000410, NIGP01000412, NIGP01000413, NIGP01000415, NIGP01000417, NIGP01000421, NIGP01000422, NIGP01000424, NIGP01000428, NIGP01000430, NIGP01000432, NIGP01000434, NIGP01000437, NIGP01000440, NIGP01000441, NIGP01000445, NIGP01000451, NIGP01000452, NIGP01000461, NIGP01000463, NIGP01000465, NIGP01000466, NIGP01000475, NIGP01000481, NIGP01000482, NIGP01000489, NIGP01000490, NIGP01000495, NIGP01000497, NIGP01000501, NIGP01000507, NIGP01000514, NIGP01000515, NIGP01000518, NIGP01000519, NIGP01000520, NIGP01000521, NIGP01000524, NIGP01000525, NIGP01000530, NIGP01000531, NIGP01000532, NIGP01000535, NIGP01000536, NIGP01000537, NIGP01000539, NIGP01000541, NIGP01000552, NIGP01000553, NIGP01000556, NIGP01000557, NIGP01000560, NIGP01000561, NIGP01000566, NIGP01000569, NIGP01000570, NIGP01000571, NIGP01000573, NIGP01000574, NIGP01000579, NIGP01000590, NIGP01000591, NIGP01000596, NIGP01000598, NIGP01000599, NIGP01000600, NIGP01000601, NIGP01000602, NIGP01000604, NIGP01000608, NIGP01000610, NIGP01000612, NIGP01000622, NIGP01000627, NIGP01000630, NIGP01000633, NIGP01000634, NIGP01000635, NIGP01000639, NIGP01000640, NIGP01000648, NIGP01000649, NIGP01000650, NIGP01000651, NIGP01000657, NIGP01000658, NIGP01000660, NIGP01000662, NIGP01000665, NIGP01000666, NIGP01000667, NIGP01000669, NIGP01000673, NIGP01000676, NIGP01000681, NIGP01000684, NIGP01000686, NIGP01000687, NIGP01000690, NIGP01000692, NIGP01000695, NIGP01000699, NIGP01000702, NIGP01000703, NIGP01000706, NIGP01000709, NIGP01000710, NIGP01000712, NIGP01000714, NIGP01000715, NIGP01000716, NIGP01000718, NIGP01000721, NIGP01000724, NIGP01000727, NIGP01000730, NIGP01000734, NIGP01000737, NIGP01000740, NIGP01000745, NIGP01000751, NIGP01000754, NIGP01000756, NIGP01000760, NIGP01000761, NIGP01000775, NIGP01000778, NIGP01000779, NIGP01000781, NIGP01000782, NIGP01000783, NIGP01000791, NIGP01000799, NIGP01000802, NIGP01000806, NIGP01000807, NIGP01000811, NIGP01000812, NIGP01000813, NIGP01000818, NIGP01000821, NIGP01000822, NIGP01000823, NIGP01000826, NIGP01000827, NIGP01000835, NIGP01000843, NIGP01000846, NIGP01000847, NIGP01000848, NIGP01000849, NIGP01000850, NIGP01000856, NIGP01000859, NIGP01000860, NIGP01000861, NIGP01000867, NIGP01000870, NIGP01000882, NIGP01000883, NIGP01000885, NIGP01000892, NIGP01000896, NIGP01000900, NIGP01000904, NIGP01000905, NIGP01000906, NIGP01000910, NIGP01000915, NIGP01000920, NIGP01000921, NIGP01000923, NIGP01000929, NIGP01000932, NIGP01000937, NIGP01000938, NIGP01000939, NIGP01000941, NIGP01000942, NIGP01000944, NIGP01000947, NIGP01000948, NIGP01000952, NIGP01000954, NIGP01000957, NIGP01000958, NIGP01000959, NIGP01000960, NIGP01000976, NIGP01000977, NIGP01000978, NIGP01000980, NIGP01000983, NIGP01000986, NIGP01000991, NIGP01000996, NIGP01001003, NIGP01001006, NIGP01001008, NIGP01001010, NIGP01001013, NIGP01001015, NIGP01001018, NIGP01001022, NIGP01001023, NIGP01001024, NIGP01001031, NIGP01001032, NIGP01001035, NIGP01001039, NIGP01001041, NIGP01001043, NIGP01001046, NIGP01001047, NIGP01001053, NIGP01001055, NIGP01001057, NIGP01001059, NIGP01001061, NIGP01001068, NIGP01001070, NIGP01001072, NIGP01001074, NIGP01001075, NIGP01001081, NIGP01001082, NIGP01001083, NIGP01001085, NIGP01001086, NIGP01001092, NIGP01001097, NIGP01001100, NIGP01001102, NIGP01001108, NIGP01001110, NIGP01001119, NIGP01001126, NIGP01001136, NIGP01001165, NIGP01001173, NIGP01001180, NIGP01001185, NIGP01001186, NIGP01001196, NIGP01001197, NIGP01001208, NIGP01001211, NIGP01001214, NIGP01001216, NIGP01001230, NIGP01001233, NIGP01001237, NIGP01001238, NIGP01001240, NIGP01001243, NIGP01001247, NIGP01001249, NIGP01001254, NIGP01001255, NIGP01001256, NIGP01001262, NIGP01001263, NIGP01001282, NIGP01001285, NIGP01001287, NIGP01001295, NIGP01001296, NIGP01001297, NIGP01001301, NIGP01001311, NIGP01001322, NIGP01001325, NIGP01001329, NIGP01001335, NIGP01001341, NIGP01001343, NIGP01001348, NIGP01001350, NIGP01001352, NIGP01001353, NIGP01001355, NIGP01001363, NIGP01001365, NIGP01001372, NIGP01001373, NIGP01001374, NIGP01001377, NIGP01001382, NIGP01001386, NIGP01001397, NIGP01001398, NIGP01001407, NIGP01001408, NIGP01001414, NIGP01001415, NIGP01001416, NIGP01001417, NIGP01001426, NIGP01001431, NIGP01001438, NIGP01001442, NIGP01001450, NIGP01001455, NIGP01001458, NIGP01001463, NIGP01001464, NIGP01001468, NIGP01001469, NIGP01001476, NIGP01001477, NIGP01001478, NIGP01001480, NIGP01001482, NIGP01001497, NIGP01001501, NIGP01001506, NIGP01001507, NIGP01001509, NIGP01001516, NIGP01001519, NIGP01001520, NIGP01001522, NIGP01001530, NIGP01001531, NIGP01001534, NIGP01001536, NIGP01001546, NIGP01001547, NIGP01001549, NIGP01001551, NIGP01001553, NIGP01001557, NIGP01001562, NIGP01001568, NIGP01001572, NIGP01001573, NIGP01001574, NIGP01001575, NIGP01001576, NIGP01001578, NIGP01001580, NIGP01001587, NIGP01001589, NIGP01001591, NIGP01001593, NIGP01001597, NIGP01001599, NIGP01001603, NIGP01001614, NIGP01001615, NIGP01001617, NIGP01001618, NIGP01001622, NIGP01001624, NIGP01001630, NIGP01001639, NIGP01001640, NIGP01001641, NIGP01001645, NIGP01001646, NIGP01001648, NIGP01001661, NIGP01001671, NIGP01001672, NIGP01001675, NIGP01001676, NIGP01001678, NIGP01001682, NIGP01001690, NIGP01001692, NIGP01001696, NIGP01001699, NIGP01001702, NIGP01001703, NIGP01001705, NIGP01001706, NIGP01001711, NIGP01001712, NIGP01001713, NIGP01001717, NIGP01001719, NIGP01001726, NIGP01001727, NIGP01001728, NIGP01001729, NIGP01001730, NIGP01001732, NIGP01001736, NIGP01001738, NIGP01001743, NIGP01001749, NIGP01001750, NIGP01001752, NIGP01001755, NIGP01001756, NIGP01001758, NIGP01001766, NIGP01001767, NIGP01001769, NIGP01001770, NIGP01001774, NIGP01001784, NIGP01001786, NIGP01001788, NIGP01001789, NIGP01001800, NIGP01001801, NIGP01001810, NIGP01001811, NIGP01001816, NIGP01001817, NIGP01001818, NIGP01001819, NIGP01
+
+## Warning in .Seqinfo.mergexy(x, y): Each of the 2 combined objects has sequence levels not in the other:
+##   - in 'x': NIGP01000081, NIGP01000723, NIGP01001312, NIGP01001552, NIGP01001579, NIGP01001581, NIGP01001642, NIGP01001658, NIGP01001735, NIGP01001852, NIGP01002067, NIGP01000332, NIGP01000588, NIGP01001651, NIGP01001665, NIGP01001990, NIGP01000226, NIGP01000358, NIGP01000825, NIGP01000917, NIGP01000946, NIGP01001002, NIGP01001056, NIGP01001101, NIGP01001349, NIGP01001814, NIGP01002025, NIGP01001900
+##   - in 'y': NIGP01000006, NIGP01000009, NIGP01000010, NIGP01000015, NIGP01000025, NIGP01000028, NIGP01000033, NIGP01000036, NIGP01000043, NIGP01000049, NIGP01000051, NIGP01000052, NIGP01000055, NIGP01000056, NIGP01000062, NIGP01000063, NIGP01000064, NIGP01000073, NIGP01000075, NIGP01000076, NIGP01000077, NIGP01000079, NIGP01000080, NIGP01000083, NIGP01000087, NIGP01000094, NIGP01000096, NIGP01000101, NIGP01000102, NIGP01000104, NIGP01000106, NIGP01000107, NIGP01000110, NIGP01000115, NIGP01000116, NIGP01000117, NIGP01000121, NIGP01000123, NIGP01000124, NIGP01000125, NIGP01000129, NIGP01000130, NIGP01000133, NIGP01000134, NIGP01000137, NIGP01000139, NIGP01000144, NIGP01000149, NIGP01000156, NIGP01000158, NIGP01000159, NIGP01000172, NIGP01000177, NIGP01000180, NIGP01000183, NIGP01000184, NIGP01000185, NIGP01000186, NIGP01000187, NIGP01000188, NIGP01000189, NIGP01000197, NIGP01000198, NIGP01000200, NIGP01000201, NIGP01000203, NIGP01000204, NIGP01000205, NIGP01000206, NIGP01000207, NIGP01000210, NIGP01000212, NIGP01000213, NIGP01000216, NIGP01000218, NIGP01000220, NIGP01000221, NIGP01000222, NIGP01000223, NIGP01000225, NIGP01000228, NIGP01000230, NIGP01000236, NIGP01000238, NIGP01000239, NIGP01000240, NIGP01000244, NIGP01000247, NIGP01000248, NIGP01000250, NIGP01000253, NIGP01000254, NIGP01000256, NIGP01000257, NIGP01000262, NIGP01000263, NIGP01000265, NIGP01000267, NIGP01000270, NIGP01000280, NIGP01000281, NIGP01000288, NIGP01000290, NIGP01000292, NIGP01000294, NIGP01000295, NIGP01000297, NIGP01000298, NIGP01000309, NIGP01000310, NIGP01000312, NIGP01000315, NIGP01000319, NIGP01000324, NIGP01000325, NIGP01000329, NIGP01000330, NIGP01000345, NIGP01000349, NIGP01000351, NIGP01000352, NIGP01000356, NIGP01000357, NIGP01000359, NIGP01000363, NIGP01000365, NIGP01000371, NIGP01000374, NIGP01000375, NIGP01000376, NIGP01000377, NIGP01000379, NIGP01000383, NIGP01000386, NIGP01000396, NIGP01000397, NIGP01000407, NIGP01000410, NIGP01000412, NIGP01000413, NIGP01000415, NIGP01000417, NIGP01000421, NIGP01000422, NIGP01000424, NIGP01000428, NIGP01000430, NIGP01000432, NIGP01000434, NIGP01000437, NIGP01000440, NIGP01000441, NIGP01000445, NIGP01000451, NIGP01000452, NIGP01000461, NIGP01000463, NIGP01000465, NIGP01000466, NIGP01000475, NIGP01000481, NIGP01000482, NIGP01000489, NIGP01000490, NIGP01000495, NIGP01000497, NIGP01000501, NIGP01000507, NIGP01000514, NIGP01000515, NIGP01000518, NIGP01000519, NIGP01000520, NIGP01000521, NIGP01000524, NIGP01000525, NIGP01000530, NIGP01000531, NIGP01000532, NIGP01000535, NIGP01000536, NIGP01000537, NIGP01000539, NIGP01000541, NIGP01000552, NIGP01000553, NIGP01000556, NIGP01000557, NIGP01000560, NIGP01000561, NIGP01000566, NIGP01000569, NIGP01000570, NIGP01000571, NIGP01000573, NIGP01000574, NIGP01000579, NIGP01000590, NIGP01000591, NIGP01000596, NIGP01000598, NIGP01000599, NIGP01000600, NIGP01000601, NIGP01000602, NIGP01000604, NIGP01000608, NIGP01000610, NIGP01000612, NIGP01000622, NIGP01000627, NIGP01000630, NIGP01000633, NIGP01000634, NIGP01000635, NIGP01000639, NIGP01000640, NIGP01000648, NIGP01000649, NIGP01000650, NIGP01000651, NIGP01000657, NIGP01000658, NIGP01000660, NIGP01000662, NIGP01000665, NIGP01000666, NIGP01000667, NIGP01000669, NIGP01000673, NIGP01000676, NIGP01000681, NIGP01000684, NIGP01000686, NIGP01000687, NIGP01000690, NIGP01000692, NIGP01000695, NIGP01000699, NIGP01000702, NIGP01000703, NIGP01000706, NIGP01000709, NIGP01000710, NIGP01000712, NIGP01000714, NIGP01000715, NIGP01000716, NIGP01000718, NIGP01000721, NIGP01000724, NIGP01000727, NIGP01000730, NIGP01000734, NIGP01000737, NIGP01000740, NIGP01000745, NIGP01000751, NIGP01000754, NIGP01000756, NIGP01000760, NIGP01000761, NIGP01000775, NIGP01000778, NIGP01000779, NIGP01000781, NIGP01000782, NIGP01000783, NIGP01000791, NIGP01000799, NIGP01000802, NIGP01000806, NIGP01000807, NIGP01000811, NIGP01000812, NIGP01000813, NIGP01000818, NIGP01000821, NIGP01000822, NIGP01000823, NIGP01000826, NIGP01000827, NIGP01000835, NIGP01000843, NIGP01000846, NIGP01000847, NIGP01000848, NIGP01000849, NIGP01000850, NIGP01000856, NIGP01000859, NIGP01000860, NIGP01000861, NIGP01000867, NIGP01000870, NIGP01000882, NIGP01000883, NIGP01000885, NIGP01000892, NIGP01000896, NIGP01000900, NIGP01000904, NIGP01000905, NIGP01000906, NIGP01000910, NIGP01000915, NIGP01000920, NIGP01000921, NIGP01000923, NIGP01000929, NIGP01000932, NIGP01000937, NIGP01000938, NIGP01000939, NIGP01000941, NIGP01000942, NIGP01000944, NIGP01000947, NIGP01000948, NIGP01000952, NIGP01000954, NIGP01000957, NIGP01000958, NIGP01000959, NIGP01000960, NIGP01000976, NIGP01000977, NIGP01000978, NIGP01000980, NIGP01000983, NIGP01000986, NIGP01000991, NIGP01000996, NIGP01001003, NIGP01001006, NIGP01001008, NIGP01001010, NIGP01001013, NIGP01001015, NIGP01001018, NIGP01001022, NIGP01001023, NIGP01001024, NIGP01001031, NIGP01001032, NIGP01001035, NIGP01001039, NIGP01001041, NIGP01001043, NIGP01001046, NIGP01001047, NIGP01001053, NIGP01001055, NIGP01001057, NIGP01001059, NIGP01001061, NIGP01001068, NIGP01001070, NIGP01001072, NIGP01001074, NIGP01001075, NIGP01001081, NIGP01001082, NIGP01001083, NIGP01001085, NIGP01001086, NIGP01001092, NIGP01001097, NIGP01001100, NIGP01001102, NIGP01001108, NIGP01001110, NIGP01001119, NIGP01001126, NIGP01001136, NIGP01001165, NIGP01001173, NIGP01001180, NIGP01001185, NIGP01001186, NIGP01001196, NIGP01001197, NIGP01001208, NIGP01001211, NIGP01001214, NIGP01001216, NIGP01001230, NIGP01001233, NIGP01001237, NIGP01001238, NIGP01001240, NIGP01001243, NIGP01001247, NIGP01001249, NIGP01001254, NIGP01001255, NIGP01001256, NIGP01001262, NIGP01001263, NIGP01001282, NIGP01001285, NIGP01001287, NIGP01001295, NIGP01001296, NIGP01001297, NIGP01001301, NIGP01001311, NIGP01001322, NIGP01001325, NIGP01001329, NIGP01001335, NIGP01001341, NIGP01001343, NIGP01001348, NIGP01001350, NIGP01001352, NIGP01001353, NIGP01001355, NIGP01001363, NIGP01001365, NIGP01001372, NIGP01001373, NIGP01001374, NIGP01001377, NIGP01001382, NIGP01001386, NIGP01001397, NIGP01001398, NIGP01001407, NIGP01001408, NIGP01001414, NIGP01001415, NIGP01001416, NIGP01001417, NIGP01001426, NIGP01001431, NIGP01001438, NIGP01001442, NIGP01001450, NIGP01001455, NIGP01001458, NIGP01001463, NIGP01001464, NIGP01001468, NIGP01001469, NIGP01001476, NIGP01001477, NIGP01001478, NIGP01001480, NIGP01001482, NIGP01001497, NIGP01001501, NIGP01001506, NIGP01001507, NIGP01001509, NIGP01001516, NIGP01001519, NIGP01001520, NIGP01001522, NIGP01001530, NIGP01001531, NIGP01001534, NIGP01001536, NIGP01001546, NIGP01001547, NIGP01001549, NIGP01001551, NIGP01001553, NIGP01001557, NIGP01001562, NIGP01001568, NIGP01001572, NIGP01001573, NIGP01001574, NIGP01001575, NIGP01001576, NIGP01001578, NIGP01001580, NIGP01001587, NIGP01001589, NIGP01001591, NIGP01001593, NIGP01001597, NIGP01001599, NIGP01001603, NIGP01001614, NIGP01001615, NIGP01001617, NIGP01001618, NIGP01001622, NIGP01001624, NIGP01001630, NIGP01001639, NIGP01001640, NIGP01001641, NIGP01001645, NIGP01001646, NIGP01001648, NIGP01001661, NIGP01001671, NIGP01001672, NIGP01001675, NIGP01001676, NIGP01001678, NIGP01001682, NIGP01001690, NIGP01001692, NIGP01001696, NIGP01001699, NIGP01001702, NIGP01001703, NIGP01001705, NIGP01001706, NIGP01001711, NIGP01001712, NIGP01001713, NIGP01001717, NIGP01001719, NIGP01001726, NIGP01001727, NIGP01001728, NIGP01001729, NIGP01001730, NIGP01001732, NIGP01001736, NIGP01001738, NIGP01001743, NIGP01001749, NIGP01001750, NIGP01001752, NIGP01001755, NIGP01001756, NIGP01001758, NIGP01001766, NIGP01001767, NIGP01001769, NIGP01001770, NIGP01001774, NIGP01001784, NIGP01001786, NIGP01001788, NIGP01001789, NIGP01001800, NIGP01001801, NIGP01001810, NIGP01001811, NIGP01001816, NIGP01001817, NIGP01001818, NIGP01001819, NIGP01
+```
+
+```
+## >> assigning chromosome lengths			 2021-03-16 02:33:35 
+## >> done...					 2021-03-16 02:33:35
+```
+
+```r
+plotAnnoPie(allanno)
+```
+
+![](annotate-1.png)
+
+
+

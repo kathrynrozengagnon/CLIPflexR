@@ -26,70 +26,72 @@ homer_peaks(
   stdout = file.path(dirname(fileTofqs), paste0(basename(fileTofqs),
     "_homer_stderr.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{fileTofqs}{File to process.}
+\item{fileTofqs}{path to file to process (BED).}
 
-\item{maketagdir}{Path to makeTagDirectory from Homer toolkit}
+\item{maketagdir}{path to makeTagDirectory from Homer toolkit.}
 
-\item{findpeaks}{Path to findpeaks from Homer toolkit}
+\item{findpeaks}{path to findpeaks from Homer toolkit.}
 
-\item{format}{Input format}
+\item{format}{input format, "bed" (default).}
 
-\item{createSingleTagsTSV}{Create a single tags.tsv file for all "chromosomes"}
+\item{createSingleTagsTSV}{create a single tags.tsv file for all "chromosomes".}
 
-\item{tagdir}{Name of Tag Directory}
+\item{tagdir}{name of Tag Directory.}
 
-\item{style}{Type of Homer peak calling, factor | histone | groseq | tss | dnase | super | mCs}
+\item{style}{type of Homer peak calling, "factor", "histone", "groseq", "tss", "dnase", "super" or "mCs".}
 
-\item{foldEnrichmentOverLocal}{fold enrichment over local tag count}
+\item{foldEnrichmentOverLocal}{fold enrichment over local tag count.}
 
-\item{localSize}{region to check for local tag enrichment}
+\item{localSize}{region to check for local tag enrichment.}
 
-\item{strand}{find peaks using tags on both | separate strands}
+\item{strand}{find peaks using tags on "both" or "separate" (default) strands.}
 
-\item{minDist}{minimum distance between peaks}
+\item{minDist}{minimum distance between peaks.}
 
-\item{size}{Peak size}
+\item{size}{peak size.}
 
-\item{fragLength}{Approximate fragment length}
+\item{fragLength}{approximate fragment length.}
 
-\item{genomeSize}{genome size, NULL (default) = 2E9, applicable for human or mouse), or set for your genome}
+\item{genomeSize}{genome size, default is NULL (2E9, applicable for human or mouse), set integer to specify for your genome.}
 
-\item{stderr}{Path to stderr file.}
+\item{stderr}{path to stderr file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen.}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
-Path to unzipped file
+path to unzipped file
 }
 \description{
 Wrapper function for Homer's makeTagDirectory and findPeaks
 }
 \examples{
-testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta)
-testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile <- decompress(testFQ,overwrite=TRUE)
+\dontrun{
+testFasta <- system.file("extdata/hg19Small.fa",package = "CLIPflexR")
+myIndex <- bowtie2_index(testFasta, overwrite = TRUE)
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package = "CLIPflexR")
+FqFile <- decompress(testFQ,overwrite = TRUE)
 FqFile_QF <- fastq_quality_filter(FqFile)
 FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
 FqFile_QFColStpClipped <- fastx_clipper(FqFile_QFColStripped)
-bam <- bowtie_align(FqFile_QFColStpClipped,myIndex)
+bam <- bowtie_align(FqFile_QFColStpClipped,myIndex, overwrite = TRUE)
 bed <- bamtobed(bam)
 homer_peaks(bed)
+}
 }
 \author{
 Kathryn Rozen-Gagnon

@@ -15,21 +15,24 @@ CLIP_buildIDX(
 )
 }
 \arguments{
-\item{ref_seq}{reference genome}
+\item{ref_seq}{path to reference genome.}
 
-\item{res_dir}{result directory}
+\item{res_dir}{result directory.}
 
-\item{preFIX}{file name prefix for indexed genome}
+\item{preFIX}{file name prefix for indexed genome.}
 
-\item{aligner}{Assign aligner bowtie2/subread/bwa/hisat2}
+\item{aligner}{Assign aligner bowtie2/subread/bwa/hisat2.}
 
-\item{thread}{threads used in processing, default is 4}
+\item{thread}{threads used in processing, default is 4.}
 
-\item{bwa}{exercutable bwa file path}
+\item{bwa}{executable bwa file path.}
 }
 \value{
-indexed reference genome
+indexed reference genome.
 }
 \description{
 Build index for reference genome
+}
+\examples{
+testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 }

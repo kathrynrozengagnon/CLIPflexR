@@ -9,31 +9,30 @@
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to stripBarcode.pl from CTK.
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param linkerlength length of barcode/linker sequences.
-#' @param inputFormat Input file format (fasta|fastq)
-#' @param barcodeStartWith Filter sequences based on the starting nucleotides in the barcode
-#' @param barcodeEndWith Filter sequences based on the ending nucleotides in the barcode
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param filesToRun path to file to process (fastq or fasta).
+#' @param outFile path to output file (fastq or fasta).
+#' @param sb path to stripBarcode.pl from CTK.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param linkerlength length of barcode/linker sequences (default is 27).
+#' @param inputFormat input file format, "fasta" (default) or "fastq"
+#' @param barcodeStartWith filter sequences based on the starting nucleotides in the barcode.
+#' @param barcodeEndWith filter sequences based on the ending nucleotides in the barcode.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
-#' @return Path to unzipped file
+#' @return path to file with index stripped, in the same format as the input file.
 #' @importFrom reticulate miniconda_path
 #' @export
 ctk_stripBarcode <- function(filesToRun,
@@ -48,7 +47,7 @@ ctk_stripBarcode <- function(filesToRun,
                              stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_stripBarcode_stderr.txt")),
                              stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_stripBarcode_stdout.txt")),
                              useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                             additionalArgumements=NULL,verbose=FALSE, writelog  =T){
+                             additional_Args=NULL,verbose=FALSE, writelog  =T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -88,9 +87,10 @@ ctk_stripBarcode <- function(filesToRun,
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
   
-  if (grepl("fa|fasta|fastq",file_ext(outFile))) {
+  if (grepl("fa|fasta|fastq|fq",file_ext(outFile))) {
     outFile <- outFile
-  } else { outFile <- paste0(outFile,  "fa")}
+  } else if(inputFormat=="fasta") { outFile <- paste0(outFile,  "fa")}
+  else if(inputFormat=="fastq"){ outFile <- paste0(outFile,  "fastq")}
   args <- c(cmd,
             paste0("-len ",linkerlength),
             paste0("-format ",inputFormat),
@@ -136,33 +136,33 @@ ctk_stripBarcode <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param mutationBedFile Mutation BED file.
-#' @param outFile Output file
-#' @param sb Path to fastx_barcode_splitter.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param bigFile big file
-#' @param mutationSize mutation size
-#' @param permutations number of iterations for permutation
-#' @param trackMutationPos track mutation position relative to read start
-#' @param noSparseCorrect no sparcity correction
-#' @param FDR threshold of FDR
-#' @param mfr threshold of m-over-k-ratio
-#' @param cacheDir Name for cache directory.
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param filesToRun path to file to process (BED).
+#' @param mutationBedFile mutation BED file.
+#' @param outFile path to output file (BED & text).
+#' @param sb path to CIMS.pl from CTK.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param bigFile big file, TRUE or FALSE (default).
+#' @param mutationSize mutation size (default is 1).
+#' @param permutations number of iterations for permutation (default is 5).
+#' @param trackMutationPos track mutation position relative to read start, TRUE or FALSE (default).
+#' @param noSparseCorrect no sparcity correction, TRUE or FALSE (default).
+#' @param FDR threshold of FDR (default is 1).
+#' @param mfr threshold of m-over-k-ratio (default is 0).
+#' @param cacheDir name for cache directory.
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' \dontrun{
 #' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 #' delBed <- ctk_getMutationType(mutations)
 #' ctk_cims("~/Downloads/uniq_tags_mutations/Fox.pool.tag.uniq.rgb.bed",delBed,verbose=TRUE)
 #' }
-#' @return Path to unzipped file
+#' @return path to CIMS text & bed files.
 #' @export
 ctk_cims <- function(filesToRun,
                      mutationBedFile,
@@ -182,7 +182,7 @@ ctk_cims <- function(filesToRun,
                      stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_cims_stderr.txt")),
                      stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_cims_stdout.txt")),
                      useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                     additionalArgumements=NULL,verbose=FALSE, writelog  =T){
+                     additional_Args=NULL,verbose=FALSE, writelog  =T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -268,29 +268,29 @@ ctk_cims <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to fastx_barcode_splitter.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param bigFile big file
-#' @param pCutOff p-value cut off
-#' @param multiTest perform multiple testing correction.
-#' @param gap gap size
-#' @param cacheDir Name for cache directory.
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
+#' @param filesToRun path to file to process (BED).
+#' @param outFile output file (BED).
+#' @param sb path to CITS.pl from CTK.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param bigFile big file, TRUE or FALSE (default).
+#' @param pCutOff p-value cut off (default is 0.01).
+#' @param multiTest perform multiple testing correction, TRUE (default) or FALSE.
+#' @param gap gap size (default is 25).
+#' @param cacheDir name for cache directory.
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
 #' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
 #' FqFile_QF <- fastq_quality_filter(FqFile)
-#' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
-#' @return Path to unzipped file
+#' FqFile_Col<- fastx_collapser(FqFile_QF)
+#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+#' @return path to CITS bed file.
 #' @export
 ctk_cits <- function(filesToRun,
                      outFile=paste(file_path_sans_ext(fileToRun),"CITS","bed",sep="."),
@@ -306,7 +306,7 @@ ctk_cits <- function(filesToRun,
                      stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_cits_stderr.txt")),
                      stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_cits_stdout.txt")),
                      useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                     additionalArgumements=NULL,verbose=FALSE, writelog=T){
+                     additional_Args=NULL,verbose=FALSE, writelog=T){
   
   
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -374,23 +374,23 @@ ctk_cits <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to getMutationType.pl from CTK toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param mutationType mutation size
-#' @param summaryStat Create summary file
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param filesToRun path to file to process (BED).
+#' @param outFile output file (BED).
+#' @param sb path to ctk_getMutationType.pl from CTK toolkit.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param mutationType mutation type, "del" (deletions; default),"ins" (insertions), "sub" (substitutions).
+#' @param summaryStat create summary file, TRUE or FALSE (default).
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' mutations <- system.file("extdata/BrdU.Fox.pool.tag.uniq.mutation.small.txt",package="CLIPflexR")
 #' ctk_getMutationType(mutations)
-#' @return Path to unzipped file
+#' @return path to getMutationType bed file.
 #' @export
 ctk_getMutationType <- function(filesToRun,
                                 outFile=paste(file_path_sans_ext(fileToRun),mutationType,"bed",sep="."),
@@ -402,7 +402,7 @@ ctk_getMutationType <- function(filesToRun,
                                 stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_getMutationType_stderr.txt")),
                                 stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_getMutationType_stdout.txt")),
                                 useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                                additionalArgumements=NULL,verbose=FALSE, writelog  =T){
+                                additional_Args=NULL,verbose=FALSE, writelog  =T){
   
   
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -469,26 +469,26 @@ ctk_getMutationType <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to fastx_barcode_splitter.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param fastqFormat The fastq format used.
-#' @param indexPosition Position of index in read
-#' @param qsFilter Quality score filter
-#' @param maxN Maximum number of bases below qsFilter 
-#' @param outputFormat Output format (fastq | fasta)
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param filesToRun path to file to process  (fastq).
+#' @param outFile output file (fastq).
+#' @param sb path to fastq_filter.pl from CTK.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param fastqFormat fastq format used, can be "sanger" (default) or "solexa".
+#' @param indexPosition position and sequence of index in read, default is NULL; set "position:seqeunce" to specify (e.g. "1:CATCGC").
+#' @param qsFilter set quality score filter, default is NULL; set method:start-end:score to specify (e.g. "mean:0-29:20"; starts/ends are 0-based).
+#' @param maxN maximum number of unknown nucleotides (N) allowed, default is NULL; set to integer to specify. 
+#' @param outputFormat output format, "fastq" (default) or "fasta".
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE.
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
-#' @return Path to unzipped file
+#' @return Path to filtered file in specified format.
 #' @export
 ctk_fastqFilter <- function(filesToRun,
                             outFile=file.path(dirname(fileToRun),paste("FF_",basename(fileToRun),sep="")),
@@ -503,7 +503,7 @@ ctk_fastqFilter <- function(filesToRun,
                             stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_fastqFilter_stderr.txt")),
                             stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_fastqFilter_stdout.txt")),
                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                            additionalArgumements=NULL,verbose=FALSE, writelog  =T){
+                            additional_Args=NULL,verbose=FALSE, writelog  =T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -542,13 +542,7 @@ ctk_fastqFilter <- function(filesToRun,
   if(!is.null(PATHTOPERLLIB)){
     Sys.setenv("PERL5LIB"=PATHTOPERLLIB)
   }
-  # cmd2 <- paste0(exportPATH," ",
-  #                cmd," ",
-  #                " -len ",linkerlength," -v ",
-  #                " ",fileToRun," ",
-  #                paste(fileToRun,"_rm5",sep=""))
-  # #"temp.rm")
-  # temp <- system(cmd2,wait = TRUE,intern = TRUE)
+
   args <- c(cmd,
             paste0("-if ",fastqFormat),
             paste0("-of ",outputFormat),
@@ -591,26 +585,25 @@ ctk_fastqFilter <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to fastx_barcode_splitter.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param filesToRun path to file to process (fastq).
+#' @param outFile output file (fastq).
+#' @param sb path to fastq2collapse.pl from CTK.
+#' @param perl path to PERL
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' @return Path to unzipped file
+#' @return Path to collapsed fastq file.
 #' @export
 ctk_fastq2collapse <- function(filesToRun,
                                outFile=file.path(dirname(fileToRun),paste("Collapsed_",basename(fileToRun),sep="")),
@@ -620,7 +613,7 @@ ctk_fastq2collapse <- function(filesToRun,
                                stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_fastq2collapse_stderr.txt")),
                                stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_fastq2collapse_stdout.txt")),
                                useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                               additionalArgumements=NULL,verbose=FALSE, writelog  =T){
+                               additional_Args=NULL,verbose=FALSE, writelog  =T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -702,37 +695,36 @@ ctk_fastq2collapse <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to parseAlignment.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param mutationFile Mutation file path.
-#' @param mapQual Minimum map quality
-#' @param minLen Minimum length of read
-#' @param indelToEnd Minimum distance from indel to end of read.
-#' @param splitDel Whether to split reads with deletions.
-#' @param indelInScore Include indels in mutation score count.
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param filesToRun path to file to process (SAM).
+#' @param outFile path to output file (BED).
+#' @param sb path to parseAlignment.pl from CTK.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param mutationFile mutation file path, default is NULL.
+#' @param mapQual minimum map quality, default is NULL.
+#' @param minLen minimum length of read, default is NULL.
+#' @param indelToEnd minimum distance from indel to end of read, default is 5.
+#' @param splitDel whether to split reads with deletions, TRUE or FALSE (default).
+#' @param indelInScore include indels in mutation score count, TRUE or FALSE (default).
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose = TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 #' parsedAlignment <- ctk_parseAlignment(bam)
-#' @return Path to unzipped file
+#' @return path to BED file.
 #' @export
 ctk_parseAlignment <- function(filesToRun,
                                outFile=paste0(file_path_sans_ext(filesToRun),".bed"),
@@ -748,7 +740,7 @@ ctk_parseAlignment <- function(filesToRun,
                                stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_parseAlignment_stderr.txt")),
                                stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_parseAlignment_stdout.txt")),
                                useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                               additionalArgumements=NULL,verbose=FALSE, writelog  =T){
+                               additional_Args=NULL,verbose=FALSE, writelog  =T){
   
   
   pathOld <- Sys.getenv("PATH",unset = NA)
@@ -839,41 +831,41 @@ ctk_parseAlignment <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to tag2collapse.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param keepMaxScore keep the tag with the most weight (instead of the longest one) as representative
-#' @param keepTagName do not change tag name (no extra information)
-#' @param weight consider the weight of each tag
+#' @param filesToRun path to file to process (BED).
+#' @param outFile path to output file
+#' @param sb path to tag2collapse.pl from CTK.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param keepMaxScore keep the tag with the most weight (instead of the longest one) as representative.
+#' @param keepTagName do not change tag name (no extra information).
+#' @param weight consider the weight of each tag.
 #' @param bigFile Set to TRUE when files are big.
-#' @param weightInName find weight in name
-#' @param randomBarcode random barcode exists, no collapse for different barcodes
-#' @param seqErrorModel sequencing error model to use (alignment or em-local or em-global or fix=0.01)
-#' @param outputSeqError output sequencing errors estimated by the EM algorithm
-#' @param em EM threshold to infer reliability of each collapsed read (when have random linker, -1=no EM)
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen.
+#' @param weightInName find weight in name.
+#' @param randomBarcode random barcode exists, no collapse for different barcodes.
+#' @param seqErrorModel sequencing error model to use (alignment or em-local or em-global or fix=0.01).
+#' @param outputSeqError output sequencing errors estimated by the EM algorithm.
+#' @param em EM threshold to infer reliability of each collapsed read (when have random linker, -1=no EM).
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args Additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
 #' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 #' parsedAlignment <- ctk_parseAlignment(bam)
-#' ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,weightInName=FALSE,verbose=TRUE)
-#' @return Path to unzipped file
+#' ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+#' weightInName = FALSE,verbose = TRUE)
+#' @return path to collapsed BED file.
 #' @export
 ctk_tag2collapse <- function(filesToRun,
                              outFile=file.path(dirname(filesToRun),paste0("TC_",basename(filesToRun))),
@@ -892,7 +884,7 @@ ctk_tag2collapse <- function(filesToRun,
                              stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2collapse_stderr.txt")),
                              stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2collapse_stdout.txt")),
                              useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                             additionalArgumements=NULL,verbose=FALSE, writelog = T){
+                             additional_Args=NULL,verbose=FALSE, writelog = T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -984,40 +976,39 @@ ctk_tag2collapse <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #' 
-#' @param file1 File 1 to join.
-#' @param file2 File 2 to join.
-#' @param field1 Field/column for file 1 join.
-#' @param field2 Field/column for file 2 join.
-#' @param mode Join mode.
-#' @param outFile Output file
-#' @param sb Path to tag2collapse.pl from FastX toolkit
-#' @param python Path to python
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param file1 path to file 1 to join (BED or tab delimited text).
+#' @param file2 path to file 2 to join (BED or tab delimited text).
+#' @param field1 field/column for file 1 join.
+#' @param field2 field/column for file 2 join.
+#' @param mode join mode.
+#' @param outFile path to output file.
+#' @param sb path to joinWrapper.py from Galaxy
+#' @param python path to python.
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' \dontrun{
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 #' mutationFile <- system.file("extdata/Fox3_Std_small_mutation.txt",package="CLIPflexR")
 #' parsedAlignment <- ctk_parseAlignment(bam,mutationFile=mutationFile)
 #' uniqueTags <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName=FALSE,verbose=TRUE)
 #' ctk_joinWrapper(mutationFile,uniqueTags,4,4,"N",verbose=TRUE)
 #' }
-#' @return Path to unzipped file
+#' @return path to joined file.
 #' @export
 ctk_joinWrapper <- function(file1,
                             file2,
@@ -1030,7 +1021,7 @@ ctk_joinWrapper <- function(file1,
                             stderr=file.path(dirname(file1),paste0(basename(file1),"_ctk_joinWrapper_stderr.txt")),
                             stdout=file.path(dirname(file1),paste0(basename(file1),"_ctk_joinWrapper_stdout.txt")),
                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                            additionalArgumements=NULL,verbose=FALSE, writelog = T){
+                            additional_Args=NULL,verbose=FALSE, writelog = T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   # perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -1104,35 +1095,34 @@ ctk_joinWrapper <- function(file1,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to tag2collapse.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param col Colour to include in BED rgb column
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param filesToRun path to file to process (BED).
+#' @param outFile path to output file (BED).
+#' @param sb path to bed2rgb.pl from CTK.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param col color to include in BED rgb column (default is "blue").
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
-#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
-#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' testFasta <- system.file("extdata/hg19Small.fa",package ="CLIPflexR")
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package ="CLIPflexR")
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20")
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
-#' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+#' FqFile_Col <- ctk_fastq2collapse(FqFile_QF)
+#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 #' parsedAlignment <- ctk_parseAlignment(bam)
-#' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
+#' myCollapsed <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName=FALSE,verbose=TRUE)
-#' ctk_bed2rgb(myCollaped,col="128,0,0")
-#' @return Path to unzipped file
+#' ctk_bed2rgb(myCollapsed,col="128,0,0")
+#' @return path to BED file with color specified.
 #' @export
 ctk_bed2rgb <- function(filesToRun,
                         outFile=paste0(file_path_sans_ext(filesToRun),".RGB.",file_ext(filesToRun)),
@@ -1143,7 +1133,7 @@ ctk_bed2rgb <- function(filesToRun,
                         stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_bed2rgb_stderr.txt")),
                         stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_bed2rgb_stdout.txt")),
                         useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                        additionalArgumements=NULL,verbose=FALSE, writelog = T){
+                        additional_Args=NULL,verbose=FALSE, writelog = T){
   
   pathOld <- Sys.getenv("PATH",unset = NA)
   perl5libPathOld <- Sys.getenv("PERL5LIB",unset=NA)
@@ -1217,9 +1207,9 @@ ctk_bed2rgb <- function(filesToRun,
 }
 
 
-#' Wrapper function for ctk's bed2rgb
+#' Wrapper function for ctk's ctk_tag2profile
 #'
-#' Wrapper function for ctk's bed2rgb
+#' Wrapper function for ctk's ctk_tag2profile
 #'
 #'
 #' @docType methods
@@ -1228,51 +1218,50 @@ ctk_bed2rgb <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param outFile2 Output 2 file
-#' @param bigFile TRUE when working with a big file
-#' @param weight weight counts according to the score of each tag
-#' @param weightAvg weight average the score of each tag
-#' @param ss separate strand
-#' @param exact exact count at each nucleotide
-#' @param nz don't print zeroes (works for sgr and bed)
-#' @param ext5 extension of tags at the 5' end
-#' @param ext3 extension of tags at the 3' end
-#' @param chromLen chrom length file
-#' @param region a bed file with regions to count tag numbers. If not specified, count in moving windows
-#' @param minBlockSize minimum number of lines to read in each block for a big file
-#' @param windowSize Window size
-#' @param stepSize Step size
-#' @param outputFormat output format ([bed] or bedgraph or sgr)
-#' @param normalization normalization ([none] or rpkm or multiply={1.3})
-#' @param sb Path to tag2collapse.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
-#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
+#' @param filesToRun path to file to process (BED).
+#' @param outFile path to output file (BED).
+#' @param outFile2 path to output 2 file (BED; specify two output files to separate strands).
+#' @param bigFile TRUE when working with a big file, TRUE or FALSE (default).
+#' @param weight weight counts according to the score of each tag, TRUE or FALSE (default).
+#' @param weightAvg weight average the score of each tag, TRUE or FALSE (default).
+#' @param ss separate strand, TRUE (default) or FALSE.
+#' @param exact exact count at each nucleotide, TRUE (default) or FALSE.
+#' @param nz don't print zeroes (works for sgr and bed), TRUE or FALSE (default).
+#' @param ext5 extension of tags at the 5' end, default is NULL (set to integer to specify).
+#' @param ext3 extension of tags at the 3' end, default is NULL (set to integer to specify).
+#' @param chromLen chrom length file, default is NULL (set file path to specify).
+#' @param region a bed file with regions to count tag numbers; if not specified  (NULL), count in moving windows
+#' @param minBlockSize minimum number of lines to read in each block for a big file, default is 2000000.
+#' @param windowSize window size, default is 100.
+#' @param stepSize step size, default is 20.
+#' @param outputFormat output format, "bed" or "bedgraph" (default) or "sgr".
+#' @param normalization normalization, "none" (default) or "rpkm" or multiply={1.3}).
+#' @param sb path to tag2profile.pl from CTK.
+#' @param perl path to PERL
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args Additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 #' parsedAlignment <- ctk_parseAlignment(bam)
 #' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName=FALSE,verbose=TRUE)
 #' myrgbBed <- ctk_bed2rgb(myCollaped,col="128,0,0")
 #' ctk_tag2profile(myrgbBed,verbose=TRUE)
-#' @return Path to unzipped file
+#' @return path to BED file.
 #' @export
 ctk_tag2profile <- function(filesToRun,
                             outFile=paste0(file_path_sans_ext(filesToRun),".out"),
@@ -1298,7 +1287,7 @@ ctk_tag2profile <- function(filesToRun,
                             stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2profile_stderr.txt")),
                             stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2profile_stdout.txt")),
                             useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                            additionalArgumements=NULL,verbose=FALSE, writelog = T){
+                            additional_Args=NULL,verbose=FALSE, writelog = T){
   
   
   pathOld <- Sys.getenv("PATH",unset = NA)
@@ -1400,50 +1389,49 @@ ctk_tag2profile <- function(filesToRun,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param filesToRun File to process.
-#' @param outFile Output file
-#' @param sb Path to tag2collapse.pl from FastX toolkit
-#' @param perl Path to PERL
-#' @param PATHTOPERLLIB Path to PERL5LIB.
-#' @param outBoundary output cluster boundaries
-#' @param outHalfPH output half peak height boundaries
-#' @param bigFile big input file
-#' @param ss separate the two strands
-#' @param valleySeeking find candidate peaks by valley seeking
-#' @param valleyDepth depth of valley if valley seeking (between 0.5 and 1, default=0.9)
+#' @param filesToRun path to file to process (BED).
+#' @param outFile path to output file (BED).
+#' @param sb path to tag2peak.pl from CTK.
+#' @param perl path to PERL.
+#' @param PATHTOPERLLIB path to PERL5LIB.
+#' @param outBoundary output cluster boundaries.
+#' @param outHalfPH output half peak height boundaries.
+#' @param bigFile big input file, TRUE or FALSE (default).
+#' @param ss separate the two strands, TRUE (default) or FALSE.
+#' @param valleySeeking find candidate peaks by valley seeking.
+#' @param valleyDepth depth of valley if valley seeking (between 0.5 and 1, default is 0.9).
 #' @param genes custom gene bed file for scan statistics (will override --dbkey)
-#' @param multiTest do Bonferroni multiple test correction
-#' @param useExpr use expression levels given in the score column in the gene bed file for normalization
+#' @param multiTest do Bonferroni multiple test correction.
+#' @param useExpr use expression levels given in the score column in the gene bed file for normalization.
 #' @param skipOutOfRangePeaks Remove out of bounds ranges.
-#' @param pCutOff threshold of p-value to call peak (e.g. 0.01)
-#' @param minPH min peak height
-#' @param maxPH max peak height
-#' @param gap merge cluster peaks closer than the gap (-1, no merge if < 0)
-#' @param peakPrefix prefix of peak id (Peak) (so output file will look like Peak1, Peak2, etc)
-#' @param stderr Path to stdout file.
-#' @param stdout Path to stdout file.
-#' @param useClipRConda Boolean on whether to use conda environment install by Herper
-#' @param additionalArgumements Additional arguments to be passed to system call.
-#' @param verbose Print messages to screen
+#' @param pCutOff threshold of p-value to call peak (e.g. 0.01).
+#' @param minPH min peak height.
+#' @param maxPH max peak height.
+#' @param gap merge cluster peaks closer than the gap (-1, no merge if < 0).
+#' @param peakPrefix prefix of peak id (Peak) (so output file will look like Peak1, Peak2, etc).
+#' @param stderr path to stdout file.
+#' @param stdout path to stdout file.
+#' @param useClipRConda use conda environment installed by Herper, TRUE (default) or FALSE.
+#' @param additional_Args additional arguments to be passed to system call.
+#' @param verbose print messages, TRUE or FALSE (default).
 #' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
+#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 #' parsedAlignment <- ctk_parseAlignment(bam)
 #' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName=FALSE,verbose=TRUE)
 #' myrgbBed <- ctk_bed2rgb(myCollaped,col="128,0,0")
 #' ctk_tag2profile(myrgbBed,verbose=TRUE)
-#' @return Path to unzipped file
+#' @return path to BED file.
 #' @export
 ctk_tag2peak <- function(filesToRun,
                          outFile=paste0(file_path_sans_ext(filesToRun),".peak.bed"),
@@ -1468,7 +1456,7 @@ ctk_tag2peak <- function(filesToRun,
                          stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2peak_stderr.txt")),
                          stdout=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2peak_stdout.txt")),
                          useClipRConda=ifelse(is.null(getOption("CLIPflexR.condaEnv")),FALSE,TRUE),
-                         additionalArgumements=NULL,verbose=FALSE, writelog = T){
+                         additional_Args=NULL,verbose=FALSE, writelog = T){
   
   
   pathOld <- Sys.getenv("PATH",unset = NA)

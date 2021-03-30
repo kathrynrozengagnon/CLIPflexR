@@ -16,6 +16,49 @@ file_ext <- function (x)
   ifelse(pos > -1L, substring(x, pos + 1L), "")
 }
 
+readinpeaks <- function(peaks,verbose=FALSE,sep="\t",header=FALSE){
+  if(verbose) message("Reading in peaks....",appendLF = FALSE)
+  if(is(peaks,"GRanges")){
+    peaks <- peaks
+    peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))}
+  else if(is(peaks,"character")){
+    if(!file.exists(peaks))stop(paste0("The file ",peaks," does not exist"))
+    peaks <- read.delim(peaks,sep=sep,header=header)
+    if(!header){
+      if(ncol(peaks) == 3)    colnames(peaks) <- c("seqnames","start","end")  ##not sure about this case
+      if(ncol(peaks) >= 6)    colnames(peaks)[1:6] <- c("seqnames","start","end","name", "score","strand")}
+    peaks <- makeGRangesFromDataFrame(peaks,
+                                      keep.extra.columns=TRUE,
+                                      ignore.strand=FALSE,
+                                      seqinfo=NULL,
+                                      seqnames.field="seqnames",
+                                      start.field="start",
+                                      end.field="end",
+                                      strand.field="strand",
+                                      starts.in.df.are.0based=FALSE)
+    peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))}
+  
+   else if(is.data.frame(peaks)) { 
+      peaks <- peaks 
+    
+    peaks <- makeGRangesFromDataFrame(peaks,
+                                      keep.extra.columns=TRUE,
+                                      ignore.strand=FALSE,
+                                      seqinfo=NULL,
+                                      seqnames.field="seqnames",
+                                      start.field="start",
+                                      end.field="end",
+                                      strand.field="strand",
+                                      starts.in.df.are.0based=FALSE)
+    peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))}
+
+  if(verbose) message("...done")
+  if(verbose) message("Read in ",length(peaks)," peaks")
+  
+  return(peaks)
+}
+
+utils::globalVariables(c("V4"))
 
 #' Convert Bam to Bed
 #'
@@ -28,21 +71,21 @@ file_ext <- function (x)
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param file File to process.
-#' @param outFile Name of output file.
-#' @param filtDup Output index name
+#' @param file path to file to process (BAM).
+#' @param outFile path to output file (BED).
+#' @param filtDup output index name.
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
+#' myIndex <- bowtie2_index(testFasta, overwrite = TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
 #' FqFile_QF <- fastq_quality_filter(FqFile)
 #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
 #' FqFile_QFColStpClipped <- fastx_clipper(FqFile_QFColStripped)
-#' bam <- bowtie_align(FqFile_QFColStpClipped,myIndex)
+#' bam <- bowtie_align(FqFile_QFColStpClipped,myIndex, overwrite = TRUE)
 #' bamtobed(bam)
-#' @return Path 
+#' @return path to BED. 
 #' @import GenomicAlignments
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
 #' @importFrom methods is
@@ -52,6 +95,7 @@ bamtobed <- function(file,
                      outFile=gsub("\\.bam",".bed",file),
                      filtDup=FALSE){
   if(!file.exists(file))stop("No BAM file found at", file)
+  if(file.exists(outFile))stop("Output BED alredy exists at", outFile)
   if(!file.exists(outFile)){
     temp <- readGAlignments(file,
                             param=ScanBamParam(what = "qname"))
@@ -67,7 +111,7 @@ bamtobed <- function(file,
 
 #' Decompress
 #'
-#' Wrapper function for bzip2
+#' Wrapper function for gunzip, bunzip
 #'
 #'
 #' @docType methods
@@ -76,11 +120,11 @@ bamtobed <- function(file,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileToDecompress File to bzip
-#' @param outDir Output directory
-#' @param keep keep (don't delete) input files
-#' @param overwrite overwrite existing output files
-#' @return Path to unzipped file
+#' @param fileToDecompress path to file to decompress.
+#' @param outDir output directory.
+#' @param keep keep (don't delete) input files, TRUE (default) or FALSE.
+#' @param overwrite overwrite existing output files, TRUE or FALSE (default).
+#' @return path to unzipped file.
 #' @importFrom R.utils bunzip2 gunzip
 #' @examples  
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
@@ -96,7 +140,7 @@ decompress <- function(fileToDecompress,
   if(!file.exists(fileToDecompress))stop("File does not exist")
   
   fileWithoutExtension <- file_path_sans_ext(fileToDecompress)
-  if(file.exists(fileToDecompress) & !file.exists(fileWithoutExtension)){
+  if(file.exists(fileToDecompress) & (overwrite | !file.exists(fileWithoutExtension))){
     cmd(fileToDecompress,overwrite=overwrite,remove=!keep)
   }
   return(fileWithoutExtension)
@@ -104,7 +148,7 @@ decompress <- function(fileToDecompress,
 
 #' Compress
 #'
-#' Wrapper function for Compress
+#' Wrapper function for gzip, bzip
 #'
 #'
 #' @docType methods
@@ -113,12 +157,12 @@ decompress <- function(fileToDecompress,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fileToCompress File to bzip.
-#' @param keep keep (don't delete) input files.
-#' @param overwrite overwrite existing output files.
-#' @param methodCompress Method to use for compression
-#' @return Path to unzipped file.
-#' @importFrom R.utils bunzip2 gunzip
+#' @param fileToCompress path to file to compress.
+#' @param keep keep (don't delete) input files, TRUE (default) or FALSE.
+#' @param overwrite overwrite existing output files, TRUE or FALSE (default).
+#' @param methodCompress method to use for compression.
+#' @return path to zipped file.
+#' @importFrom R.utils bunzip2 gunzip gzip bzip2
 #' @examples  
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' decom <- decompress(testFQ,overwrite=TRUE)
@@ -126,50 +170,20 @@ decompress <- function(fileToDecompress,
 #' @export
 compress <- function(fileToCompress,
                      keep=TRUE,
-                     methodCompress="gunzip",
+                     methodCompress="gzip",
                      overwrite=FALSE){
-  fileExt <- switch(methodCompress,gunzip="gz",bunzip2="bz2")
-  cmd <- switch(fileExt,gz=gunzip,bz=bunzip2,bz2=bunzip2)
+  fileExt <- switch(methodCompress,gzip="gz",bzip2="bz2")
+  cmd <- switch(fileExt,gz=gzip,bz=bzip2,bz2=bzip2)
   
   if(!file.exists(fileToCompress))stop("File does not exist")
   
   fileCompressed <- paste0(fileToCompress,".",fileExt)
-  if(file.exists(fileToCompress) & !file.exists(fileCompressed)){
-    cmd(fileToCompress,overwrite=overwrite,remove=!keep)
+  if(file.exists(fileToCompress) & (overwrite |!file.exists(fileCompressed))){
+    cmd(filename  = fileToCompress, destname= fileCompressed,overwrite=overwrite,remove=!keep)
   }
   return(fileCompressed)
 }
 
-
-readinpeaks <- function(peaks,verbose=FALSE,sep="\t",header=FALSE){
-  if(verbose) message("Reading in peaks....",appendLF = FALSE)
-  if(is(peaks,"GRanges")){
-    peaks <- peaks
-    peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))
-  }else if(is(peaks,"character")){
-    if(!file.exists(peaks))stop(paste0("The file ",peaks," does not exist"))
-    peaks <- read.table(peaks,sep=sep,header=header)
-    if(!header){
-      if(ncol(peaks) == 3)    colnames(peaks) <- c("seqnames","start","end")  ##not sure about this case
-      if(ncol(peaks) >= 6)    colnames(peaks)[1:6] <- c("peakID", "seqnames","start","end","strand","score")
-    }
-    peaks <- makeGRangesFromDataFrame(peaks,
-                                      keep.extra.columns=TRUE,
-                                      ignore.strand=FALSE,
-                                      seqinfo=NULL,
-                                      seqnames.field="seqnames",
-                                      start.field="start",
-                                      end.field="end",
-                                      strand.field="strand",
-                                      starts.in.df.are.0based=FALSE)
-    peaks$originalPeak <-  paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks))
-    
-  }
-  if(verbose) message("...done")
-  if(verbose) message("Read in ",length(peaks)," peaks")
-  
-  return(peaks)
-}
 
 
 #' Retrieve sequences from under peaks/regions
@@ -183,15 +197,15 @@ readinpeaks <- function(peaks,verbose=FALSE,sep="\t",header=FALSE){
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param peaks CLIP peaks to process.
-#' @param fasta Genome fasta file.
-#' @param resize Size of window in bp for resizing around peak center.
-#' @param add5 Bp to add to 5' of resized peak.
-#' @param add3 Bp to add to 3' of resized peak.
-#' @param verbose Print messages.
-#' @param bedHeader TRUE if peak file contains column headers.
-#' @param bedSep Separator in BED file.
-#' @return Path to unzipped file.
+#' @param peaks CLIP peaks to process; accepts path to peak files (BED file or BED-formatted tab-delimited text files) or R objects (GRanges or BED-formatted data.frame); peak locations must be unique.
+#' @param fasta path to genome file (fasta).
+#' @param resize size of window in bp for resizing around peak center, default is NULL (set by specifying integer).
+#' @param add5 bp to add to 5' of resized peak, default is 0 (set by specifying integer).
+#' @param add3 bp to add to 3' of resized peak, default is 0 (set by specifying integer).
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param bedHeader if peak file contains column headers, TRUE (default) or FALSE; if TRUE, column names must be "seqnames" (chromosome), "start" (peak start), "end" (peak end), "strand" (peak strand).
+#' @param bedSep separator in BED file.
+#' @return path to unzipped file.
 #' @importFrom R.utils bunzip2 gunzip
 #' @examples  
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
@@ -241,16 +255,16 @@ fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=
 #' @rdname annotatePeaksWithPatterns
 #'
 #' @author Kathryn Rozen-Gagnon
-#' @param peaks CLIP peaks to process
-#' @param fasta Genome fasta file
-#' @param patterns Patterns to scan in CLIP peaks
-#' @param resize Size of window in bp for resizing around peak center
-#' @param add5 Bp to add to 5' of resized peak
-#' @param add3 Bp to add to 3' of resized peak
-#' @param verbose Print messages, TRUE (default) or FALSE
-#' @param checkReverse Check the reverse strand for pattern.
-#' @param bedHeader TRUE if peak file contains column headers.
-#' @param bedSep Seperator in BED file.
+#' @param peaks CLIP peaks to process; accepts path to peak files (BED file or BED-formatted tab-delimited text files) or R objects (GRanges or BED-formatted data.frame); peak locations must be unique.
+#' @param fasta path to genome file (fasta).
+#' @param patterns patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence).
+#' @param resize size of window in bp for resizing around peak center.
+#' @param add5 bp to add to 5' of resized peak, default is 0 (set by specifying integer).
+#' @param add3 bp to add to 3' of resized peak, default is 0 (set by specifying integer).
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param checkReverse check the reverse strand for pattern.
+#' @param bedHeader if peak file contains column headers, TRUE (default) or FALSE; if TRUE, column names must be "seqnames" (chromosome), "start" (peak start), "end" (peak end), "strand" (peak strand).
+#' @param bedSep separator in BED file.
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' @return Path 
@@ -306,16 +320,16 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
   
   if(verbose) message("Retrieving patterns to search for....",appendLF = FALSE)
   if(class(patterns) == "DNAStringSet"){
-    pattern <- patterns
-  }else if(class(patterns) == "character"){
-    motifSeq <- DNAStringSet(patterns)
-    pattern <- as.character(motifSeq)
-  }else{
+    pattern <- as.character(patterns)
+  }else if(grepl(".fa", patterns)){
     motifSeq <- readDNAStringSet(patterns)
     pattern <- as.character(motifSeq)
-  }
+  } else if (class(patterns) == "character"){
+    pattern <- patterns }
   if(verbose) message("...done")
   if(verbose) message("Read in ",length(pattern)," patterns")
+  
+
   
   
   # rm(fixedInRegion)
@@ -340,8 +354,8 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
                             IRanges(as.numeric(pos[pos[,3] =="-",2])-end(fixedInRegion[pos[,3] =="-"])+1,
                                     as.numeric(pos[pos[,3] =="-",2])-start(fixedInRegion[pos[,3] =="-"])+1),startOfPmatch=startOfPmatch[pos[,3] =="-"])
       sitesGRneg$PeakID <- names(fixedInRegion[pos[,3] =="-"])
-      if(isEmpty(sitesGRpos)) { sitesFA <-  Biostrings::reverseComplement(fetchSequencesForClIP(sitesGRneg,reSize=NULL,fasta))
-      sitesFAExtended <- Biostrings::reverseComplement(fetchSequencesForClIP(sitesGRneg,reSize=NULL,fasta,add5=add5,add3=add3))
+      if(isEmpty(sitesGRpos)) { sitesFA <-  Biostrings::reverseComplement(fetchSequencesForCLIP(sitesGRneg,resize=NULL,fasta))
+      sitesFAExtended <- Biostrings::reverseComplement(fetchSequencesForCLIP(sitesGRneg,resize=NULL,fasta,add5=add5,add3=add3))
       sitesGR <- sitesGRneg
       
       sitesGR$Seq <- sitesFA
@@ -357,8 +371,8 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
       rm(peaks_Sites)
       } 
       else if(isEmpty(sitesGRneg)) {
-        sitesFA <- fetchSequencesForClIP(sitesGRpos,reSize=NULL,fasta)
-        sitesFAExtended <- fetchSequencesForClIP(sitesGRpos,reSize=NULL,fasta,add5=add5,add3=add3)
+        sitesFA <- fetchSequencesForCLIP(sitesGRpos,resize=NULL,fasta)
+        sitesFAExtended <- fetchSequencesForCLIP(sitesGRpos,resize=NULL,fasta,add5=add5,add3=add3)
         sitesGR <- sitesGRpos
         
         sitesGR$Seq <- sitesFA
@@ -373,9 +387,9 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
         rm(peaks_SitesDF)
         rm(peaks_Sites)
       } else {
-        sitesFA <- c(fetchSequencesForClIP(sitesGRpos,reSize=NULL,fasta),reverseComplement(fetchSequencesForClIP(sitesGRneg,reSize=NULL,fasta)))
-        sitesFAExtended <- c(fetchSequencesForClIP(sitesGRpos,reSize=NULL,fasta,add5=add5,add3=add3),
-                             reverseComplement(fetchSequencesForClIP(sitesGRneg,reSize=NULL,fasta,add5=add5,add3=add3))
+        sitesFA <- c(fetchSequencesForCLIP(sitesGRpos,resize=NULL,fasta),reverseComplement(fetchSequencesForCLIP(sitesGRneg,resize=NULL,fasta)))
+        sitesFAExtended <- c(fetchSequencesForCLIP(sitesGRpos,resize=NULL,fasta,add5=add5,add3=add3),
+                             reverseComplement(fetchSequencesForCLIP(sitesGRneg,resize=NULL,fasta,add5=add5,add3=add3))
         )
         sitesGR <- suppressWarnings(c(sitesGRpos,sitesGRneg))
         
@@ -409,27 +423,24 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param genomeFasta File to process.
-#' @param outIndex Output index name
-#' @param overwrite Overwrite if directory exists.
-#' @param threads Number of threads to use.
+#' @param genomeFasta path to file to process.
+#' @param outIndex path to output index.
+#' @param overwrite overwrite existing output files, TRUE or FALSE (default).
+#' @param threads number of threads to use, default is 1.
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' bowtie2_index(testFasta)
+#' bowtie2_index(testFasta, overwrite = TRUE)
 #' @importFrom Rbowtie2 bowtie2_build
 #' @return Path to index 
 #' @export
 bowtie2_index <- function(genomeFasta,
                           outIndex=gsub("\\.fa","",genomeFasta),
-                          overwrite=TRUE,threads=1
-) {
+                          overwrite=F,threads=1) {
   bowtieArgs <- paste0("--threads ",threads)
-  if(!dir.exists(outIndex)){
     suppressMessages(
       bowtie2_build(references=genomeFasta,
                     bt2Index=outIndex,
                     overwrite = overwrite,bowtieArgs))
-  }
   return(outIndex)
 }
 
@@ -445,37 +456,53 @@ bowtie2_index <- function(genomeFasta,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fq File to process.
-#' @param index Index name
-#' @param bam Output bam name
-#' @param format Format of reads (fastq or fasta)
-#' @param maxMismatches max mismatches
-#' @param seedSubString length of seed substrings
-#' @param threads Number of threads to use
-#' @param report_k number of alignments to report
-#' @param keepSAM keep bowtie2 SAM output file, default = T
+#' @param fq path to file to process (fasta or fastq).
+#' @param index bowtie2 index name without extension.
+#' @param outbam output bam name, not required if mode is set. If mode is set to "NULL", specify "fq" (default - name of file to process/reads) or "index" (name of index)
+#' @param keepSAM keep bowtie2 SAM output file, TRUE (default) or FALSE.
+#' @param inputFormat Format of reads, "fastq" or "fasta" (default).
+#' @param mode mapping mode, "genome_map" (default - 1 mismatch in seed alignment, seed substring of 18) or "reverse_map" (for mapping short sequences to reads, i.e. miRNAs or chimera analysis, 0 mismatches and a seed substring of 18); set mode=NULL to custom set bowtie2 options using arguments below or additional arguments.
+#' @param maxMismatches max mismatches in seed alignment, (default is 0).
+#' @param seedSubString length of seed substrings (default is 18).
+#' @param threads number of threads to use (default is 1).
+#' @param report_k number of alignments to report, default is NULL (the best alignment is reported), set to integer to specify.
+#' @param keep_all report all alignments, default is NULL (the best alignment is reported), set to TRUE to report all.
+#' @param soft_clip allow soft clipping, default is NULL (no soft clipping), set to TRUE to to soft clip.
+#' @param additional_Args any additional mapping arguments not set above, default is NULL, can be set by specifying a single character string with spaces between arguments (see example below); run "Rbowtie2::bowtie2_usage()" to see all options; please note that due to a Rbowtie2 bug, the "--no-1mm-upfront" is not available.
+#' @param overwrite overwrite existing output files, TRUE or FALSE (default).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
-#' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
-#' FqFile_clipped <- fastx_clipper(FqFile,length=20)
+#' FqFile <- decompress(testFQ,overwrite=TRUE)
+#' FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter="mean:0-29:20",verbose=TRUE)
+#' FqFile_clipped <- fastx_clipper(FqFile_FF,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bowtie_align(FqFile_QFColStripped,myIndex)
+#' FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
+#' 
+#' ##map reads to genome
+#' bowtie_align(FqFile_ColStrip,myIndex, inputFormat="fastq", overwrite=TRUE)
+#' 
+#' ##map reads to genome, custom mode
+#' bowtie_align(FqFile_ColStrip,myIndex, mode=NULL, 
+#' soft_clip=TRUE, additional_Args="--mp 15 -R 4", inputFormat="fastq", overwrite=TRUE) 
+#' 
+#' ##map miRNAs to reads
+#' miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
+#' FaFile_Fa <- fastx_qtoa(FqFile_ColStrip)
+#' readIndex <- bowtie2_index(FaFile_Fa, overwrite=TRUE)
+#' bowtie_align(miRNAs,readIndex, mode="reverse_map",overwrite=TRUE)
+
 #' @importFrom Rsamtools asBam indexBam sortBam
 #' @importFrom Rbowtie2 bowtie2
-#' @return Path to BAM 
+#' @return path to sorted BAM. 
 #' @export
 bowtie_align <- function(fq,index,
-                         bam=file.path(dirname(fq),
-                                       paste0("Sorted_",gsub("\\.fa|\\.fasta|\\.fastq","",basename(fq)),".bam")),
-                         format="fasta", keepSAM = T, maxMismatches=1,seedSubString=18,threads=1,report_k=NULL) {
+                          outbam="fq",
+                         inputFormat="fasta", keepSAM = T, mode = "genome_map", maxMismatches=0,seedSubString=18,threads=1,report_k=NULL, keep_all=NULL, soft_clip = NULL, additional_Args = NULL, overwrite=FALSE) {
   
-  if(format == "fasta"){
+  if(inputFormat == "fasta"){
     optionFormat <- "-f"
   }else{
     optionFormat <- ""
@@ -487,44 +514,69 @@ bowtie_align <- function(fq,index,
     fq <- gsub("\\.gz$","",fq)
     
   }
-  if(is.null(report_k)){
-    bowtieArgs <- paste0(optionFormat,
-                         " -N ",maxMismatches,
-                         " -L ",seedSubString,
-                         " --threads ",threads)
-  }else{
-    report_k = as.integer(report_k)
-    bowtieArgs <- paste0(optionFormat,
-                         " -N ",maxMismatches,
-                         " -L ",seedSubString,
-                         " --threads ",threads,
-                         " -k ",report_k)
-  }
-  if(!file.exists(bam)){
-    suppressMessages(bowtie2(bt2Index = index,
-                             samOutput = gsub("\\.bam$",".sam",
-                                              bam),
-                             seq1 = fq,
-                             bowtieArgs))
-    asBam(gsub("\\.bam$",".sam",
-               bam),
-          gsub("\\.bam$",".temp",
-               bam))
-    sortBam(gsub("\\.bam$",".temp.bam",
-                 bam),
-            destination = gsub("\\.bam$","",
-                               bam))
-    unlink(gsub("\\.bam$",".temp.bam",
-                bam)) # remove temp.bam
-    unlink(gsub("\\.bam$",".temp.bam.bai",
-                bam))
-    indexBam(bam)
-    if(!keepSAM) {
-      unlink(gsub("\\.bam$",".sam",
-                  bam))
+  if(!is.null(mode)){
+    if(mode=="genome_map") {
+      bowtieArgs <- paste0(optionFormat, " -N 1 -L 18 --threads ",threads)
+      bam=file.path(dirname(fq),
+                    paste0(gsub("\\.fa|\\.fasta|\\.fastq|\\.fq","",basename(fq)),".bam"))
+        suppressMessages(bowtie2(bt2Index = index,
+                                 samOutput = gsub("\\.bam$",".sam",
+                                                  bam),
+                                 seq1 = fq,
+                                 bowtieArgs, overwrite = overwrite)) }
+    else if(mode=="reverse_map") {
+      bowtieArgs <- paste0(optionFormat,  " --score-min C,0,0 -L 18 -a --threads ",threads)
+      bam=file.path(dirname(index),
+                    paste0(gsub("\\.fa|\\.fasta|\\.fastq|\\.fq","",basename(index)),".bam"))
+        suppressMessages(bowtie2(bt2Index = index,
+                                 samOutput = gsub("\\.bam$",".sam",
+                                                  bam),
+                                 seq1 = fq,
+                                 bowtieArgs, overwrite = overwrite)) }}
+  else if(is.null(mode)){
+    bowtieArgs <- paste0(optionFormat, 
+                         paste0(" --threads ", threads),
+                         ifelse(!is.null(maxMismatches), paste0(" -N ", maxMismatches), ""),
+                         ifelse(!is.null(seedSubString), paste0(" -L ", seedSubString), ""),
+                         ifelse(!is.null(report_k), paste0(" -k ", as.integer(report_k)), ""),
+                         ifelse(!is.null(keep_all), " -a ", ""),
+                         ifelse(!is.null(soft_clip), " --local ", ""),
+                         ifelse(!is.null(additional_Args), paste0(" ", additional_Args), "")
+    )
+      if(outbam=="fq") {
+        bam=file.path(dirname(fq),
+                      paste0(gsub("\\.fa|\\.fasta|\\.fastq|\\.fq","",basename(fq)),".bam"))
+        suppressMessages(bowtie2(bt2Index = index,
+                                 samOutput = gsub("\\.bam$",".sam",
+                                                  bam),
+                                 seq1 = fq,
+                                 bowtieArgs, overwrite = overwrite)) } else if(outbam=="index"){
+                                   bam=file.path(dirname(index), paste0(gsub("\\.fa|\\.fasta|\\.fastq|\\.fq","",basename(index)),".bam"))
+                                   suppressMessages(bowtie2(bt2Index = index,
+                                                            samOutput = gsub("\\.bam$",".sam",
+                                                                             bam),
+                                                            seq1 = fq,
+                                                            bowtieArgs, overwrite = overwrite))  } 
     }
-    
+  
+  asBam(gsub("\\.bam$",".sam",
+             bam),
+        gsub("\\.bam$",".temp",
+             bam), overwrite = overwrite)
+  sortBam(gsub("\\.bam$",".temp.bam",
+               bam),
+          destination = gsub("\\.bam$","",
+                             bam))
+  unlink(gsub("\\.bam$",".temp.bam",
+              bam)) # remove temp.bam
+  unlink(gsub("\\.bam$",".temp.bam.bai",
+              bam))
+  indexBam(bam)
+  if(!keepSAM) {
+    unlink(gsub("\\.bam$",".sam",
+                bam))
   }
+  
   return(bam)
   
 }
@@ -540,18 +592,18 @@ bowtie_align <- function(fq,index,
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param Bed BED bed files containing mapped reads
-#' @param GR BED file containing genomic ranges over which to count 
-#' @param notStranded Stranded or not stranded TRUE (default) or FALSE
-#' @param interFeature Count reads mapping to multiple features TRUE or FALSE (default)
+#' @param Bed BED bed files containing mapped reads.
+#' @param GR genomic ranges object over which to count. 
+#' @param notStranded if strand information should be considered when counting, TRUE (ignore strand) or FALSE (consider strand; default).
+#' @param interFeature discard reads mapping to multiple features, TRUE or FALSE (default).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' bowtie2_index(testFasta)
+#' bowtie2_index(testFasta, overwrite = TRUE)
 #' @import GenomicRanges GenomicAlignments
 #' @importMethodsFrom SummarizedExperiment assay
 #' @importMethodsFrom rtracklayer import.bed
 #' @importMethodsFrom GenomeInfoDb seqlengths "seqlengths<-" seqlevels
-#' @return counting matrix
+#' @return count matrix.
 #' @export
 countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
   reads <- import.bed(Bed)
@@ -563,24 +615,49 @@ countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
 #' Build bigwigs
 #'
 #' @rdname CLIP_bw2
-#' @param sort_bam sorted bam file
-#' @param res_dir result directory
-#' @param normalized Normalised to total reads
-#' 
+#' @param sort_bam path to sorted BAM file.
+#' @param res_dir result directory, default is directory where BAM file is located, to specify other/create new directory, enter path as character string.
+#' @param normalized normalized to total reads.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @examples
+#' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
+#' FqFile <- decompress(testFQ,overwrite = TRUE)
+#' FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile_clipped <- fastx_clipper(FqFile_FF,length=20)
+#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
+#' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose = TRUE)
+#' FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq") 
+#' ##map reads to genome
+#' mapped <- bowtie_align(FqFile_ColStrip,myIndex, mode="genome_map", inputFormat="fastq")
+#' wig <- CLIP_bw2(mapped)
 #' @docType methods
 #' @import  Rsamtools
-#' @return bigwig
+#' @return bigwig.
 #' @export
-CLIP_bw2 <- function(sort_bam,res_dir=NULL,normalized=TRUE){
-  if(dir.exists(res_dir)){dir.create(res_dir)}else{print(paste0("folder is exist: ",res_dir))}
-  samID <- gsub("_sort.bam","",basename(sort_bam))
+CLIP_bw2 <- function(sort_bam,res_dir=dirname(sort_bam),normalized=TRUE, verbose=FALSE){
+  if(!dir.exists(res_dir)){
+    dir.create(res_dir) 
+    if(verbose){
+    message("creating output directory ", res_dir)}
+  }else if(dir.exists(res_dir) & verbose){
+      message("bigwig will be written to existing directory: ",res_dir)}
+  samID <- gsub("_sort.bam","",basename(sort_bam)) 
   bw_out <- file.path(res_dir,paste0(samID,".bigwig"))
-  if(isTRUE(normalized)){
-    allChromosomeStats <- idxstatsBam(sort_bam)
+  if(normalized){
+    allChromosomeStats <- Rsamtools::idxstatsBam(sort_bam)
     mapped <- sum(allChromosomeStats[,"mapped"])
-    toRun <- coverage(BamFile(sort_bam),weight = (10^6)/mapped)
-    export.bw(toRun,con=bw_out)
-  }else{
+    toRun <- coverage(Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
+    export.bw(toRun,con=bw_out)}
+#     else if(notStranded==FALSE){
+#     mapped <- scanBam(BamFile(sort_bam), flag = scanBamFlag(isUnmappedQuery = FALSE)))
+#     mapped_pos <- length(which(mapped$strand=="+"))
+#     toRun_pos <- Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
+# scanBam(BamFile(sort_bam),param=ScanBamParam(what = c("qname","seq"),flag = scanBamFlag(isUnmappedQuery = FALSE)))
+#     mapped_neg <- length(which(mapped$strand=="-"))
+#     }
+  else{
     toRun <- coverage(BamFile(sort_bam))
     export.bw(toRun,con=bw_out)}
 }
@@ -588,16 +665,17 @@ CLIP_bw2 <- function(sort_bam,res_dir=NULL,normalized=TRUE){
 #' Build index for reference genome
 #'
 #' @rdname CLIP_buildIDX
-#' @param ref_seq reference genome
-#' @param res_dir result directory
-#' @param preFIX file name prefix for indexed genome
-#' @param aligner Assign aligner bowtie2/subread/bwa/hisat2
-#' @param thread threads used in processing, default is 4
-#' @param bwa exercutable bwa file path
+#' @param ref_seq path to reference genome.
+#' @param res_dir result directory.
+#' @param preFIX file name prefix for indexed genome.
+#' @param aligner Assign aligner bowtie2/subread/bwa/hisat2.
+#' @param thread threads used in processing, default is 4.
+#' @param bwa executable bwa file path.
 #' @import Rbowtie2 Rsubread Rhisat2
-#' 
+#' @examples
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' @docType methods
-#' @return indexed reference genome
+#' @return indexed reference genome.
 #' @export
 CLIP_buildIDX <- function(ref_seq=NULL,res_dir=NULL,preFIX=NULL,aligner=NULL,thread=4,bwa=NULL){
   if(aligner=="bowtie2"){
@@ -616,17 +694,18 @@ CLIP_buildIDX <- function(ref_seq=NULL,res_dir=NULL,preFIX=NULL,aligner=NULL,thr
 #' Align to Genome
 #'
 #' @rdname CLIP_align
-#' @param samID sample id in the sample sheet
-#' @param samSheet sample sheet
-#' @param res_dir result directory
-#' @param genome_idx file path of indexed genome
+#' @param samID sample id in the sample sheet.
+#' @param samSheet sample sheet.
+#' @param res_dir result directory.
+#' @param genome_idx path to indexed genome.
 #' @param aligner Assign aligner bowtie2/bwa_mem/bwa_alb/subread/subjunc/hisat2
 #' @param thread thread used in the processing, default is 4
-#' @param bwa executable file path of bwa
+#' @param bwa executable bwa file path. 
 #' @import Rbowtie2 Rsamtools Rsubread ShortRead 
-#' 
+#' @examples
+#' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' @docType methods
-#' @return sorted bam file
+#' @return path to sorted BAM file.
 #' @export
 CLIP_align <- function(samID,res_dir=NULL,genome_idx=NULL,aligner=NULL,samSheet=NULL,thread=4,bwa=NULL){
   # samID <- gsub("_trimmed.fq","",basename(fastq))
@@ -727,7 +806,7 @@ CLIP_align <- function(samID,res_dir=NULL,genome_idx=NULL,aligner=NULL,samSheet=
 
 #' Revmap_process
 #'
-#' Process reads for small RNA counting
+#' Process reads to remove linker artifacts or filter  by length
 #'
 #'
 #' @docType methods
@@ -736,12 +815,16 @@ CLIP_align <- function(samID,res_dir=NULL,genome_idx=NULL,aligner=NULL,samSheet=
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fastas FASTA file to process
-#' @param length_min minimum length required during fasta processing, integer (default is NULL)
-#' @param length_max maximum length required during fasta processing, integer (default is NULL) 
-#' @param linkers contaminating seqences to remove (default is NULL)
-#' 
-#' @return Processed FASTAS
+#' @param fastas path to FASTA file to process.
+#' @param length_min minimum length required during fasta processing, default is NULL, set to integer to specify.
+#' @param length_max maximum length required during fasta processing, default is NULL, set to integer to specify. 
+#' @param linkers contaminating sequences to remove, default is NULL, set to character string to specify.
+#' @examples
+#' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+#' FqFile <- decompress(testFastq,overwrite = TRUE)
+#' FaFile <- fastx_qtoa(FqFile)
+#' processed_Fa <-  revmap_process(FaFile, linkers="GGACGATGC", length_min=18, length_max=30)
+#' @return path to processed FASTA.
 #' @import Biostrings IRanges
 #' @export
 revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min = NULL) { 
@@ -776,62 +859,77 @@ revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fastas FASTA files to reverse map
-#' @param knownMiRNAs FASTA file containing annotated miRNA or other small RNA sequences
-#' @param linkers contaminating sequences to remove 
-#' @param length_min minimum length required during fasta processing, integer (default is NULL)
-#' @param length_max maximum length required during fasta processing, integer (default is NULL)
-#' @param verbose print messages, TRUE (default) or FALSE 
-#' @param bpparam TRUE or FALSE (default)
-#' @param removedups remove multiple miRNAs or small RNAs mapping to the same read, TRUE or FALSE (FALSE)
-#' @return BEDs 
+#' @param fastas path to FASTA files to reverse map.
+#' @param knownMiRNAs path to FASTA file containing annotated miRNA or other small RNA sequences.
+#' @param linkers contaminating sequences to remove, default is NULL, set to character string to specify. 
+#' @param length_min minimum length required during fasta processing, default is NULL, set to integer to specify. 
+#' @param length_max maximum length required during fasta processing, default is NULL, set to integer to specify. 
+#' @param removedups remove multiple miRNAs or small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param bpparam TRUE or FALSE (default).
+#' @param overwrite overwrite existing output files, TRUE or FALSE (default).  
+#' @return path to BEDs where small RNAs mapped to reads. 
 #' @examples 
 #' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+#' FqFile <- decompress(testFastq,overwrite = TRUE)
+#' FaFile <- fastx_qtoa(FqFile)
+#' FaFile_clip <- fastx_clipper(FaFile, writelog = FALSE)
 #' testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
-#' @import GenomicAlignments BiocParallel stringr Biostrings
-#' @importMethodsFrom rtracklayer export.bed export.bw mcols
+#' revmap <- revmap_count(FaFile_clip, testMiRNA, 
+#' linkers="GGACGATGC", length_min=18, length_max=30, overwrite=TRUE)
+#' @import GenomicAlignments BiocParallel GenomicRanges Biostrings
+#' @importFrom magrittr "%>%"
 #' @importFrom rtracklayer import
 #' @export
-revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=TRUE, linkers = NULL, length_max = NULL, length_min = NULL, removedups =FALSE){
+revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=FALSE, linkers = NULL, length_max = NULL, length_min = NULL, removedups =TRUE, overwrite = FALSE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
+  pro_fastas <- vector("list",length = length(fastas)) 
   if(!is.null(linkers) | !is.null(length_max) | !is.null(length_min)) { 
     if (verbose) message("Processing fastas..",appendLF = FALSE)
-    if (!is.null(linkers)) message("removing linkers... ", linkers)
-    if (!is.null(length_max)) message ("getting sequences shorter than ", as.character(length_max), " nt")
-    if (!is.null(length_min)) message ("getting sequences longer than ", as.character(length_min), " nt")
-    pro_fastas <- vector("list",length = length(fastas)) 
+    if (!is.null(linkers) & verbose) message("removing linkers... ", linkers)
+    if (!is.null(length_max) & verbose) message ("getting sequences shorter than ", as.character(length_max), " nt")
+    if (!is.null(length_min) & verbose) message ("getting sequences longer than ", as.character(length_min), " nt")
     for (i in 1:length(fastas)) {
       pro_fastas[[i]] <- revmap_process(fastas[[i]], length_max = length_max, linkers =  linkers, length_min = length_min)
     }} else {
       pro_fastas <-  fastas
     }
   if(verbose) message("Creating indices from FASTA files..",appendLF = FALSE)
-  indicies <- bplapply(pro_fastas,bowtie2_index,BPPARAM=bpparam)
+  indicies <- bplapply(pro_fastas,bowtie2_index,overwrite=overwrite, BPPARAM=bpparam)
   if(verbose) message("done")
   if(verbose) message("Mapping miRNAs to processed reads..",appendLF = FALSE)
   revBams <- bplapply(indicies,
                       function(x,knownMiRNAs){
-                        bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"), maxMismatches = 0, report_k = 1000000)
-                      },knownMiRNAs=knownMiRNAs,BPPARAM=bpparam)
+                        bowtie_align(knownMiRNAs,index=x, mode = "reverse_map", overwrite = overwrite)
+                      },knownMiRNAs=knownMiRNAs, BPPARAM=bpparam)
   if(verbose) message("done")
-  if(verbose) message("Converting BAMs to BEDs..",appendLF = FALSE)
-  beds <- bplapply(revBams, bamtobed,BPPARAM=bpparam)
-  if (removedups) { message("deduplicating...") 
-    dedup <- lapply(beds,read.delim,  header = F)
-    for (i in 1:length(dedup)) {
-      dedup[[i]]$miRNAnum  <- ifelse(!grepl("miR|let|iab", dedup[[i]]$V4), stringr::str_sub(dedup[[i]]$V4, 2, 7), NA)
-      dedup[[i]]$miRNAnum <- ifelse(grepl("miR|let|iab", dedup[[i]]$V4), as.numeric(apply(dedup[[i]],1,function(x) regmatches(x["name"],regexpr("[0-9]+",x["name"])))), paste(dedup[[i]]$miRNAnum))
+    if(verbose) message("Converting BAMs to BEDs..",appendLF = FALSE)
+  bedpath <- bplapply(revBams, bamtobed,BPPARAM=bpparam)
+  dedup<- lapply(bedpath ,read.delim,  header = F, sep = "\t")
+  names(dedup) <- bedpath
+  if (removedups &  verbose) { message("deduplicating...") 
+   for (i in 1:length(dedup)) {
+      dedup[[i]]$miRNAnum  <- ifelse(!grepl("miR|let|iab|bantam", dedup[[i]]$V4), stringr::str_sub(dedup[[i]]$V4, 2, 7), NA)
+      dedup[[i]]$miRNAnum <- ifelse(grepl("miR|let|iab|bantam", dedup[[i]]$V4), as.numeric(apply(dedup[[i]],1,function(x) regmatches(x["name"],regexpr("[0-9]+",x["name"])))), paste(dedup[[i]]$miRNAnum))
       dedup[[i]] <- dedup[[i]][order(dedup[[i]]$V1, dedup[[i]]$V2, dedup[[i]]$miRNAnum,dedup[[i]]$V4),]
       dedup[[i]] <- dedup[[i]][!duplicated(dedup[[i]]$V1),] 
       dedup[[i]]$miRNAnum <- NULL
     } 
-    names(dedup) <- gsub(".bed", "_deduplicated.bed", beds)
+    names(dedup) <- gsub(".bed", "_deduplicated.bed", bedpath)
     for (i in seq_along(dedup)) {
       write.table(dedup[i],names(dedup)[i], col.names =  FALSE, row.names= FALSE, sep = "\t", quote = F)
-    } 
-    return(names(dedup))[i]} 
-  else { return(beds)}
-  if(verbose) message("done")  }
+    } }
+  count <- lapply(dedup, function(x) x %>% dplyr::group_by(V4) %>% dplyr::summarize(count=dplyr::n()))
+  count_stat <- Reduce(function(x, y) merge(x, y, by = "V4", all = TRUE), count )
+  count_stat[is.na(count_stat)] <- 0 
+  col.names<- basename(unlist(bedpath)) 
+  col.names <- c("miRNA", col.names)
+  count_stat <- setNames(count_stat, col.names)
+  write.table(count_stat,file.path(dirname(fastas)[1], "revmap_counts.txt"), col.names = TRUE, row.names= FALSE, sep = "\t", quote = F)
+  if(verbose) message("done")  
+   p <- c(names(dedup), file.path(dirname(fastas)[1], "revmap_counts.txt"))
+    return(p)
+  }
 
 #' Ranges_count
 #'
@@ -844,28 +942,40 @@ revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=TRUE, linkers
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param fastas FASTA files to process.
-#' @param miRNA_ranges BED file containing annotated miRNA or other small RNA genomic ranges
-#' @param linkers contaminating sequences to remove (default is NULL) 
-#' @param length_min minimum length required during fasta processing (default is NULL)
-#' @param length_max maximum length required during fasta processing (default is NULL)
-#' @param genomeIndex full genome index 
-#' @param verbose print messages, TRUE (default) or FALSE 
+#' @param fastas path to FASTA files to process.
+#' @param miRNA_ranges BED file containing annotated miRNA or other small RNA genomic ranges.
+#' @param linkers contaminating sequences to remove, default is NULL, set to character string to specify. 
+#' @param length_min minimum length required during fasta processing, default is NULL, set to integer to specify. 
+#' @param length_max maximum length required during fasta processing, default is NULL, set to integer to specify. 
+#' @param genomeIndex path to genome index. 
+#' @param mode mapping mode, default is NULL to allow custom mapping with default arguments set below (0 mismatches in seed alignment, seed substring length 18, disallow alignments with mismatches); see bowtie_align for other mapping modes.
+#' @param maxMismatches max mismatches in seed alignment (default is 0).
+#' @param seedSubString length of seed substrings (default is 18).
+#' @param threads number of threads to use (default is 1).
+#' @param report_k number of alignments to report, default is NULL (the best alignment is reported), set to integer to specify.
+#' @param keep_all set to TRUE to report all alignments, default is NULL (the best alignment is reported).
+#' @param soft_clip set to TRUE to allow soft clipping, default is no soft clipping.
+#' @param additional_Args any additional mapping arguments, default is "--score-min C,0,0" to disallow alignments with mismatches; run "Rbowtie2::bowtie2_usage()" to see all options; please note that due to a Rbowtie2 bug, the "--no-1mm-upfront" is not available.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param overwrite overwrite existing output files, TRUE or FALSE (default). 
 #' @param bpparam TRUE or FALSE (default)
-#' @return Path 
 #' @examples
 #' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
-#' @import GenomicAlignments BiocParallel stringr rtracklayer GenomicRanges
-#' @importMethodsFrom rtracklayer export.bed export.bw mcols
+#' @return path to count matrix.
+#' @import GenomicAlignments BiocParallel GenomicRanges Biostrings
+#' @importFrom rtracklayer import
 #' @export
 #' 
-Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_max = NULL, length_min = NULL, bpparam=NULL,verbose=TRUE){
+Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_max = NULL, length_min = NULL, 
+                         mode = NULL, maxMismatches=0, threads=1, report_k = NULL, keep_all  = NULL, soft_clip = NULL,
+                         additional_Args = "--score-min C,0,0", seedSubString = 18, overwrite=FALSE, 
+                         bpparam=NULL,verbose=FALSE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
   if(!is.null(linkers) | !is.null(length_max) | !is.null(length_min)) { 
     if (verbose) message("Processing fastas..",appendLF = FALSE)
-    if (!is.null(linkers)) message("removing linkers... ", linkers)
-    if (!is.null(length_max)) message ("getting sequences shorter than ", as.character(length_max), " nt")
-    if (!is.null(length_min)) message ("getting sequences longer than ", as.character(length_min), " nt")
+    if (!is.null(linkers) & verbose) message("removing linkers... ", linkers)
+    if (!is.null(length_max) & verbose) message ("getting sequences shorter than ", as.character(length_max), " nt")
+    if (!is.null(length_min) & verbose) message ("getting sequences longer than ", as.character(length_min), " nt")
     pro_fastas <- vector("list",length = length(fastas)) 
     for (i in 1:length(fastas)) {
       pro_fastas[[i]] <- revmap_process(fastas[[i]], length_max = length_max, linkers =  linkers, length_min = length_min)
@@ -873,7 +983,7 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
       pro_fastas <-  fastas
     }
   if(verbose) message("Mapping reads to genome..",appendLF = FALSE)
-  mappedBams <- bplapply(pro_fastas, bowtie_align, index = genomeIndex, maxMismatches=0,BPPARAM=bpparam)
+  mappedBams <- bplapply(pro_fastas, bowtie_align, index = genomeIndex, mode=mode, report_k=report_k, threads=threads, maxMismatches=maxMismatches, keep_all=keep_all, soft_clip=soft_clip, seedSubString=seedSubString, additional_Args=additional_Args, overwrite=overwrite, BPPARAM=bpparam)
   if(verbose) message("done")
   if(verbose) message("Converting BAMs to BEDs..",appendLF = FALSE)
   Mybeds <- bplapply(mappedBams, bamtobed,BPPARAM=bpparam)
@@ -886,7 +996,7 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
   colnames(kksMat) <- basename(unlist(Mybeds))
   kksMat <- as.data.frame(kksMat)
   outname <- unique(dirname(unlist(Mybeds)))
-  outname <- paste0(outname, "/miRNA_count_matrix.txt")
+  outname <- paste0(outname, "/range_count_matrix.txt")
   write.table(kksMat, outname,  col.names = TRUE,  row.names = FALSE,  sep =  "\t", quote = F)
   return(outname)
   if (verbose) message("done")
@@ -903,22 +1013,21 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param bam BAM file
-#' @param outfa PATH to output FASTA (default is same directory as input BAM)
+#' @param bam path to BAM file.
+#' @param outfa path to output FASTA (default is same directory as input BAM).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta)
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+#' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20")
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 #' FqFile_clipped <- fastx_clipper(FqFile,length=20)
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-#' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
-#' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
-#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5)
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex)
+#' FqFile_Col <- ctk_fastq2collapse(FqFile_QF)
+#' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
+#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
 #' extract_unmapped(bam)
-#' @return Path to FASTA file
+#' @return path to FASTA file of unmapped reads.
 #' @import GenomicAlignments Biostrings
 #' @export
 extract_unmapped <- function(bam,outfa=NULL){
@@ -945,37 +1054,45 @@ extract_unmapped <- function(bam,outfa=NULL){
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param bams BAM files mapped to the genome to process
-#' @param knownMiRNAs FASTA file containing annotated miRNA or other small RNA sequences
-#' @param genomeIndex Full genome index
-#' @param exclude Names of miRNAs or small RNA sequences to remove, character vector 
-#' @param verbose print messages, TRUE (default) or FALSE 
-#' @param bpparam TRUE or FALSE (default)
-#' @return Path 
+#' @param bams path to BAM files mapped to the genome, unmapped reads will be extracted for chimera processing.
+#' @param knownMiRNAs path to FASTA file containing annotated miRNA or other small RNA sequence. Known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".  
+#' @param genomeIndex path to genome index.
+#' @param removedups remove multiple small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".
+#' @param exclude names of small RNAs to remove, default is NULL, can be set to character vector to specify; must match names in knownMiRNAs file.
+#' @param verbose print messages, TRUE or FALSE (default).
+#' @param overwrite overwrite existing output files, TRUE or FALSE (default).   
+#' @param bpparam TRUE or FALSE (default).
+#' @return path to chimera output table.
 #' @examples 
 #' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
-#' testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
-#' testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
+#' FqFile <- decompress(testFastq,overwrite=TRUE)
+#' FaFile <- fastx_qtoa(FqFile)
+#' FaFile_clip <- fastx_clipper(FaFile, writelog=FALSE)
+#' myGenome <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
+#' myIndex <- bowtie2_index(myGenome, overwrite = TRUE)
+#' myBam <- bowtie_align(FaFile_clip,myIndex, overwrite=TRUE)
+#' miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
+#' chimera_bed <- chimera_Process(myBam, miRNAs, myIndex, exclude="hsa-miR-19a-3p", overwrite=TRUE)
 #' @import GenomicAlignments BiocParallel stringr
 #' @importFrom tibble rownames_to_column
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
 #' @importFrom purrr map2
 #' @export
-chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,verbose=TRUE){
+chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude=NULL, bpparam=NULL,verbose=FALSE, removedups = TRUE, overwrite=FALSE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
-  if(verbose) message("Extracting unmapped reads to FASTA..",appendLF = FALSE)
+  if(verbose) message("Extracting unmapped reads to FASTA...",appendLF = FALSE)
   fastas <- bplapply(bams,extract_unmapped,BPPARAM=bpparam)
   if(verbose) message("done")
-  if(verbose) message("Creating indicies from FASTA files..",appendLF = FALSE)
-  indicies <- bplapply(fastas,bowtie2_index,BPPARAM=bpparam)
+  if(verbose) message("Creating indices from FASTA files...",appendLF = FALSE)
+  indicies <- bplapply(fastas,bowtie2_index,overwrite=overwrite, BPPARAM=bpparam)
   if(verbose) message("done")
-  if(verbose) message("Mapping miRNAs to unmapped reads..",appendLF = FALSE)
+  if(verbose) message("Mapping miRNAs to unmapped reads...",appendLF = FALSE)
   newBams <- bplapply(indicies,
                       function(x,knownMiRNAs){
-                        bowtie_align(knownMiRNAs,index=x, bam = paste0(x, ".bam"),maxMismatches=0,seedSubString=18,report_k=1000000)
+                        bowtie_align(knownMiRNAs,index=x,mode = "reverse_map", overwrite=overwrite)
                       },knownMiRNAs=knownMiRNAs,BPPARAM=bpparam)
   if(verbose) message("done")
-  if(verbose) message("Converting BAMs to BEDs..",appendLF = FALSE)
+  if(verbose) message("Converting BAMs to BEDs...",appendLF = FALSE)
   beds <- bplapply(newBams, bamtobed,BPPARAM=bpparam)
   if(verbose) message("done")  
   
@@ -991,60 +1108,65 @@ chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude, bpparam=NULL,v
   names(fasta) <- fa 
   fasta <- bplapply(fasta, function(x) tibble::rownames_to_column(as.data.frame(x)),BPPARAM=bpparam)
   #check for duplicate readnames
-  if (verbose) message("Checking read names..", appendLF = FALSE)
+  if (verbose) message("Checking read names...", appendLF = FALSE)
   checkreads <- lapply(fasta, function(x) duplicated(x$rowname))
   checkreads <- unlist(lapply(checkreads, function(x) length(which(x==TRUE))))
   idx <- which(checkreads > 0)
   if (verbose & isTRUE(length(idx)==0)) message("read names ok") else message(paste0("Warning, the following sample(s) have duplicate read names! \n", names(idx)))
   #merge together read sequence and bed by rowname (read name)
+  if (verbose) message("Merging reads with mapped small RNAs to read sequences...", appendLF = FALSE)
   chimera <- purrr::map2(fasta,chimera, ~merge(.x,.y, by = "rowname"))
-  
-  #write files to chimera inputs: bed with read name, start, stop, srand, read name, and read sequence
+  if(verbose) message("done") 
+  #write files to chimera inputs: bed with read name, start, stop, strand, read name, and read sequence
   # setwd(Dir)
+  if (verbose) message("Writing merged output files...", appendLF = FALSE)
   fastaTxts <- vector("list",length = length(chimera))
   for (x in 1:length(chimera)) {
     write.table(chimera[[x]], file=paste0(names(chimera)[x],".txt"), sep="\t", quote = FALSE)
     fastaTxts[[x]] <- paste0(names(chimera)[x],".txt")
   }
+  if(verbose) message("done")
   names(fastaTxts) <- names(chimera)
-  
   chimerafiles <- vector("list",length = length(fastaTxts))
+  if (verbose) message("Extracting read sequences up- and downstream of small RNA sequences & writing output files...", appendLF = FALSE)
   for (i in 1:length(fastaTxts)) {
-    chimerafiles[[i]] <- chimeraProcess(fastaTxts[[i]], exclude)
+    chimerafiles[[i]] <- chimeraProcess(fastaTxts[[i]], exclude=exclude, removedups=removedups)
   }
-  
+  if(verbose) message("done")
   rffiles <- vector("list",length = length(chimerafiles)) 
-  
+  if(verbose) message("Writing downstream sequences as fastas...", appendLF = FALSE)
   for (i in 1:length(chimerafiles)) {
     rffiles[[i]] <- reformat(chimerafiles[[i]])
   }
+  if(verbose) message("done")
   
-  
-  
-  remappedBams <- bplapply(rffiles, bowtie_align, index =genomeIndex,BPPARAM=bpparam)
-  
+  if(verbose) message("Remapping downstream sequences to genome...", appendLF = FALSE)
+  remappedBams <- bplapply(rffiles, bowtie_align, index =genomeIndex,mode =  "genome_map", overwrite=overwrite, BPPARAM=bpparam)
+  if(verbose) message("done")
+  if(verbose) message("Converting remapped BAMs to BEDs...", appendLF = FALSE)
   myBeds <- bplapply(remappedBams, bamtobed,BPPARAM=bpparam)
-  
+  if(verbose) message("done")
   
   return(myBeds)
   
 }
 
-chimeraProcess <- function(input, exclude) {
+chimeraProcess <- function(input, exclude, removedups) {
   BR1 <- read.delim(input, header=T)
   BR1 <- BR1[!BR1$name %in% exclude,] 
   BR1<- BR1[BR1$strand=="+",]
-  BR1$miRNAnum <- ifelse(!grepl("miR|let|iab", BR1$name), stringr::str_sub(BR1$name, 2, 7), NA)
-  BR1$miRNAnum <- ifelse(grepl("miR|let|iab", BR1$name), as.numeric(apply(BR1,1,function(x) regmatches(x["name"],regexpr("[0-9]+",x["name"])))), paste(BR1$miRNAnum))
+  if(removedups){
+  BR1$miRNAnum <- ifelse(!grepl("miR|let|iab|bantam", BR1$name), stringr::str_sub(BR1$name, 2, 7), NA)
+  BR1$miRNAnum <- ifelse(grepl("miR|let|iab|bantam", BR1$name), as.numeric(apply(BR1,1,function(x) regmatches(x["name"],regexpr("[0-9]+",x["name"])))), paste(BR1$miRNAnum))
   BR1 <- BR1[order(BR1$rowname, BR1$start, BR1$miRNAnum, BR1$name),]
   BR1 <- BR1[!duplicated(BR1$rowname),] 
-  BR1$miRNAnum <- NULL
+  BR1$miRNAnum <- NULL}
   BR1$length <- sapply(as.character(BR1$x), nchar)
   BR1$ups.seq <- mapply(substr, x=BR1$x, start=0, stop=BR1$start)
   BR1$dns.seq <- mapply(substr, x=BR1$x, start=BR1$stop+1, stop=BR1$length)
   outname = paste(input, sep = "")
   outname = gsub(".fa.txt", "_chimera.txt", outname)
-  write.table(BR1, outname, quote=F, sep="\t")
+  write.table(BR1, outname, quote=F, sep="\t", col.names = T, row.names = F)
   return(outname)
 }
 

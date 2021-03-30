@@ -21,46 +21,46 @@ ctk_fastqFilter(
   stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
     "_ctk_fastqFilter_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{filesToRun}{File to process.}
+\item{filesToRun}{path to file to process  (fastq).}
 
-\item{outFile}{Output file}
+\item{outFile}{output file (fastq).}
 
-\item{sb}{Path to fastx_barcode_splitter.pl from FastX toolkit}
+\item{sb}{path to fastq_filter.pl from CTK.}
 
-\item{perl}{Path to PERL}
+\item{perl}{path to PERL.}
 
-\item{PATHTOPERLLIB}{Path to PERL5LIB.}
+\item{PATHTOPERLLIB}{path to PERL5LIB.}
 
-\item{fastqFormat}{The fastq format used.}
+\item{fastqFormat}{fastq format used, can be "sanger" (default) or "solexa".}
 
-\item{indexPosition}{Position of index in read}
+\item{indexPosition}{position and sequence of index in read, default is NULL; set "position:seqeunce" to specify (e.g. "1:CATCGC").}
 
-\item{qsFilter}{Quality score filter}
+\item{qsFilter}{set quality score filter, default is NULL; set method:start-end:score to specify (e.g. "mean:0-29:20"; starts/ends are 0-based).}
 
-\item{maxN}{Maximum number of bases below qsFilter}
+\item{maxN}{maximum number of unknown nucleotides (N) allowed, default is NULL; set to integer to specify.}
 
-\item{outputFormat}{Output format (fastq | fasta)}
+\item{outputFormat}{output format, "fastq" (default) or "fasta".}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
-Path to unzipped file
+Path to filtered file in specified format.
 }
 \description{
 Wrapper function for ctk's fastq_filter

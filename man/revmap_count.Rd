@@ -9,39 +9,47 @@ revmap_count(
   fastas,
   knownMiRNAs,
   bpparam = NULL,
-  verbose = TRUE,
+  verbose = FALSE,
   linkers = NULL,
   length_max = NULL,
   length_min = NULL,
-  removedups = FALSE
+  removedups = TRUE,
+  overwrite = FALSE
 )
 }
 \arguments{
-\item{fastas}{FASTA files to reverse map}
+\item{fastas}{path to FASTA files to reverse map.}
 
-\item{knownMiRNAs}{FASTA file containing annotated miRNA or other small RNA sequences}
+\item{knownMiRNAs}{path to FASTA file containing annotated miRNA or other small RNA sequences.}
 
-\item{bpparam}{TRUE or FALSE (default)}
+\item{bpparam}{TRUE or FALSE (default).}
 
-\item{verbose}{print messages, TRUE (default) or FALSE}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{linkers}{contaminating sequences to remove}
+\item{linkers}{contaminating sequences to remove, default is NULL, set to character string to specify.}
 
-\item{length_max}{maximum length required during fasta processing, integer (default is NULL)}
+\item{length_max}{maximum length required during fasta processing, default is NULL, set to integer to specify.}
 
-\item{length_min}{minimum length required during fasta processing, integer (default is NULL)}
+\item{length_min}{minimum length required during fasta processing, default is NULL, set to integer to specify.}
 
-\item{removedups}{remove multiple miRNAs or small RNAs mapping to the same read, TRUE or FALSE (FALSE)}
+\item{removedups}{remove multiple miRNAs or small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".}
+
+\item{overwrite}{overwrite existing output files, TRUE or FALSE (default).}
 }
 \value{
-BEDs
+path to BEDs where small RNAs mapped to reads.
 }
 \description{
 Reverse map small RNAs to processed or unprocessed reads
 }
 \examples{
 testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
+FqFile <- decompress(testFastq,overwrite = TRUE)
+FaFile <- fastx_qtoa(FqFile)
+FaFile_clip <- fastx_clipper(FaFile, writelog = FALSE)
 testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
+revmap <- revmap_count(FaFile_clip, testMiRNA, 
+linkers="GGACGATGC", length_min=18, length_max=30, overwrite=TRUE)
 }
 \author{
 Kathryn Rozen-Gagnon

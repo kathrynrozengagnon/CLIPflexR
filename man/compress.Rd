@@ -8,24 +8,24 @@
 compress(
   fileToCompress,
   keep = TRUE,
-  methodCompress = "gunzip",
+  methodCompress = "gzip",
   overwrite = FALSE
 )
 }
 \arguments{
-\item{fileToCompress}{File to bzip.}
+\item{fileToCompress}{path to file to compress.}
 
-\item{keep}{keep (don't delete) input files.}
+\item{keep}{keep (don't delete) input files, TRUE (default) or FALSE.}
 
-\item{methodCompress}{Method to use for compression}
+\item{methodCompress}{method to use for compression.}
 
-\item{overwrite}{overwrite existing output files.}
+\item{overwrite}{overwrite existing output files, TRUE or FALSE (default).}
 }
 \value{
-Path to unzipped file.
+path to zipped file.
 }
 \description{
-Wrapper function for Compress
+Wrapper function for gzip, bzip
 }
 \examples{
  

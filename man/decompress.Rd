@@ -13,19 +13,19 @@ decompress(
 )
 }
 \arguments{
-\item{fileToDecompress}{File to bzip}
+\item{fileToDecompress}{path to file to decompress.}
 
-\item{outDir}{Output directory}
+\item{outDir}{output directory.}
 
-\item{keep}{keep (don't delete) input files}
+\item{keep}{keep (don't delete) input files, TRUE (default) or FALSE.}
 
-\item{overwrite}{overwrite existing output files}
+\item{overwrite}{overwrite existing output files, TRUE or FALSE (default).}
 }
 \value{
-Path to unzipped file
+path to unzipped file.
 }
 \description{
-Wrapper function for bzip2
+Wrapper function for gunzip, bunzip
 }
 \examples{
  

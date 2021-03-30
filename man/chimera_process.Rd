@@ -9,34 +9,46 @@ chimera_Process(
   bams,
   knownMiRNAs,
   genomeIndex,
-  exclude,
+  exclude = NULL,
   bpparam = NULL,
-  verbose = TRUE
+  verbose = FALSE,
+  removedups = TRUE,
+  overwrite = FALSE
 )
 }
 \arguments{
-\item{bams}{BAM files mapped to the genome to process}
+\item{bams}{path to BAM files mapped to the genome, unmapped reads will be extracted for chimera processing.}
 
-\item{knownMiRNAs}{FASTA file containing annotated miRNA or other small RNA sequences}
+\item{knownMiRNAs}{path to FASTA file containing annotated miRNA or other small RNA sequence. Known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".}
 
-\item{genomeIndex}{Full genome index}
+\item{genomeIndex}{path to genome index.}
 
-\item{exclude}{Names of miRNAs or small RNA sequences to remove, character vector}
+\item{exclude}{names of small RNAs to remove, default is NULL, can be set to character vector to specify; must match names in knownMiRNAs file.}
 
-\item{bpparam}{TRUE or FALSE (default)}
+\item{bpparam}{TRUE or FALSE (default).}
 
-\item{verbose}{print messages, TRUE (default) or FALSE}
+\item{verbose}{print messages, TRUE or FALSE (default).}
+
+\item{removedups}{remove multiple small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".}
+
+\item{overwrite}{overwrite existing output files, TRUE or FALSE (default).}
 }
 \value{
-Path
+path to chimera output table.
 }
 \description{
 Chimera process CLIP data
 }
 \examples{
 testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
-testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
-testMiRNA <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
+FqFile <- decompress(testFastq,overwrite=TRUE)
+FaFile <- fastx_qtoa(FqFile)
+FaFile_clip <- fastx_clipper(FaFile, writelog=FALSE)
+myGenome <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
+myIndex <- bowtie2_index(myGenome, overwrite = TRUE)
+myBam <- bowtie_align(FaFile_clip,myIndex, overwrite=TRUE)
+miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
+chimera_bed <- chimera_Process(myBam, miRNAs, myIndex, exclude="hsa-miR-19a-3p", overwrite=TRUE)
 }
 \author{
 Kathryn Rozen-Gagnon

@@ -21,55 +21,54 @@ ctk_stripBarcode(
   stdout = file.path(dirname(fileToRun), paste0(basename(fileToRun),
     "_stripBarcode_stdout.txt")),
   useClipRConda = ifelse(is.null(getOption("CLIPflexR.condaEnv")), FALSE, TRUE),
-  additionalArgumements = NULL,
+  additional_Args = NULL,
   verbose = FALSE,
   writelog = T
 )
 }
 \arguments{
-\item{filesToRun}{File to process.}
+\item{filesToRun}{path to file to process (fastq or fasta).}
 
-\item{outFile}{Output file}
+\item{outFile}{path to output file (fastq or fasta).}
 
-\item{sb}{Path to stripBarcode.pl from CTK.}
+\item{sb}{path to stripBarcode.pl from CTK.}
 
-\item{perl}{Path to PERL}
+\item{perl}{path to PERL.}
 
-\item{PATHTOPERLLIB}{Path to PERL5LIB.}
+\item{PATHTOPERLLIB}{path to PERL5LIB.}
 
-\item{linkerlength}{length of barcode/linker sequences.}
+\item{linkerlength}{length of barcode/linker sequences (default is 27).}
 
-\item{inputFormat}{Input file format (fasta|fastq)}
+\item{inputFormat}{input file format, "fasta" (default) or "fastq"}
 
-\item{barcodeStartWith}{Filter sequences based on the starting nucleotides in the barcode}
+\item{barcodeStartWith}{filter sequences based on the starting nucleotides in the barcode.}
 
-\item{barcodeEndWith}{Filter sequences based on the ending nucleotides in the barcode}
+\item{barcodeEndWith}{filter sequences based on the ending nucleotides in the barcode.}
 
-\item{stderr}{Path to stdout file.}
+\item{stderr}{path to stdout file.}
 
-\item{stdout}{Path to stdout file.}
+\item{stdout}{path to stdout file.}
 
-\item{useClipRConda}{Boolean on whether to use conda environment install by Herper}
+\item{useClipRConda}{use conda environment installed by Herper, TRUE (default) or FALSE.}
 
-\item{additionalArgumements}{Additional arguments to be passed to system call.}
+\item{additional_Args}{additional arguments to be passed to system call.}
 
-\item{verbose}{Print messages to screen}
+\item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE}
+\item{writelog}{write stderr/stdout logs, TRUE (default) or FALSE.}
 }
 \value{
-Path to unzipped file
+path to file with index stripped, in the same format as the input file.
 }
 \description{
 Wrapper function for ctk's stripBarcode
 }
 \examples{
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
-FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter = "mean:0-29:20",verbose=TRUE)
+FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 FqFile <- decompress(FqFile_FF,overwrite=TRUE)
 FqFile_clipped <- fastx_clipper(FqFile,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
-FqFile_QF <- fastq_quality_trimmer(FqFile_clipped,paste0(FqFile_QF,".gz"))
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
 }
