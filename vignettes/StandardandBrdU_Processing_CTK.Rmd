@@ -18,12 +18,8 @@ baseDir <- "/Users/thomascarroll/Desktop/Projects/brc/clipRUTest/"
 Download data from [SRA](https://www.ncbi.nlm.nih.gov/sra). *SRR110753* was selected as an example in this vignette. 
 
 ```{r DownloadData_GetSRA,echo=TRUE,eval=FALSE}
-require(SRAdb)
-mySRA <- "SRAmetadb.sqlite"
-if(!file.exists(mySRA)){
-  mySRA <- getSRAdbFile()
-}
-sra_con <- dbConnect(dbDriver("SQLite"), mySRA )
+pathToData <- "ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR110/005/SRR1107535/SRR1107535.fastq.gz"
+download.file(pathToData,basename(pathToData))
 ```
 
 ```{r DownloadData_GetFastQ,echo=TRUE,eval=FALSE}
