@@ -669,10 +669,10 @@ CLIP_bw2 <- function(sort_bam,res_dir=dirname(sort_bam),normalized=TRUE, strande
       allChromosomeStats <- Rsamtools::idxstatsBam(sort_bam)
       mapped <- sum(allChromosomeStats[,"mapped"])
       myparam <- ScanBamParam(flag=scanBamFlag(isMinusStrand=FALSE))
-      toRun <- coverage(Rsamtools::BamFile(sort_bam,param=myparam),weight = (10^6)/mapped)
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),param=myparam,weight = (10^6)/mapped)
       export.bw(toRun,con=gsub("\\.bigwig","_Pos.bigwig",bw_out))
       myparam <- ScanBamParam(flag=scanBamFlag(isMinusStrand=TRUE))
-      toRun <- coverage(Rsamtools::BamFile(sort_bam,param=myparam),weight = (10^6)/mapped)
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),param=myparam,weight = (10^6)/mapped)
       export.bw(toRun,con=gsub("\\.bigwig","_Neg.bigwig",bw_out))
     }
     #     else if(notStranded==FALSE){
@@ -684,10 +684,10 @@ CLIP_bw2 <- function(sort_bam,res_dir=dirname(sort_bam),normalized=TRUE, strande
     #     }
     else{
       myparam <- ScanBamParam(flag=scanBamFlag(isMinusStrand=FALSE))
-      toRun <- coverage(Rsamtools::BamFile(sort_bam,param=myparam))
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),param=myparam)
       export.bw(toRun,con=gsub("\\.bigwig","_Pos.bigwig",bw_out))
       myparam <- ScanBamParam(flag=scanBamFlag(isMinusStrand=TRUE))
-      toRun <- coverage(Rsamtools::BamFile(sort_bam,param=myparam))
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),param=myparam)
       export.bw(toRun,con=gsub("\\.bigwig","_Neg.bigwig",bw_out))
     }
   }
