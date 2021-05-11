@@ -9,6 +9,7 @@ CLIP_bw2(
   sort_bam,
   res_dir = dirname(sort_bam),
   normalized = TRUE,
+  stranded = FALSE,
   verbose = FALSE
 )
 }
@@ -18,6 +19,8 @@ CLIP_bw2(
 \item{res_dir}{result directory, default is directory where BAM file is located, to specify other/create new directory, enter path as character string.}
 
 \item{normalized}{normalized to total reads.}
+
+\item{stranded}{Whether to make separate bigwigs for each strand, TRUE or FALSE (default).}
 
 \item{verbose}{print messages, TRUE or FALSE (default).}
 }
@@ -29,7 +32,7 @@ Build bigwigs
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- suppressWarnings(bowtie2_index(testFasta, overwrite=TRUE))
+myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile <- decompress(testFQ,overwrite = TRUE)
 FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter = "mean:0-29:20",verbose=TRUE)

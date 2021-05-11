@@ -714,7 +714,7 @@ ctk_fastq2collapse <- function(filesToRun,
 #' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose = TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
@@ -853,7 +853,7 @@ ctk_parseAlignment <- function(filesToRun,
 #' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
@@ -993,7 +993,7 @@ ctk_tag2collapse <- function(filesToRun,
 #' @examples
 #' \dontrun{
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
@@ -1109,7 +1109,7 @@ ctk_joinWrapper <- function(file1,
 #' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package ="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package ="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20")
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
@@ -1247,7 +1247,7 @@ ctk_bed2rgb <- function(filesToRun,
 #' @param writelog write stderr/stdout logs, TRUE (default) or FALSE. 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
@@ -1417,7 +1417,7 @@ ctk_tag2profile <- function(filesToRun,
 #' @param writelog write stderr/stdout logs, TRUE (default) or FALSE 
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20",verbose=TRUE)
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)

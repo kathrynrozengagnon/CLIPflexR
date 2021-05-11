@@ -24,7 +24,7 @@ count from mapped beds to make count matrix
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-bowtie2_index(testFasta, overwrite = TRUE)
+myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 }
 \author{
 Kathryn Rozen-Gagnon

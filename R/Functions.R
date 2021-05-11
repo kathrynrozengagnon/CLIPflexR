@@ -76,7 +76,7 @@ utils::globalVariables(c("V4"))
 #' @param filtDup output index name.
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite = TRUE)
+#' myIndex <- suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
 #' FqFile_QF <- fastq_quality_filter(FqFile)
@@ -429,7 +429,7 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
 #' @param threads number of threads to use, default is 1.
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' bowtie2_index(testFasta, overwrite = TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' @importFrom Rbowtie2 bowtie2_build
 #' @return Path to index 
 #' @export
@@ -598,7 +598,7 @@ bowtie_align <- function(fq,index,
 #' @param interFeature discard reads mapping to multiple features, TRUE or FALSE (default).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' bowtie2_index(testFasta, overwrite = TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' @import GenomicRanges GenomicAlignments
 #' @importMethodsFrom SummarizedExperiment assay
 #' @importMethodsFrom rtracklayer import.bed
@@ -622,7 +622,7 @@ countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
 #' @param verbose print messages, TRUE or FALSE (default).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <-suppressWarnings(bowtie2_index(testFasta, overwrite = TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite = TRUE)
 #' FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter = "mean:0-29:20",verbose=TRUE)
@@ -1049,7 +1049,7 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
 #' @param outfa path to output FASTA (default is same directory as input BAM).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <- suppressWarnings(bowtie2_index(testFasta, overwrite=TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile_FF <- ctk_fastqFilter(testFQ,qsFilter="mean:0-29:20")
 #' FqFile <- decompress(FqFile_FF,overwrite=TRUE)
