@@ -618,10 +618,11 @@ countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
 #' @param sort_bam path to sorted BAM file.
 #' @param res_dir result directory, default is directory where BAM file is located, to specify other/create new directory, enter path as character string.
 #' @param normalized normalized to total reads.
+#' @param stranded Whether to make separate bigwigs for each strand, TRUE or FALSE (default).
 #' @param verbose print messages, TRUE or FALSE (default).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- suppressWarnings(bowtie2_index(testFasta, overwrite=TRUE))
+#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite = TRUE)
 #' FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter = "mean:0-29:20",verbose=TRUE)
@@ -636,30 +637,61 @@ countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
 #' @import  Rsamtools
 #' @return bigwig.
 #' @export
-CLIP_bw2 <- function(sort_bam,res_dir=dirname(sort_bam),normalized=TRUE, verbose=FALSE){
+CLIP_bw2 <- function(sort_bam,res_dir=dirname(sort_bam),normalized=TRUE, stranded=FALSE,verbose=FALSE){
   if(!dir.exists(res_dir)){
     dir.create(res_dir) 
     if(verbose){
-    message("creating output directory ", res_dir)}
+      message("creating output directory ", res_dir)}
   }else if(dir.exists(res_dir) & verbose){
-      message("bigwig will be written to existing directory: ",res_dir)}
+    message("bigwig will be written to existing directory: ",res_dir)}
   samID <- gsub("_sort.bam","",basename(sort_bam)) 
   bw_out <- file.path(res_dir,paste0(samID,".bigwig"))
-  if(normalized){
-    allChromosomeStats <- Rsamtools::idxstatsBam(sort_bam)
-    mapped <- sum(allChromosomeStats[,"mapped"])
-    toRun <- coverage(Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
-    export.bw(toRun,con=bw_out)}
-#     else if(notStranded==FALSE){
-#     mapped_pos <- scanBam(BamFile(sort_bam), flag = scanBamFlag(isUnmappedQuery = FALSE)))
-#
-#     toRun_pos <- Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
-# scanBam(BamFile(sort_bam),param=ScanBamParam(what = c("qname","seq"),flag = scanBamFlag(isUnmappedQuery = FALSE)))
-#     mapped_neg <- length(which(mapped$strand=="-"))
-#     }
-  else{
-    toRun <- coverage(BamFile(sort_bam))
-    export.bw(toRun,con=bw_out)}
+  if(!stranded){
+    if(normalized){
+      allChromosomeStats <- Rsamtools::idxstatsBam(sort_bam)
+      mapped <- sum(allChromosomeStats[,"mapped"])
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
+      export.bw(toRun,con=bw_out)
+    }
+    #     else if(notStranded==FALSE){
+    #     mapped <- scanBam(BamFile(sort_bam), flag = scanBamFlag(isUnmappedQuery = FALSE)))
+    #     mapped_pos <- length(which(mapped$strand=="+"))
+    #     toRun_pos <- Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
+    # scanBam(BamFile(sort_bam),param=ScanBamParam(what = c("qname","seq"),flag = scanBamFlag(isUnmappedQuery = FALSE)))
+    #     mapped_neg <- length(which(mapped$strand=="-"))
+    #     }
+    else{
+      toRun <- coverage(BamFile(sort_bam))
+      export.bw(toRun,con=bw_out)
+    }
+  }else{
+    if(normalized){
+      allChromosomeStats <- Rsamtools::idxstatsBam(sort_bam)
+      mapped <- sum(allChromosomeStats[,"mapped"])
+      myparam <- ScanBamParam(flag=scanBamFlag(isMinusStrand=FALSE))
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),param=myparam,weight = (10^6)/mapped)
+      export.bw(toRun,con=gsub("\\.bigwig","_Pos.bigwig",bw_out))
+      myparam <- ScanBamParam(flag=scanBamFlag(isMinusStrand=TRUE))
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),param=myparam,weight = (10^6)/mapped)
+      export.bw(toRun,con=gsub("\\.bigwig","_Neg.bigwig",bw_out))
+    }
+    #     else if(notStranded==FALSE){
+    #     mapped <- scanBam(BamFile(sort_bam), flag = scanBamFlag(isUnmappedQuery = FALSE)))
+    #     mapped_pos <- length(which(mapped$strand=="+"))
+    #     toRun_pos <- Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
+    # scanBam(BamFile(sort_bam),param=ScanBamParam(what = c("qname","seq"),flag = scanBamFlag(isUnmappedQuery = FALSE)))
+    #     mapped_neg <- length(which(mapped$strand=="-"))
+    #     }
+    else{
+      myparam <- ScanBamParam(flag=scanBamFlag(isMinusStrand=FALSE))
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),param=myparam)
+      export.bw(toRun,con=gsub("\\.bigwig","_Pos.bigwig",bw_out))
+      myparam <- ScanBamParam(flag=scanBamFlag(isMinusStrand=TRUE))
+      toRun <- coverage(Rsamtools::BamFile(sort_bam),param=myparam)
+      export.bw(toRun,con=gsub("\\.bigwig","_Neg.bigwig",bw_out))
+    }
+  }
+  
 }
 
 #' Build index for reference genome
