@@ -472,7 +472,7 @@ bowtie2_index <- function(genomeFasta,
 #' @param overwrite overwrite existing output files, TRUE or FALSE (default).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <- suppressWarnings(bowtie2_index(testFasta, overwrite=TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite=TRUE)
 #' FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter="mean:0-29:20",verbose=TRUE)
@@ -621,7 +621,7 @@ countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
 #' @param verbose print messages, TRUE or FALSE (default).
 #' @examples
 #' testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+#' myIndex <- suppressWarnings(bowtie2_index(testFasta, overwrite=TRUE))
 #' testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 #' FqFile <- decompress(testFQ,overwrite = TRUE)
 #' FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter = "mean:0-29:20",verbose=TRUE)
@@ -651,8 +651,8 @@ CLIP_bw2 <- function(sort_bam,res_dir=dirname(sort_bam),normalized=TRUE, verbose
     toRun <- coverage(Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
     export.bw(toRun,con=bw_out)}
 #     else if(notStranded==FALSE){
-#     mapped <- scanBam(BamFile(sort_bam), flag = scanBamFlag(isUnmappedQuery = FALSE)))
-#     mapped_pos <- length(which(mapped$strand=="+"))
+#     mapped_pos <- scanBam(BamFile(sort_bam), flag = scanBamFlag(isUnmappedQuery = FALSE)))
+#
 #     toRun_pos <- Rsamtools::BamFile(sort_bam),weight = (10^6)/mapped)
 # scanBam(BamFile(sort_bam),param=ScanBamParam(what = c("qname","seq"),flag = scanBamFlag(isUnmappedQuery = FALSE)))
 #     mapped_neg <- length(which(mapped$strand=="-"))

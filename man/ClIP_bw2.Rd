@@ -29,7 +29,7 @@ Build bigwigs
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(testFasta, overwrite=TRUE)
+myIndex <- suppressWarnings(bowtie2_index(testFasta, overwrite=TRUE))
 testFQ <- system.file("extdata/Fox3_Std_small.fq.gz",package="CLIPflexR")
 FqFile <- decompress(testFQ,overwrite = TRUE)
 FqFile_FF <- ctk_fastqFilter(FqFile,qsFilter = "mean:0-29:20",verbose=TRUE)
