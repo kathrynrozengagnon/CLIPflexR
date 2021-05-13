@@ -105,8 +105,12 @@
 <a href="#download-data" class="anchor"></a>Download Data</h2>
 <p>Download data from <a href="https://www.ncbi.nlm.nih.gov/sra">SRA</a>. <em>SRR110753</em> was selected as an example in this vignette.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">pathToData</span> <span class="op">&lt;-</span> <span class="st">"ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR110/005/SRR1107535/SRR1107535.fastq.gz"</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span><span class="op">(</span><span class="va">pathToData</span>,<span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">pathToData</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">SRAdb</span><span class="op">)</span>
+<span class="va">mySRA</span> <span class="op">&lt;-</span> <span class="st">"SRAmetadb.sqlite"</span>
+<span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">mySRA</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="va">mySRA</span> <span class="op">&lt;-</span> <span class="fu">getSRAdbFile</span><span class="op">(</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="va">sra_con</span> <span class="op">&lt;-</span> <span class="fu">dbConnect</span><span class="op">(</span><span class="fu">dbDriver</span><span class="op">(</span><span class="st">"SQLite"</span><span class="op">)</span>, <span class="va">mySRA</span> <span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Fox3_Std</span> <span class="op">&lt;-</span> <span class="st">"SRR1107535.fastq.gz"</span>
 <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="va">Fox3_Std</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
