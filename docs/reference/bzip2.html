@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -149,7 +149,7 @@
   <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileToBzip2</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileToBzip2</span>),
     <span class='st'>"_Bzip2_stdout.txt"</span>)),
   <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"CLIPflexR.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>additionalArgumements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>additional_Args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
     
@@ -158,15 +158,15 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fileToBzip2</th>
-      <td><p>File to bzip.</p></td>
+      <td><p>path to file to bzip.</p></td>
     </tr>
     <tr>
       <th>bzip2</th>
-      <td><p>Path to bzip2.</p></td>
+      <td><p>path to bzip2.</p></td>
     </tr>
     <tr>
       <th>keep</th>
-      <td><p>keep (don't delete) input files.</p></td>
+      <td><p>keep (don't delete) input files, TRUE (default) or FALSE.</p></td>
     </tr>
     <tr>
       <th>force</th>
@@ -182,29 +182,29 @@
     </tr>
     <tr>
       <th>stderr</th>
-      <td><p>Path to stderr file.</p></td>
+      <td><p>path to stderr file.</p></td>
     </tr>
     <tr>
       <th>stdout</th>
-      <td><p>Path to stdout file.</p></td>
+      <td><p>path to stdout file.</p></td>
     </tr>
     <tr>
       <th>useClipRConda</th>
-      <td><p>Boolean on whether to use conda environment install by Herper.</p></td>
+      <td><p>use conda environment installed by Herper, TRUE (default) or FALSE.</p></td>
     </tr>
     <tr>
-      <th>additionalArgumements</th>
-      <td><p>Additional arguments to be passed to system call.</p></td>
+      <th>additional_Args</th>
+      <td><p>additional arguments to be passed to system call.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Print messages to screen</p></td>
+      <td><p>print messages to screen, TRUE or FALSE (default).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to unzipped file.</p>
+    <p>path to bzipped file.</p>
     
 
   </div>

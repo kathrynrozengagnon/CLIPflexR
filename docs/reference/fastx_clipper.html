@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -142,14 +142,15 @@
   <span class='kw'>outFile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'>file_path_sans_ext</span>(<span class='no'>fileTofqs</span>), <span class='st'>"_clip."</span>, <span class='fu'>file_ext</span>(<span class='no'>fileTofqs</span>)),
   <span class='kw'>fqc</span> <span class='kw'>=</span> <span class='st'>"fastx_clipper"</span>,
   <span class='kw'>length</span> <span class='kw'>=</span> <span class='fl'>18</span>,
-  <span class='kw'>adaptor</span> <span class='kw'>=</span> <span class='st'>"GTGTCAGTCACTTCCAGCGG"</span>,
+  <span class='kw'>adapter</span> <span class='kw'>=</span> <span class='st'>"GTGTCAGTCACTTCCAGCGG"</span>,
+  <span class='kw'>qEncoding</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>writelog</span> <span class='kw'>=</span> <span class='no'>T</span>,
   <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileTofqs</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileTofqs</span>),
     <span class='st'>"_fastx_clipper_stderr.txt"</span>)),
   <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileTofqs</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileTofqs</span>),
     <span class='st'>"_fastx_clipper_stdout.txt"</span>)),
   <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"CLIPflexR.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
-  <span class='kw'>additionalArgumements</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>additional_Args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
     
@@ -158,59 +159,63 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fileTofqs</th>
-      <td><p>File to process.</p></td>
+      <td><p>path to file to process (fastq or fasta).</p></td>
     </tr>
     <tr>
       <th>outFile</th>
-      <td><p>Output file path</p></td>
+      <td><p>output file path.</p></td>
     </tr>
     <tr>
       <th>fqc</th>
-      <td><p>Path to fastx_clipper from FastX toolkit</p></td>
+      <td><p>path to fastx_clipper from FastX toolkit.</p></td>
     </tr>
     <tr>
       <th>length</th>
-      <td><p>Length for fastx_clipper</p></td>
+      <td><p>miminum sequence length, default is 18 (set to .</p></td>
     </tr>
     <tr>
-      <th>adaptor</th>
-      <td><p>Adapter to remove</p></td>
+      <th>adapter</th>
+      <td><p>adapter to remove (default is "GTGTCAGTCACTTCCAGCGG", specify a string to change adapter sequence).</p></td>
+    </tr>
+    <tr>
+      <th>qEncoding</th>
+      <td><p>quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq) or NULL (Phred+64 fastq or fasta; default).</p></td>
     </tr>
     <tr>
       <th>writelog</th>
-      <td><p>write stderr/stdout logs, TRUE (default) or FALSE</p></td>
+      <td><p>write stderr/stdout logs, TRUE (default) or FALSE.</p></td>
     </tr>
     <tr>
       <th>stderr</th>
-      <td><p>Path to stderr file.</p></td>
+      <td><p>path to stderr file.</p></td>
     </tr>
     <tr>
       <th>stdout</th>
-      <td><p>Path to stdout file.</p></td>
+      <td><p>path to stdout file.</p></td>
     </tr>
     <tr>
       <th>useClipRConda</th>
-      <td><p>Boolean on whether to use conda environment install by Herper</p></td>
+      <td><p>use conda environment installed by Herper, TRUE (default) or FALSE.</p></td>
     </tr>
     <tr>
-      <th>additionalArgumements</th>
-      <td><p>Additional arguments to be passed to system call.</p></td>
+      <th>additional_Args</th>
+      <td><p>additional arguments to be passed to system call.</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Print messages to screen</p></td>
+      <td><p>print messages to screen, TRUE or FALSE (default).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to clipped file</p>
+    <p>path to clipped file</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'>fastx_clipper</span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)</div></pre>
+<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'>fastx_clipper</span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>, <span class='kw'>adapter</span> <span class='kw'>=</span> <span class='st'>"GTGTCAG"</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

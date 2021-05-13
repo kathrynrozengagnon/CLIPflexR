@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -153,41 +153,41 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>peaks</th>
-      <td><p>CLIP peaks to process.</p></td>
+      <td><p>CLIP peaks to process; accepts path to peak files (BED file or BED-formatted tab-delimited text files) or R objects (GRanges or BED-formatted data.frame); peak locations must be unique.</p></td>
     </tr>
     <tr>
       <th>resize</th>
-      <td><p>Size of window in bp for resizing around peak center.</p></td>
+      <td><p>size of window in bp for resizing around peak center, default is NULL (set by specifying integer).</p></td>
     </tr>
     <tr>
       <th>fasta</th>
-      <td><p>Genome fasta file.</p></td>
+      <td><p>path to genome file (fasta).</p></td>
     </tr>
     <tr>
       <th>add5</th>
-      <td><p>Bp to add to 5' of resized peak.</p></td>
+      <td><p>bp to add to 5' of resized peak, default is 0 (set by specifying integer).</p></td>
     </tr>
     <tr>
       <th>add3</th>
-      <td><p>Bp to add to 3' of resized peak.</p></td>
+      <td><p>bp to add to 3' of resized peak, default is 0 (set by specifying integer).</p></td>
     </tr>
     <tr>
       <th>verbose</th>
-      <td><p>Print messages.</p></td>
+      <td><p>print messages, TRUE or FALSE (default).</p></td>
     </tr>
     <tr>
       <th>bedHeader</th>
-      <td><p>TRUE if peak file contains column headers.</p></td>
+      <td><p>if peak file contains column headers, TRUE (default) or FALSE; if TRUE, column names must be "seqnames" (chromosome), "start" (peak start), "end" (peak end), "strand" (peak strand).</p></td>
     </tr>
     <tr>
       <th>bedSep</th>
-      <td><p>Separator in BED file.</p></td>
+      <td><p>separator in BED file.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to unzipped file.</p>
+    <p>path to unzipped file.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

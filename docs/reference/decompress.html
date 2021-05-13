@@ -38,7 +38,7 @@
 
 <meta property="og:title" content="Decompress — decompress" />
 
-<meta property="og:description" content="Wrapper function for bzip2" />
+<meta property="og:description" content="Wrapper function for gunzip, bunzip" />
 
 
 
@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -133,7 +133,7 @@
 
     <div class="ref-description">
     
-    <p>Wrapper function for bzip2</p>
+    <p>Wrapper function for gunzip, bunzip</p>
     
     </div>
 
@@ -149,31 +149,31 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fileToDecompress</th>
-      <td><p>File to bzip</p></td>
+      <td><p>path to file to decompress.</p></td>
     </tr>
     <tr>
       <th>outDir</th>
-      <td><p>Output directory</p></td>
+      <td><p>output directory.</p></td>
     </tr>
     <tr>
       <th>keep</th>
-      <td><p>keep (don't delete) input files</p></td>
+      <td><p>keep (don't delete) input files, TRUE (default) or FALSE.</p></td>
     </tr>
     <tr>
       <th>overwrite</th>
-      <td><p>overwrite existing output files</p></td>
+      <td><p>overwrite existing output files, TRUE or FALSE (default).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to unzipped file</p>
+    <p>path to unzipped file.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='fu'>decompress</span>(<span class='no'>testFQ</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Fox3_Std_small.fq"</div></pre>
+<span class='fu'>decompress</span>(<span class='no'>testFQ</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Fox3_Std_small.fq"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

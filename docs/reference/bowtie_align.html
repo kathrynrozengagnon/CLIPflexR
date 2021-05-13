@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.19</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
       </span>
     </div>
 
@@ -97,7 +97,7 @@
       <a href="../articles/Processing_to_matrix.html">Processing reads, mapping, and building a count matrix</a>
     </li>
     <li>
-      <a href="../articles/StandardandBrdU_Processing_CTK.html">Standard/BrdU-CLIP data analysis using CTK</a>
+      <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
@@ -140,14 +140,18 @@
     <pre class="usage"><span class='fu'>bowtie_align</span>(
   <span class='no'>fq</span>,
   <span class='no'>index</span>,
-  <span class='kw'>bam</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fq</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"Sorted_"</span>, <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span>(<span class='st'>"\\.fa|\\.fasta|\\.fastq"</span>,
-    <span class='st'>""</span>, <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fq</span>)), <span class='st'>".bam"</span>)),
-  <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"fasta"</span>,
+  <span class='kw'>outbam</span> <span class='kw'>=</span> <span class='st'>"fq"</span>,
+  <span class='kw'>inputFormat</span> <span class='kw'>=</span> <span class='st'>"fasta"</span>,
   <span class='kw'>keepSAM</span> <span class='kw'>=</span> <span class='no'>T</span>,
-  <span class='kw'>maxMismatches</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"genome_map"</span>,
+  <span class='kw'>maxMismatches</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>seedSubString</span> <span class='kw'>=</span> <span class='fl'>18</span>,
   <span class='kw'>threads</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>report_k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>report_k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>keep_all</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>soft_clip</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>additional_Args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -155,56 +159,86 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>fq</th>
-      <td><p>File to process.</p></td>
+      <td><p>path to file to process (fasta or fastq).</p></td>
     </tr>
     <tr>
       <th>index</th>
-      <td><p>Index name</p></td>
+      <td><p>bowtie2 index name without extension.</p></td>
     </tr>
     <tr>
-      <th>bam</th>
-      <td><p>Output bam name</p></td>
+      <th>outbam</th>
+      <td><p>output bam name, not required if mode is set. If mode is set to "NULL", specify "fq" (default - name of file to process/reads) or "index" (name of index)</p></td>
     </tr>
     <tr>
-      <th>format</th>
-      <td><p>Format of reads (fastq or fasta)</p></td>
+      <th>inputFormat</th>
+      <td><p>Format of reads, "fastq" or "fasta" (default).</p></td>
     </tr>
     <tr>
       <th>keepSAM</th>
-      <td><p>keep bowtie2 SAM output file, default = T</p></td>
+      <td><p>keep bowtie2 SAM output file, TRUE (default) or FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>mode</th>
+      <td><p>mapping mode, "genome_map" (default - 1 mismatch in seed alignment, seed substring of 18) or "reverse_map" (for mapping short sequences to reads, i.e. miRNAs or chimera analysis, 0 mismatches and a seed substring of 18); set mode=NULL to custom set bowtie2 options using arguments below or additional arguments.</p></td>
     </tr>
     <tr>
       <th>maxMismatches</th>
-      <td><p>max mismatches</p></td>
+      <td><p>max mismatches in seed alignment, (default is 0).</p></td>
     </tr>
     <tr>
       <th>seedSubString</th>
-      <td><p>length of seed substrings</p></td>
+      <td><p>length of seed substrings (default is 18).</p></td>
     </tr>
     <tr>
       <th>threads</th>
-      <td><p>Number of threads to use</p></td>
+      <td><p>number of threads to use (default is 1).</p></td>
     </tr>
     <tr>
       <th>report_k</th>
-      <td><p>number of alignments to report</p></td>
+      <td><p>number of alignments to report, default is NULL (the best alignment is reported), set to integer to specify.</p></td>
+    </tr>
+    <tr>
+      <th>keep_all</th>
+      <td><p>report all alignments, default is NULL (the best alignment is reported), set to TRUE to report all.</p></td>
+    </tr>
+    <tr>
+      <th>soft_clip</th>
+      <td><p>allow soft clipping, default is NULL (no soft clipping), set to TRUE to to soft clip.</p></td>
+    </tr>
+    <tr>
+      <th>additional_Args</th>
+      <td><p>any additional mapping arguments not set above, default is NULL, can be set by specifying a single character string with spaces between arguments (see example below); run "Rbowtie2::bowtie2_usage()" to see all options; please note that due to a Rbowtie2 bug, the "--no-1mm-upfront" is not available.</p></td>
+    </tr>
+    <tr>
+      <th>overwrite</th>
+      <td><p>overwrite existing output files, TRUE or FALSE (default).</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Path to BAM</p>
+    <p>path to sorted BAM.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>testFasta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hg19Small.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.2.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.3.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.4.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.rev.1.bt2. It will be overwrited</span></div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `bt2Index`, file exist:/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/hg19Small.rev.2.bt2. It will be overwrited</span></div><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
-<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)
+<span class='no'>myIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span>(<span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>testFasta</span>, <span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>))
+<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>testFQ</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>FqFile</span>,<span class='kw'>qsFilter</span><span class='kw'>=</span><span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Fox3_Std_small.fq  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/FF_Fox3_Std_small.fq </span></div><div class='input'><span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)
 <span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>)
-<span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_quality_trimmer.html'>fastq_quality_trimmer</a></span>(<span class='no'>FqFile_clipped</span>,<span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>FqFile_QF</span>,<span class='st'>".gz"</span>))
-<span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq2collapse.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.19/bin/ctk/fastq2collapse.pl  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/QF_FF_Fox3_Std_small_clip.fq.gz  /private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Collapsed_QF_FF_Fox3_Std_small_clip.fq </span></div><div class='input'><span class='no'>FqFile_QFColStripped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>)
-<span class='fu'>bowtie_align</span>(<span class='no'>FqFile_QFColStripped</span>,<span class='no'>myIndex</span>)</div><div class='output co'>#&gt; [1] "/private/var/folders/rx/rt8glh297vbg70g644dpwy6w0000gn/T/Rtmp7xIt5c/temp_libpath160e7360bd99c/CLIPflexR/extdata/Sorted_Collapsed_QF_FF_Fox3_Std_small_clip.fq_rm5.gzfa.bam"</div></pre>
+<span class='no'>FqFile_Col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastq2collapse.html'>ctk_fastq2collapse</a></span>(<span class='no'>FqFile_QF</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq2collapse.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq2collapse.pl  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/QT_FF_Fox3_Std_small_clip.fq  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Collapsed_QT_FF_Fox3_Std_small_clip.fq </span></div><div class='input'><span class='no'>FqFile_ColStrip</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span>(<span class='no'>FqFile_Col</span>,<span class='kw'>linkerlength</span><span class='kw'>=</span><span class='fl'>5</span>, <span class='kw'>inputFormat</span><span class='kw'>=</span><span class='st'>"fastq"</span>)
+
+<span class='co'>##map reads to genome</span>
+<span class='fu'>bowtie_align</span>(<span class='no'>FqFile_ColStrip</span>,<span class='no'>myIndex</span>, <span class='kw'>inputFormat</span><span class='kw'>=</span><span class='st'>"fastq"</span>, <span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `samOutput`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Collapsed_QT_FF_Fox3_Std_small_clip_rm5.sam. It will be overwrited</span></div><div class='output co'>#&gt; [1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Collapsed_QT_FF_Fox3_Std_small_clip_rm5.bam"</div><div class='input'>
+<span class='co'>##map reads to genome, custom mode</span>
+<span class='fu'>bowtie_align</span>(<span class='no'>FqFile_ColStrip</span>,<span class='no'>myIndex</span>, <span class='kw'>mode</span><span class='kw'>=</span><span class='kw'>NULL</span>,
+<span class='kw'>soft_clip</span><span class='kw'>=</span><span class='fl'>TRUE</span>, <span class='kw'>additional_Args</span><span class='kw'>=</span><span class='st'>"--mp 15 -R 4"</span>, <span class='kw'>inputFormat</span><span class='kw'>=</span><span class='st'>"fastq"</span>, <span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `samOutput`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Collapsed_QT_FF_Fox3_Std_small_clip_rm5.sam. It will be overwrited</span></div><div class='output co'>#&gt; [1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Collapsed_QT_FF_Fox3_Std_small_clip_rm5.bam"</div><div class='input'>
+<span class='co'>##map miRNAs to reads</span>
+<span class='no'>miRNAs</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/hsa_mature.fa"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+<span class='no'>FaFile_Fa</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastq_to_fasta.html'>fastx_qtoa</a></span>(<span class='no'>FqFile_ColStrip</span>)
+<span class='no'>readIndex</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='bowtie2_index.html'>bowtie2_index</a></span>(<span class='no'>FaFile_Fa</span>, <span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
+<span class='fu'>bowtie_align</span>(<span class='no'>miRNAs</span>,<span class='no'>readIndex</span>, <span class='kw'>mode</span><span class='kw'>=</span><span class='st'>"reverse_map"</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: For argument `samOutput`, file exist:/Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Collapsed_QT_FF_Fox3_Std_small_clip_rm5.sam. It will be overwrited</span></div><div class='output co'>#&gt; [1] "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Collapsed_QT_FF_Fox3_Std_small_clip_rm5.bam"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

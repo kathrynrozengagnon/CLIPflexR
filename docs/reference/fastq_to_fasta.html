@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Wrapper function for fastq_quality_trimmer — fastq_quality_trimmer • CLIPflexR</title>
+<title>Wrapper function for fastq_to_fasta — fastq_to_fasta • CLIPflexR</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 
 
 
-<meta property="og:title" content="Wrapper function for fastq_quality_trimmer — fastq_quality_trimmer" />
+<meta property="og:title" content="Wrapper function for fastq_to_fasta — fastq_to_fasta" />
 
-<meta property="og:description" content="Wrapper function for fastq_quality_trimmer" />
+<meta property="og:description" content="Wrapper function for fastq_to_fasta" />
 
 
 
@@ -126,56 +126,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Wrapper function for fastq_quality_trimmer</h1>
+    <h1>Wrapper function for fastq_to_fasta</h1>
     <small class="dont-index">Source: <a href='https://github.com/kathrynrozengagnon/CLIPflexR/blob/master/R/wrapperFunctions_fastxtoolkit.R'><code>R/wrapperFunctions_fastxtoolkit.R</code></a></small>
-    <div class="hidden name"><code>fastq_quality_trimmer.Rd</code></div>
+    <div class="hidden name"><code>fastq_to_fasta.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Wrapper function for fastq_quality_trimmer</p>
+    <p>Wrapper function for fastq_to_fasta</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>fastq_quality_trimmer</span>(
-  <span class='no'>fileTofqf</span>,
-  <span class='kw'>outFile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileTofqf</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"QT_"</span>, <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileTofqf</span>))),
-  <span class='kw'>fqf</span> <span class='kw'>=</span> <span class='st'>"fastq_quality_trimmer"</span>,
-  <span class='kw'>qualityThreshold</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>minimumLength</span> <span class='kw'>=</span> <span class='fl'>20</span>,
+    <pre class="usage"><span class='fu'>fastx_qtoa</span>(
+  <span class='no'>fileToc</span>,
+  <span class='kw'>fqa</span> <span class='kw'>=</span> <span class='st'>"fastq_to_fasta"</span>,
+  <span class='kw'>discard_N</span> <span class='kw'>=</span> <span class='no'>T</span>,
+  <span class='kw'>rename</span> <span class='kw'>=</span> <span class='no'>F</span>,
+  <span class='kw'>outFile</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'>file_path_sans_ext</span>(<span class='no'>fileToc</span>), <span class='st'>".fa"</span>),
+  <span class='kw'>writelog</span> <span class='kw'>=</span> <span class='no'>T</span>,
   <span class='kw'>qEncoding</span> <span class='kw'>=</span> <span class='fl'>33</span>,
-  <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileTofqf</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileTofqf</span>),
-    <span class='st'>"_fastq_quality_trimmer_stderr.txt"</span>)),
-  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileTofqf</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileTofqf</span>),
-    <span class='st'>"_fastq_quality_trimmer_stdout.txt"</span>)),
+  <span class='kw'>stderr</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileToc</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileToc</span>), <span class='st'>"_qtoa_stderr.txt"</span>)),
+  <span class='kw'>stdout</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>fileToc</span>), <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/basename.html'>basename</a></span>(<span class='no'>fileToc</span>), <span class='st'>"_qtoa_stdout.txt"</span>)),
   <span class='kw'>useClipRConda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/NULL.html'>is.null</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span>(<span class='st'>"CLIPflexR.condaEnv"</span>)), <span class='fl'>FALSE</span>, <span class='fl'>TRUE</span>),
   <span class='kw'>additional_Args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>writelog</span> <span class='kw'>=</span> <span class='no'>T</span>
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>fileTofqf</th>
+      <th>fileToc</th>
       <td><p>path to file to process (fastq).</p></td>
     </tr>
     <tr>
+      <th>fqa</th>
+      <td><p>path to fastx_trimmer from FastX toolkit.</p></td>
+    </tr>
+    <tr>
+      <th>discard_N</th>
+      <td><p>discard reads with unknown nucleotides (N), TRUE (default)  or FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>rename</th>
+      <td><p>replace sequence names with number identifiers, TRUE or FALSE (default).</p></td>
+    </tr>
+    <tr>
       <th>outFile</th>
-      <td><p>output file name.</p></td>
+      <td><p>output file path.</p></td>
     </tr>
     <tr>
-      <th>fqf</th>
-      <td><p>path to fastq_quality_trimmer from FastX toolkit.</p></td>
-    </tr>
-    <tr>
-      <th>qualityThreshold</th>
-      <td><p>minimum quality score to keep.</p></td>
-    </tr>
-    <tr>
-      <th>minimumLength</th>
-      <td><p>minimum percent of bases that must have [-q] quality.</p></td>
+      <th>writelog</th>
+      <td><p>write stderr/stdout logs, TRUE (default) or FALSE.</p></td>
     </tr>
     <tr>
       <th>qEncoding</th>
@@ -201,23 +203,17 @@
       <th>verbose</th>
       <td><p>print messages to screen, TRUE or FALSE (default).</p></td>
     </tr>
-    <tr>
-      <th>writelog</th>
-      <td><p>write stderr/stdout logs, TRUE (default) or FALSE.</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>path to unzipped file</p>
+    <p>path to trimmed file</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
+    <pre class="examples"><div class='input'><span class='no'>testFQ</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/system.file.html'>system.file</a></span>(<span class='st'>"extdata/Fox3_Std_small.fq.gz"</span>,<span class='kw'>package</span><span class='kw'>=</span><span class='st'>"CLIPflexR"</span>)
 <span class='no'>FqFile_FF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ctk_fastqFilter.html'>ctk_fastqFilter</a></span>(<span class='no'>testFQ</span>,<span class='kw'>qsFilter</span> <span class='kw'>=</span> <span class='st'>"mean:0-29:20"</span>,<span class='kw'>verbose</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl command is /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl</span></div><div class='output co'>#&gt; <span class='message'>fastq_filter.pl arguments are /Users/kathryn/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /Library/Frameworks/R.framework/Versions/3.5/Resources/library/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span></div><div class='input'><span class='no'>FqFile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='decompress.html'>decompress</a></span>(<span class='no'>FqFile_FF</span>,<span class='kw'>overwrite</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
-<span class='no'>FqFile_clipped</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span>(<span class='no'>FqFile</span>,<span class='kw'>length</span><span class='kw'>=</span><span class='fl'>20</span>)
-<span class='no'>FqFile_QF</span> <span class='kw'>&lt;-</span> <span class='fu'>fastq_quality_trimmer</span>(<span class='no'>FqFile_clipped</span>)</div></pre>
+<span class='no'>FqFile_fa</span> <span class='kw'>&lt;-</span> <span class='fu'>fastx_qtoa</span>(<span class='no'>FqFile</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

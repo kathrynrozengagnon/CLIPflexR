@@ -41,6 +41,7 @@ reference:
     desc: >
       FastX toolkit wrapper functions.
     contents:
+      - fastq_to_fasta
       - fastx_quality_stats
       - fastx_collapser
       - fastx_barcode_splitter
