@@ -170,7 +170,7 @@
 <span class='va'>FqFile_QFCollapsed</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fastx_collapser.html'>fastx_collapser</a></span><span class='op'>(</span><span class='va'>FqFile_QF</span><span class='op'>)</span>
 <span class='va'>FqFile_QFColStripped</span> <span class='op'>&lt;-</span> <span class='fu'><a href='ctk_stripBarcode.html'>ctk_stripBarcode</a></span><span class='op'>(</span><span class='va'>FqFile_QFCollapsed</span><span class='op'>)</span>
 <span class='va'>FqFile_QFColStpClipped</span> <span class='op'>&lt;-</span> <span class='fu'><a href='fastx_clipper.html'>fastx_clipper</a></span><span class='op'>(</span><span class='va'>FqFile_QFColStripped</span><span class='op'>)</span>
-<span class='va'>bam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span><span class='op'>(</span><span class='va'>FqFile_QFColStpClipped</span>,<span class='va'>myIndex</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>bam</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/warning.html'>suppressWarnings</a></span><span class='op'>(</span><span class='fu'><a href='bowtie_align.html'>bowtie_align</a></span><span class='op'>(</span><span class='va'>FqFile_QFColStpClipped</span>,<span class='va'>myIndex</span>, overwrite <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'>bamtobed</span><span class='op'>(</span><span class='va'>bam</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "/Users/runner/work/_temp/Library/CLIPflexR/extdata/QF_Fox3_Std_small_collapse_rm5_clip.bed"</div></pre>
   </div>
