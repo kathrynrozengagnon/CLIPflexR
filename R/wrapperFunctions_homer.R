@@ -40,7 +40,7 @@
 #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
 #' FqFile_QFColStpClipped <- fastx_clipper(FqFile_QFColStripped)
-#' bam <- bowtie_align(FqFile_QFColStpClipped,myIndex, overwrite = TRUE)
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStpClipped,myIndex, overwrite = TRUE))
 #' bed <- bamtobed(bam)
 #' homer_peaks(bed)
 #' }

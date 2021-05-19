@@ -46,7 +46,7 @@ FaFile <- fastx_qtoa(FqFile)
 FaFile_clip <- fastx_clipper(FaFile, writelog=FALSE)
 myGenome <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 myIndex <- bowtie2_index(myGenome, overwrite = TRUE)
-myBam <- bowtie_align(FaFile_clip,myIndex, overwrite=TRUE)
+myBam <- suppressWarnings(bowtie_align(FaFile_clip,myIndex, overwrite=TRUE))
 miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 chimera_bed <- chimera_Process(myBam, miRNAs, myIndex, exclude="hsa-miR-19a-3p", overwrite=TRUE)
 }

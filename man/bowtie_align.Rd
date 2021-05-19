@@ -69,17 +69,17 @@ FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
 
 ##map reads to genome
-bowtie_align(FqFile_ColStrip,myIndex, inputFormat="fastq", overwrite=TRUE)
+suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, inputFormat="fastq", overwrite=TRUE))
 
 ##map reads to genome, custom mode
-bowtie_align(FqFile_ColStrip,myIndex, mode=NULL, 
-soft_clip=TRUE, additional_Args="--mp 15 -R 4", inputFormat="fastq", overwrite=TRUE) 
+suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, mode=NULL, 
+soft_clip=TRUE, additional_Args="--mp 15 -R 4", inputFormat="fastq", overwrite=TRUE)) 
 
 ##map miRNAs to reads
 miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 FaFile_Fa <- fastx_qtoa(FqFile_ColStrip)
 readIndex <- bowtie2_index(FaFile_Fa, overwrite=TRUE)
-bowtie_align(miRNAs,readIndex, mode="reverse_map",overwrite=TRUE)
+suppressWarnings(bowtie_align(miRNAs,readIndex, mode="reverse_map",overwrite=TRUE))
 }
 \author{
 Kathryn Rozen-Gagnon

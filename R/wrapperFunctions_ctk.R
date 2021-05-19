@@ -722,7 +722,7 @@ ctk_fastq2collapse <- function(filesToRun,
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
 #' parsedAlignment <- ctk_parseAlignment(bam)
 #' @return path to BED file.
 #' @export
@@ -861,7 +861,7 @@ ctk_parseAlignment <- function(filesToRun,
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
 #' parsedAlignment <- ctk_parseAlignment(bam)
 #' ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName = FALSE,verbose = TRUE)
@@ -1001,7 +1001,7 @@ ctk_tag2collapse <- function(filesToRun,
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
 #' mutationFile <- system.file("extdata/Fox3_Std_small_mutation.txt",package="CLIPflexR")
 #' parsedAlignment <- ctk_parseAlignment(bam,mutationFile=mutationFile)
 #' uniqueTags <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
@@ -1117,7 +1117,7 @@ ctk_joinWrapper <- function(file1,
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
 #' parsedAlignment <- ctk_parseAlignment(bam)
 #' myCollapsed <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName=FALSE,verbose=TRUE)
@@ -1255,7 +1255,7 @@ ctk_bed2rgb <- function(filesToRun,
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
 #' parsedAlignment <- ctk_parseAlignment(bam)
 #' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName=FALSE,verbose=TRUE)
@@ -1425,7 +1425,7 @@ ctk_tag2profile <- function(filesToRun,
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
 #' parsedAlignment <- ctk_parseAlignment(bam)
 #' myCollaped <- ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 #' weightInName=FALSE,verbose=TRUE)

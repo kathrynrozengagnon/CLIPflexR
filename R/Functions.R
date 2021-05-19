@@ -83,7 +83,7 @@ utils::globalVariables(c("V4"))
 #' FqFile_QFCollapsed <- fastx_collapser(FqFile_QF)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_QFCollapsed)
 #' FqFile_QFColStpClipped <- fastx_clipper(FqFile_QFColStripped)
-#' bam <- bowtie_align(FqFile_QFColStpClipped,myIndex, overwrite = TRUE)
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStpClipped,myIndex, overwrite = TRUE))
 #' bamtobed(bam)
 #' @return path to BED. 
 #' @import GenomicAlignments
@@ -482,17 +482,17 @@ bowtie2_index <- function(genomeFasta,
 #' FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
 #' 
 #' ##map reads to genome
-#' bowtie_align(FqFile_ColStrip,myIndex, inputFormat="fastq", overwrite=TRUE)
+#' suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, inputFormat="fastq", overwrite=TRUE))
 #' 
 #' ##map reads to genome, custom mode
-#' bowtie_align(FqFile_ColStrip,myIndex, mode=NULL, 
-#' soft_clip=TRUE, additional_Args="--mp 15 -R 4", inputFormat="fastq", overwrite=TRUE) 
+#' suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, mode=NULL, 
+#' soft_clip=TRUE, additional_Args="--mp 15 -R 4", inputFormat="fastq", overwrite=TRUE)) 
 #' 
 #' ##map miRNAs to reads
 #' miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 #' FaFile_Fa <- fastx_qtoa(FqFile_ColStrip)
 #' readIndex <- bowtie2_index(FaFile_Fa, overwrite=TRUE)
-#' bowtie_align(miRNAs,readIndex, mode="reverse_map",overwrite=TRUE)
+#' suppressWarnings(bowtie_align(miRNAs,readIndex, mode="reverse_map",overwrite=TRUE))
 
 #' @importFrom Rsamtools asBam indexBam sortBam
 #' @importFrom Rbowtie2 bowtie2
@@ -631,7 +631,7 @@ countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose = TRUE)
 #' FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq") 
 #' ##map reads to genome
-#' mapped <- bowtie_align(FqFile_ColStrip,myIndex, mode="genome_map", inputFormat="fastq")
+#' mapped <- suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, mode="genome_map", inputFormat="fastq"))
 #' wig <- CLIP_bw2(mapped)
 #' @docType methods
 #' @import  Rsamtools
@@ -1057,7 +1057,7 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
-#' bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
 #' extract_unmapped(bam)
 #' @return path to FASTA file of unmapped reads.
 #' @import GenomicAlignments Biostrings
@@ -1102,7 +1102,7 @@ extract_unmapped <- function(bam,outfa=NULL){
 #' FaFile_clip <- fastx_clipper(FaFile, writelog=FALSE)
 #' myGenome <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
 #' myIndex <- bowtie2_index(myGenome, overwrite = TRUE)
-#' myBam <- bowtie_align(FaFile_clip,myIndex, overwrite=TRUE)
+#' myBam <- suppressWarnings(bowtie_align(FaFile_clip,myIndex, overwrite=TRUE))
 #' miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
 #' chimera_bed <- chimera_Process(myBam, miRNAs, myIndex, exclude="hsa-miR-19a-3p", overwrite=TRUE)
 #' @import GenomicAlignments BiocParallel stringr

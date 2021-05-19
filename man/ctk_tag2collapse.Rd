@@ -87,7 +87,7 @@ FqFile_clipped <- fastx_clipper(FqFile,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5,inputFormat="fastq")
-bam <- bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq")
+bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
 parsedAlignment <- ctk_parseAlignment(bam)
 ctk_tag2collapse(parsedAlignment,weight=FALSE,randomBarcode=FALSE,
 weightInName = FALSE,verbose = TRUE)
