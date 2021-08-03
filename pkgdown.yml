@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   Processing_to_matrix: Processing_to_matrix.html
   StandardandBrdU_Processing_CTK: StandardandBrdU_Processing_CTK.html
+  chimera_vignette: chimera_vignette.html
   installCliPR: installCliPR.html
-last_built: 2021-05-19T02:32Z
+last_built: 2021-08-03T06:54Z
 

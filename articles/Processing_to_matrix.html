@@ -60,6 +60,9 @@
       <a href="../articles/StandardandBrdU_Processing_CTK.html">CTK: Standard/BrdU-CLIP data analysis</a>
     </li>
     <li>
+      <a href="../articles/chimera_vignette.html">Chimera processing</a>
+    </li>
+    <li>
       <a href="../articles/installCliPR.html">Using and installing the CTK pipeline using CLIPflexR</a>
     </li>
   </ul>
@@ -583,8 +586,14 @@ see <a href="../reference/bowtie_align.html">bowtie_align documentation</a>; see
 ## 
 ## [[4]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.bam"</code></pre>
-<p>##Convert to beds, find peaks, and build count matrix</p>
-<p>###Convert to beds <a href="../reference/bamtobed_index.html">CLIPflexR documentation</a></p>
+</div>
+<div id="convert-to-beds-find-peaks-and-build-count-matrix" class="section level2">
+<h2 class="hasAnchor">
+<a href="#convert-to-beds-find-peaks-and-build-count-matrix" class="anchor"></a>Convert to beds, find peaks, and build count matrix</h2>
+<div id="convert-to-beds" class="section level3">
+<h3 class="hasAnchor">
+<a href="#convert-to-beds" class="anchor"></a>Convert to beds</h3>
+<p><a href="../reference/bamtobed.html">CLIPflexR documentation</a></p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">beds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">bams</span>, <span class="va">bamtobed</span><span class="op">)</span>
 <span class="va">beds</span></code></pre></div>
@@ -599,6 +608,7 @@ see <a href="../reference/bowtie_align.html">bowtie_align documentation</a>; see
 ## 
 ## [[4]]
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.bed"</code></pre>
+</div>
 <div id="make-tag-directories-and-findpeaks-wrapping-homers-maketagdirectory-and-findpeaks" class="section level3">
 <h3 class="hasAnchor">
 <a href="#make-tag-directories-and-findpeaks-wrapping-homers-maketagdirectory-and-findpeaks" class="anchor"></a>Make tag directories and findpeaks <strong>(wrapping HOMER’s MakeTagDirectory and findpeaks)</strong>
