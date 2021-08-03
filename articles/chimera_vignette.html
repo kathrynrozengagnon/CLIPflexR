@@ -110,9 +110,7 @@
 <h2 class="hasAnchor">
 <a href="#process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting" class="anchor"></a>Process AGO-CLIP reads to find small RNAs directing AGO targeting</h2>
 <p>This vignette demonstrates how chimeric reads can be detected. Chimeras are reads containing a both a small RNA sequence and its transcript target sequence, indicating that the small RNA was targeting AGO to the transcript. This analysis could be applied to other RBPs if applicable…</p>
-<div class="figure">
-<img src="chimera.png" alt=""><p class="caption">plot of chunk annopie</p>
-</div>
+<p><img src="chimera.png"></p>
 <p>Modified from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4826034/">Scheel et al., <em>Cell Host Microbe</em>, 2016</a></p>
 </div>
 <div id="chimera-processing" class="section level2">
@@ -374,16 +372,17 @@
 <span class="co">#and merge these with our reverse mapped counts</span>
 <span class="va">revmap_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="va">revmap</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,  header <span class="op">=</span> <span class="cn">T</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
 <span class="va">col.names2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"miRNA"</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"\\.txt"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">revmap</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
-<span class="va">revmap_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">revmap_counts</span>, <span class="va">col.names2</span><span class="op">)</span>
-
-<span class="co"># merge together and visualize</span>
-<span class="va">merged_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">chimera_counts</span>, <span class="va">revmap_counts</span>, by<span class="op">=</span><span class="st">"miRNA"</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">revmap_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">revmap_counts</span>, <span class="va">col.names2</span><span class="op">)</span></code></pre></div>
+</div>
+</div>
+<div id="merge-count-tables-and-plot" class="section level1">
+<h1 class="hasAnchor">
+<a href="#merge-count-tables-and-plot" class="anchor"></a>Merge count tables and plot</h1>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">merged_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">chimera_counts</span>, <span class="va">revmap_counts</span>, by<span class="op">=</span><span class="st">"miRNA"</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">KRG102219_aegypti_Ago1_Exp8A_rm5_rm3_unmapped_chimera</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">KRG102219_aegypti_Ago1_Exp8A_rm5_rm3_revmap_counts</span><span class="op">)</span><span class="op">)</span>, data<span class="op">=</span><span class="va">merged_counts</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">15</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">15</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">"lm"</span>,se<span class="op">=</span><span class="cn">FALSE</span>, colour<span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">coord_equal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<div class="figure">
-<img src="miRNA_counts.png" alt=""><p class="caption">plot of chunk scatter</p>
-</div>
-</div>
+<p><img src="miRNA_counts.png"></p>
 </div>
   </div>
 
