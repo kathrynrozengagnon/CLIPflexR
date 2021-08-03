@@ -3,10 +3,11 @@
 \docType{methods}
 \name{chimera_Process}
 \alias{chimera_Process}
-\title{chimera_Process}
+\title{Chimera process CLIP data}
 \usage{
 chimera_Process(
   bams,
+  fastas = NULL,
   knownMiRNAs,
   genomeIndex,
   exclude = NULL,
@@ -17,7 +18,9 @@ chimera_Process(
 )
 }
 \arguments{
-\item{bams}{path to BAM files mapped to the genome, unmapped reads will be extracted for chimera processing.}
+\item{bams}{path to BAM files mapped to the genome, unmapped reads will be extracted for chimera processing. This requires that you mapped your reads to the genome disallowing soft clipping. If you allowed soft clipping, use fasta param and set bams = NULL.}
+
+\item{fastas}{path to reads to process if you want to perform chimera analysis on all reads, i.e. if you mapped your reads to the genome allowing soft clipping, default is NULL.}
 
 \item{knownMiRNAs}{path to FASTA file containing annotated miRNA or other small RNA sequence. Known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".}
 
@@ -45,10 +48,11 @@ FqFile <- decompress(testFastq,overwrite=TRUE)
 FaFile <- fastx_qtoa(FqFile)
 FaFile_clip <- fastx_clipper(FaFile, writelog=FALSE)
 myGenome <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-myIndex <- bowtie2_index(myGenome, overwrite = TRUE)
+myIndex <- suppressWarnings(bowtie2_index(myGenome, overwrite = TRUE))
 myBam <- suppressWarnings(bowtie_align(FaFile_clip,myIndex, overwrite=TRUE))
 miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
-chimera_bed <- chimera_Process(myBam, miRNAs, myIndex, exclude="hsa-miR-19a-3p", overwrite=TRUE)
+chimera_bed <- chimera_Process(myBam, knownMiRNAs= miRNAs, genomeIndex = myIndex, 
+exclude="hsa-miR-19a-3p", overwrite=TRUE, fastas = NULL)
 }
 \author{
 Kathryn Rozen-Gagnon

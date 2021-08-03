@@ -3,7 +3,7 @@
 \docType{methods}
 \name{bowtie_align}
 \alias{bowtie_align}
-\title{bowtie_align}
+\title{Alignment using Rbowtie2}
 \usage{
 bowtie_align(
   fq,
@@ -69,7 +69,8 @@ FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose=TRUE)
 FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
 
 ##map reads to genome
-suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, inputFormat="fastq", overwrite=TRUE))
+suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex,
+inputFormat="fastq", overwrite=TRUE))
 
 ##map reads to genome, custom mode
 suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, mode=NULL, 

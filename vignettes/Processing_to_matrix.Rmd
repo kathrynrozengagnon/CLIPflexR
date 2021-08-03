@@ -597,10 +597,10 @@ bams
 ## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_processing_vignette/KRG092419_S1_L001_R1_001_collapse_Aag2_Ago1_Exp7B_rm5_clip.bam"
 ```
 
-##Convert to beds, find peaks, and build count matrix
+## Convert to beds, find peaks, and build count matrix
 
-###Convert to beds
-[CLIPflexR documentation](../reference/bamtobed_index.html)
+### Convert to beds
+[CLIPflexR documentation](../reference/bamtobed.html)
 
 
 ```r

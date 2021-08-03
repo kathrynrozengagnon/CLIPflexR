@@ -41,6 +41,7 @@ FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose = TRUE)
 FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq") 
 ##map reads to genome
-mapped <- suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, mode="genome_map", inputFormat="fastq"))
+mapped <- suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, 
+mode="genome_map", inputFormat="fastq"))
 wig <- CLIP_bw2(mapped)
 }

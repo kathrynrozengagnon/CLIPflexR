@@ -3,7 +3,7 @@
 \docType{methods}
 \name{compress}
 \alias{compress}
-\title{Compress}
+\title{Wrapper function for gzip, bzip}
 \usage{
 compress(
   fileToCompress,

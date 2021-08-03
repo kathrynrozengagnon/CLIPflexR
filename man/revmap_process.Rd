@@ -3,7 +3,7 @@
 \docType{methods}
 \name{revmap_process}
 \alias{revmap_process}
-\title{Revmap_process}
+\title{Process reads to remove linker artifacts or filter  by length}
 \usage{
 revmap_process(fastas, linkers = NULL, length_max = NULL, length_min = NULL)
 }

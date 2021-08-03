@@ -3,7 +3,7 @@
 \docType{methods}
 \name{annotatePeaksWithPatterns}
 \alias{annotatePeaksWithPatterns}
-\title{annotatePeaksWithPatterns}
+\title{Search for small RNA targets, or any pattern, in peaks}
 \usage{
 annotatePeaksWithPatterns(
   peaks,

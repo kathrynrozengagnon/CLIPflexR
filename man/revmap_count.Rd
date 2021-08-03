@@ -3,7 +3,7 @@
 \docType{methods}
 \name{revmap_count}
 \alias{revmap_count}
-\title{revmap_count}
+\title{Reverse map small RNAs to processed or unprocessed reads}
 \usage{
 revmap_count(
   fastas,

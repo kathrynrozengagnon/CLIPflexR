@@ -62,8 +62,6 @@ utils::globalVariables(c("V4"))
 
 #' Convert Bam to Bed
 #'
-#' Convert Bam to Bed
-#'
 #'
 #' @docType methods
 #' @name bamtobed
@@ -109,8 +107,7 @@ bamtobed <- function(file,
   return(outFile)
 }
 
-#' Decompress
-#'
+
 #' Wrapper function for gunzip, bunzip
 #'
 #'
@@ -146,8 +143,6 @@ decompress <- function(fileToDecompress,
   return(fileWithoutExtension)
 }
 
-#' Compress
-#'
 #' Wrapper function for gzip, bzip
 #'
 #'
@@ -245,8 +240,6 @@ fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=
 }
 
 
-#' annotatePeaksWithPatterns
-#'
 #' Search for small RNA targets, or any pattern, in peaks
 #'
 #'
@@ -412,8 +405,6 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
 }
 
 
-#' bowtie2_index
-#'
 #' Make index for Rbowtie2
 #'
 #'
@@ -445,8 +436,7 @@ bowtie2_index <- function(genomeFasta,
 }
 
 
-#' bowtie_align
-#'
+
 #' Alignment using Rbowtie2
 #'
 #'
@@ -482,7 +472,8 @@ bowtie2_index <- function(genomeFasta,
 #' FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
 #' 
 #' ##map reads to genome
-#' suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, inputFormat="fastq", overwrite=TRUE))
+#' suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex,
+#' inputFormat="fastq", overwrite=TRUE))
 #' 
 #' ##map reads to genome, custom mode
 #' suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, mode=NULL, 
@@ -581,9 +572,8 @@ bowtie_align <- function(fq,index,
   
 }
 
-#' countFromBed to make count matrix
-#'
-#' count from mapped beds to make count matrix
+
+#' Count from beds to make count matrix
 #'
 #'
 #' @docType methods
@@ -631,7 +621,8 @@ countFromBed <- function(Bed,GR,notStranded=TRUE,interFeature=FALSE){
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF,verbose = TRUE)
 #' FqFile_ColStrip <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq") 
 #' ##map reads to genome
-#' mapped <- suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, mode="genome_map", inputFormat="fastq"))
+#' mapped <- suppressWarnings(bowtie_align(FqFile_ColStrip,myIndex, 
+#'mode="genome_map", inputFormat="fastq"))
 #' wig <- CLIP_bw2(mapped)
 #' @docType methods
 #' @import  Rsamtools
@@ -836,8 +827,7 @@ CLIP_align <- function(samID,res_dir=NULL,genome_idx=NULL,aligner=NULL,samSheet=
     }else{print("The index is not built by hisat2.")}
   }else{print("Please assign an available aligner: bowtie2, subread, subjunc, bwa, and hisat2")}}
 
-#' Revmap_process
-#'
+
 #' Process reads to remove linker artifacts or filter  by length
 #'
 #'
@@ -880,8 +870,7 @@ revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min
 
 
 
-#' revmap_count
-#'
+
 #'Reverse map small RNAs to processed or unprocessed reads
 #'
 #'
@@ -957,20 +946,19 @@ revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=FALSE, linker
   col.names<- basename(unlist(bedpath)) 
   col.names <- c("miRNA", col.names)
   count_stat <- setNames(count_stat, col.names)
-  write.table(count_stat,file.path(dirname(fastas)[1], "revmap_counts.txt"), col.names = TRUE, row.names= FALSE, sep = "\t", quote = F)
+  write.table(count_stat,paste0(gsub("\\.fa|\\.fasta", "", fastas[i]), "_revmap_counts.txt"), col.names = TRUE, row.names= FALSE, sep = "\t", quote = F)
   if(verbose) message("done")  
-   p <- c(names(dedup), file.path(dirname(fastas)[1], "revmap_counts.txt"))
+   p <- paste0(gsub("\\.fa|\\.fasta", "", fastas[i]), "_revmap_counts.txt")
     return(p)
   }
 
-#' Ranges_count
-#'
+
 #' Map unprocessed or processed reads to genome and count small RNAs by location
 #'
 #'
 #' @docType methods
-#' @name Ranges_count
-#' @rdname Ranges_count
+#' @name ranges_count
+#' @rdname ranges_count
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
@@ -998,7 +986,7 @@ revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=FALSE, linker
 #' @importFrom rtracklayer import
 #' @export
 #' 
-Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_max = NULL, length_min = NULL, 
+ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_max = NULL, length_min = NULL, 
                          mode = NULL, maxMismatches=0, threads=1, report_k = NULL, keep_all  = NULL, soft_clip = NULL,
                          additional_Args = "--score-min C,0,0", seedSubString = 18, overwrite=FALSE, 
                          bpparam=NULL,verbose=FALSE){
@@ -1034,8 +1022,7 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
   if (verbose) message("done")
 }
 
-#' extract_unmapped
-#'
+
 #' Extracts unmapped reads from BAM and writes them to a FASTA file
 #'
 #'
@@ -1057,7 +1044,8 @@ Ranges_count <- function(fastas,miRNA_ranges,genomeIndex,linkers = NULL, length_
 #' FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 #' FqFile_Col <- ctk_fastq2collapse(FqFile_QF)
 #' FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
-#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
+#' bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, 
+#' overwrite=TRUE, inputFormat="fastq"))
 #' extract_unmapped(bam)
 #' @return path to FASTA file of unmapped reads.
 #' @import GenomicAlignments Biostrings
@@ -1075,8 +1063,6 @@ extract_unmapped <- function(bam,outfa=NULL){
 
 
 
-#' chimera_Process
-#'
 #'Chimera process CLIP data
 #'
 #'
@@ -1086,7 +1072,8 @@ extract_unmapped <- function(bam,outfa=NULL){
 #'
 #' @author Kathryn Rozen-Gagnon
 #'
-#' @param bams path to BAM files mapped to the genome, unmapped reads will be extracted for chimera processing.
+#' @param bams path to BAM files mapped to the genome, unmapped reads will be extracted for chimera processing. This requires that you mapped your reads to the genome disallowing soft clipping. If you allowed soft clipping, use fasta param and set bams = NULL.
+#' @param fastas path to reads to process if you want to perform chimera analysis on all reads, i.e. if you mapped your reads to the genome allowing soft clipping, default is NULL. 
 #' @param knownMiRNAs path to FASTA file containing annotated miRNA or other small RNA sequence. Known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".  
 #' @param genomeIndex path to genome index.
 #' @param removedups remove multiple small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".
@@ -1101,19 +1088,27 @@ extract_unmapped <- function(bam,outfa=NULL){
 #' FaFile <- fastx_qtoa(FqFile)
 #' FaFile_clip <- fastx_clipper(FaFile, writelog=FALSE)
 #' myGenome <- system.file("extdata/hg19Small.fa",package="CLIPflexR")
-#' myIndex <- bowtie2_index(myGenome, overwrite = TRUE)
+#' myIndex <- suppressWarnings(bowtie2_index(myGenome, overwrite = TRUE))
 #' myBam <- suppressWarnings(bowtie_align(FaFile_clip,myIndex, overwrite=TRUE))
 #' miRNAs <- system.file("extdata/hsa_mature.fa",package="CLIPflexR")
-#' chimera_bed <- chimera_Process(myBam, miRNAs, myIndex, exclude="hsa-miR-19a-3p", overwrite=TRUE)
+#' chimera_bed <- chimera_Process(myBam, knownMiRNAs= miRNAs, genomeIndex = myIndex, 
+#' exclude="hsa-miR-19a-3p", overwrite=TRUE, fastas = NULL)
 #' @import GenomicAlignments BiocParallel stringr
 #' @importFrom tibble rownames_to_column
 #' @importMethodsFrom rtracklayer export.bed export.bw mcols
 #' @importFrom purrr map2
 #' @export
-chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude=NULL, bpparam=NULL,verbose=FALSE, removedups = TRUE, overwrite=FALSE){
+chimera_Process <- function(bams,fastas = NULL, knownMiRNAs,genomeIndex,exclude=NULL, bpparam=NULL,verbose=FALSE, removedups = TRUE, overwrite=FALSE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
-  if(verbose) message("Extracting unmapped reads to FASTA...",appendLF = FALSE)
-  fastas <- bplapply(bams,extract_unmapped,BPPARAM=bpparam)
+  if(is.null(fastas)){
+    fastas <- bplapply(bams,extract_unmapped,BPPARAM=bpparam) 
+    if(verbose) message("Extracting unmapped reads to FASTA...",appendLF = FALSE)
+  }
+  else if(!is.null(fastas)) {
+    fastas <- fastas}
+  else {
+    stop("No input files provided")
+  }
   if(verbose) message("done")
   if(verbose) message("Creating indices from FASTA files...",appendLF = FALSE)
   indicies <- bplapply(fastas,bowtie2_index,overwrite=overwrite, BPPARAM=bpparam)
@@ -1144,7 +1139,7 @@ chimera_Process <- function(bams,knownMiRNAs,genomeIndex,exclude=NULL, bpparam=N
   checkreads <- lapply(fasta, function(x) duplicated(x$rowname))
   checkreads <- unlist(lapply(checkreads, function(x) length(which(x==TRUE))))
   idx <- which(checkreads > 0)
-  if (verbose & isTRUE(length(idx)==0)) message("read names ok") else message(paste0("Warning, the following sample(s) have duplicate read names! \n", names(idx)))
+  if (verbose & isTRUE(length(idx)==0)) message("read names ok") else if(verbose & isFALSE(length(idx)==0)) message(paste0("Warning, the following sample(s) have duplicate read names! ", names(idx)))
   #merge together read sequence and bed by rowname (read name)
   if (verbose) message("Merging reads with mapped small RNAs to read sequences...", appendLF = FALSE)
   chimera <- purrr::map2(fasta,chimera, ~merge(.x,.y, by = "rowname"))

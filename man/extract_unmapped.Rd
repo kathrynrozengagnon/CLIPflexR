@@ -3,7 +3,7 @@
 \docType{methods}
 \name{extract_unmapped}
 \alias{extract_unmapped}
-\title{extract_unmapped}
+\title{Extracts unmapped reads from BAM and writes them to a FASTA file}
 \usage{
 extract_unmapped(bam, outfa = NULL)
 }
@@ -28,7 +28,8 @@ FqFile_clipped <- fastx_clipper(FqFile,length=20)
 FqFile_QF <- fastq_quality_trimmer(FqFile_clipped)
 FqFile_Col <- ctk_fastq2collapse(FqFile_QF)
 FqFile_QFColStripped <- ctk_stripBarcode(FqFile_Col,linkerlength=5, inputFormat="fastq")
-bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, overwrite=TRUE, inputFormat="fastq"))
+bam <- suppressWarnings(bowtie_align(FqFile_QFColStripped,myIndex, 
+overwrite=TRUE, inputFormat="fastq"))
 extract_unmapped(bam)
 }
 \author{

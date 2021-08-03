@@ -3,7 +3,7 @@
 \docType{methods}
 \name{countFromBed}
 \alias{countFromBed}
-\title{countFromBed to make count matrix}
+\title{Count from beds to make count matrix}
 \usage{
 countFromBed(Bed, GR, notStranded = TRUE, interFeature = FALSE)
 }
@@ -20,7 +20,7 @@ countFromBed(Bed, GR, notStranded = TRUE, interFeature = FALSE)
 count matrix.
 }
 \description{
-count from mapped beds to make count matrix
+Count from beds to make count matrix
 }
 \examples{
 testFasta <- system.file("extdata/hg19Small.fa",package="CLIPflexR")

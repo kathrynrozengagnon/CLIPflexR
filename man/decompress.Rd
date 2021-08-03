@@ -3,7 +3,7 @@
 \docType{methods}
 \name{decompress}
 \alias{decompress}
-\title{Decompress}
+\title{Wrapper function for gunzip, bunzip}
 \usage{
 decompress(
   fileToDecompress,
