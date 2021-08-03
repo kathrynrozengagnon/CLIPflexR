@@ -22,7 +22,7 @@ library(ggplot2)
 
 This vignette demonstrates how chimeric reads can be detected. Chimeras are reads  containing a both a small RNA sequence and its transcript target sequence, indicating that the small RNA was targeting AGO to the transcript. This analysis could be applied to other RBPs if applicable... 
 
-![plot of chunk annopie](chimera.png)
+![](chimera.png)
 
 Modified from [Scheel et al., *Cell Host Microbe*, 2016](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4826034/)
 
@@ -431,12 +431,15 @@ chimera_counts <- setNames(chimera_counts, col.names1)
 revmap_counts <- read.delim(revmap[[1]],  header = T, sep = "\t")
 col.names2 <- c("miRNA", gsub("\\.txt", "", basename(revmap[[1]]))) 
 revmap_counts <- setNames(revmap_counts, col.names2)
+```
 
-# merge together and visualize
+# Merge count tables and plot
+
+```r
 merged_counts <- merge(chimera_counts, revmap_counts, by="miRNA", all=TRUE)
 
 ggplot(aes(x=log2(KRG102219_aegypti_Ago1_Exp8A_rm5_rm3_unmapped_chimera),y=log2(KRG102219_aegypti_Ago1_Exp8A_rm5_rm3_revmap_counts)), data=merged_counts) + xlim(0,15) + ylim(0,15) + geom_smooth(method="lm",se=FALSE, colour= "black") + geom_point() + coord_equal() + theme_bw()
 ```
 
-![plot of chunk scatter](miRNA_counts.png)
+![](miRNA_counts.png)
 
