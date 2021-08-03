@@ -433,7 +433,7 @@ col.names2 <- c("miRNA", gsub("\\.txt", "", basename(revmap[[1]])))
 revmap_counts <- setNames(revmap_counts, col.names2)
 ```
 
-# Merge count tables and plot
+## Merge count tables and plot
 
 ```r
 merged_counts <- merge(chimera_counts, revmap_counts, by="miRNA", all=TRUE)
