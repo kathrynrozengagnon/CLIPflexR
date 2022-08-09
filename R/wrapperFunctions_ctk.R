@@ -843,7 +843,7 @@ ctk_parseAlignment <- function(filesToRun,
 #' @param bigFile Set to TRUE when files are big.
 #' @param weightInName find weight in name.
 #' @param randomBarcode random barcode exists, no collapse for different barcodes.
-#' @param seqErrorModel sequencing error model to use (alignment or em-local or em-global or fix=0.01).
+#' @param seqErrorModel sequencing error model to use, "alignment" or "em-local" (default) or "em-global" or "fix=0.01".
 #' @param outputSeqError output sequencing errors estimated by the EM algorithm.
 #' @param em EM threshold to infer reliability of each collapsed read (when have random linker, -1=no EM).
 #' @param stderr path to stdout file.
@@ -880,7 +880,7 @@ ctk_tag2collapse <- function(filesToRun,
                              bigFile=FALSE,
                              weightInName=TRUE,
                              randomBarcode=TRUE,
-                             seqErrorModel=TRUE,
+                             seqErrorModel="em-local",
                              outputSeqError=NULL,
                              em=NULL,
                              stderr=file.path(dirname(fileToRun),paste0(basename(fileToRun),"_ctk_tag2collapse_stderr.txt")),

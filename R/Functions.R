@@ -250,7 +250,7 @@ fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=
 #' @author Kathryn Rozen-Gagnon
 #' @param peaks CLIP peaks to process; accepts path to peak files (BED file or BED-formatted tab-delimited text files) or R objects (GRanges or BED-formatted data.frame); peak locations must be unique.
 #' @param fasta path to genome file (fasta).
-#' @param patterns patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence).
+#' @param patterns patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences.
 #' @param resize size of window in bp for resizing around peak center.
 #' @param add5 bp to add to 5' of resized peak, default is 0 (set by specifying integer).
 #' @param add3 bp to add to 3' of resized peak, default is 0 (set by specifying integer).
@@ -331,7 +331,7 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
   for(i in 1:length(pattern)){
     if(verbose) message("Search for ",pattern[i])
     peaks_Sites <- validPeaks
-    fixedInRegion <- vmatchPattern(pattern=pattern[i],subject=myRes) %>% unlist()
+    fixedInRegion <- vmatchPattern(pattern=pattern[i],subject=myRes, fixed=FALSE) %>% unlist()
     if(!isEmpty(fixedInRegion)) {
       
       startOfPmatch <- resize(fixedInRegion,width=1,fix="start") %>% unname %>% as.character
@@ -928,7 +928,8 @@ revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=FALSE, linker
   bedpath <- bplapply(revBams, bamtobed,BPPARAM=bpparam)
   dedup<- lapply(bedpath ,read.delim,  header = F, sep = "\t")
   names(dedup) <- bedpath
-  if (removedups &  verbose) { message("deduplicating...") 
+  if (removedups &  verbose) message("deduplicating...") 
+  if (removedups) {
    for (i in 1:length(dedup)) {
       dedup[[i]]$miRNAnum  <- ifelse(!grepl("miR|let|iab|bantam", dedup[[i]]$V4), stringr::str_sub(dedup[[i]]$V4, 2, 7), NA)
       dedup[[i]]$miRNAnum <- ifelse(grepl("miR|let|iab|bantam", dedup[[i]]$V4), as.numeric(apply(dedup[[i]],1,function(x) regmatches(x["name"],regexpr("[0-9]+",x["name"])))), paste(dedup[[i]]$miRNAnum))

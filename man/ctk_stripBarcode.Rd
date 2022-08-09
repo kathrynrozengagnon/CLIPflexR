@@ -7,8 +7,7 @@
 \usage{
 ctk_stripBarcode(
   filesToRun,
-  outFile = paste(file_path_sans_ext(fileToRun), "_rm5.", file_ext(fileToRun), sep =
-    ""),
+  outFile = paste(file_path_sans_ext(fileToRun), "_rm5.", file_ext(fileToRun), sep = ""),
   sb = "stripBarcode.pl",
   perl = "perl",
   PATHTOPERLLIB = NULL,

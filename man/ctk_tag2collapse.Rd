@@ -17,7 +17,7 @@ ctk_tag2collapse(
   bigFile = FALSE,
   weightInName = TRUE,
   randomBarcode = TRUE,
-  seqErrorModel = TRUE,
+  seqErrorModel = "em-local",
   outputSeqError = NULL,
   em = NULL,
   stderr = file.path(dirname(fileToRun), paste0(basename(fileToRun),
@@ -53,7 +53,7 @@ ctk_tag2collapse(
 
 \item{randomBarcode}{random barcode exists, no collapse for different barcodes.}
 
-\item{seqErrorModel}{sequencing error model to use (alignment or em-local or em-global or fix=0.01).}
+\item{seqErrorModel}{sequencing error model to use, "alignment" or "em-local" (default) or "em-global" or "fix=0.01".}
 
 \item{outputSeqError}{output sequencing errors estimated by the EM algorithm.}
 

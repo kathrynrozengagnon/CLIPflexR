@@ -7,8 +7,8 @@
 \usage{
 ctk_fastq2collapse(
   filesToRun,
-  outFile = file.path(dirname(fileToRun), paste("Collapsed_", basename(fileToRun), sep
-    = "")),
+  outFile = file.path(dirname(fileToRun), paste("Collapsed_", basename(fileToRun), sep =
+    "")),
   sb = "fastq2collapse.pl",
   perl = "perl",
   PATHTOPERLLIB = NULL,

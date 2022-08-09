@@ -23,7 +23,7 @@ annotatePeaksWithPatterns(
 
 \item{fasta}{path to genome file (fasta).}
 
-\item{patterns}{patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence).}
+\item{patterns}{patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences.}
 
 \item{resize}{size of window in bp for resizing around peak center.}
 
