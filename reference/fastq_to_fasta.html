@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.21</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.20</span>
       </span>
     </div>
 
@@ -150,8 +150,8 @@
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">testFQ</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/Fox3_Std_small.fq.gz"</span>,package<span class="op">=</span><span class="st">"CLIPflexR"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">FqFile_FF</span> <span class="op">&lt;-</span> <span class="fu"><a href="ctk_fastqFilter.html">ctk_fastqFilter</a></span><span class="op">(</span><span class="va">testFQ</span>,qsFilter <span class="op">=</span> <span class="st">"mean:0-29:20"</span>,verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.21/bin/ctk/fastq_filter.pl</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.21/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Users/runner/work/_temp/Library/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /Users/runner/work/_temp/Library/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Users/runner/work/_temp/Library/CLIPflexR/extdata/Fox3_Std_small.fq.gz  /Users/runner/work/_temp/Library/CLIPflexR/extdata/FF_Fox3_Std_small.fq.gz </span>
 <span class="r-in"><span><span class="va">FqFile</span> <span class="op">&lt;-</span> <span class="fu"><a href="decompress.html">decompress</a></span><span class="op">(</span><span class="va">FqFile_FF</span>,overwrite<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">FqFile_fa</span> <span class="op">&lt;-</span> <span class="fu">fastx_qtoa</span><span class="op">(</span><span class="va">FqFile</span><span class="op">)</span></span></span>
 </code></pre></div>
