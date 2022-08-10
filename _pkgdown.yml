@@ -68,7 +68,7 @@ reference:
       - fetchSequencesForCLIP
       - revmap_process
       - revmap_count
-      - Ranges_count
+      - ranges_count
       - chimera_Process
     
 
