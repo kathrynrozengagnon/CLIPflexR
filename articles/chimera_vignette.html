@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.20</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -70,7 +66,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/kathrynrozengagnon/CLIPflexR/">
+  <a href="https://github.com/kathrynrozengagnon/CLIPflexR/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -89,11 +85,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Chimera processing</h1>
-                        <h4 class="author">Kathryn Rozen-Gagnon, Troels Scheel</h4>
+                        <h4 data-toc-skip class="author">Kathryn Rozen-Gagnon, Troels Scheel</h4>
             
-            <h4 class="date">7/25/2021</h4>
+            <h4 data-toc-skip class="date">7/25/2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/kathrynrozengagnon/CLIPflexR/blob/master/vignettes/chimera_vignette.Rmd"><code>vignettes/chimera_vignette.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/kathrynrozengagnon/CLIPflexR/blob/HEAD/vignettes/chimera_vignette.Rmd" class="external-link"><code>vignettes/chimera_vignette.Rmd</code></a></small>
       <div class="hidden name"><code>chimera_vignette.Rmd</code></div>
 
     </div>
@@ -101,287 +97,287 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">baseDir</span> <span class="op">&lt;-</span> <span class="st">"/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette"</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR">CLIPflexR</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org">stringr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">ggplot2</span><span class="op">)</span></code></pre></div>
-<div id="process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting" class="section level2">
-<h2 class="hasAnchor">
-<a href="#process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting" class="anchor"></a>Process AGO-CLIP reads to find small RNAs directing AGO targeting</h2>
+<code class="sourceCode R"><span><span class="va">baseDir</span> <span class="op">&lt;-</span> <span class="st">"/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette"</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR" class="external-link">CLIPflexR</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
+<div class="section level2">
+<h2 id="process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting">Process AGO-CLIP reads to find small RNAs directing AGO targeting<a class="anchor" aria-label="anchor" href="#process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting"></a>
+</h2>
 <p>This vignette demonstrates how chimeric reads can be detected. Chimeras are reads containing a both a small RNA sequence and its transcript target sequence, indicating that the small RNA was targeting AGO to the transcript. This analysis could be applied to other RBPs if applicable…</p>
 <p><img src="chimera.png"></p>
-<p>Modified from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4826034/">Scheel et al., <em>Cell Host Microbe</em>, 2016</a></p>
+<p>Modified from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4826034/" class="external-link">Scheel et al., <em>Cell Host Microbe</em>, 2016</a></p>
 </div>
-<div id="chimera-processing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#chimera-processing" class="anchor"></a>Chimera processing</h2>
+<div class="section level2">
+<h2 id="chimera-processing">Chimera processing<a class="anchor" aria-label="anchor" href="#chimera-processing"></a>
+</h2>
 <p>Returns BED file for each sample containing the genomic coordinates of the transcript target, name of the read and of the small RNA found in that read, score (0; meaningless in this context), and strand of genomic target</p>
-<div id="chimera-processing-starting-from-bams" class="section level3">
-<h3 class="hasAnchor">
-<a href="#chimera-processing-starting-from-bams" class="anchor"></a>Chimera processing starting from bams</h3>
+<div class="section level3">
+<h3 id="chimera-processing-starting-from-bams">Chimera processing starting from bams<a class="anchor" aria-label="anchor" href="#chimera-processing-starting-from-bams"></a>
+</h3>
 <p>This is the standard, recommended pipeline for chimera processing using <a href="../reference/chimera_Process.html">chimera_Process</a>.</p>
 <p>Follow this pipeline if you have mapped your reads to your genome using CLIPflexR <strong>bowtie_align</strong> “genome_map” mode (see <a href="../reference/bowtie_align.html">bowtie_align documentation</a>) or another aligner that disallows soft clipping. When soft clipping is not allowed, chimeric reads should not map to your genome.</p>
 <p>Please note, if you have mapped your reads to your genome allowing soft-clipping, you should perform your chimera analysis on all reads prior to mapping, by setting chimera_Process <strong>bams</strong> = NULL and setting <strong>fastas</strong> to your fasta file path(s); see <strong>chimera processing starting from fastas</strong>.</p>
 <p>We will use 2 bams generated in the CLIPflexR <a href="../articles/Processing_to_matrix.html"><em>Processing reads, mapping, and building a count matrix vignette</em></a>, with AGO1-CLIP reads from mosquitoes mapped to the AaegL5 genome assembly.</p>
 <p>First, chimera_Process extracts unmapped reads from bams mapped to the genome using <a href="../reference/extract_unmapped.html">extract_unmapped</a>. Then, chimera_Process makes indices of unmapped reads and aligns known small RNA sequences to reads using <a href="../reference/bowtie2_index.html">bowtie2_index</a> and <a href="../reference/bowtie_align.html">bowtie_align</a> in “reverse_map” mode . These bams are converted to beds with the reads that contained small RNAs and the positions of the small RNAs in the read sequence using <a href="../reference/bamtobed.html">bamtobed</a> and then the read sequences are merged with the read names. This modified BED is then chimera processed to obtain fastas of transcript target sequences downstream of the small RNA. Options are <strong>remove_dups</strong>: remove multiple small RNAs mapping to the same read, TRUE (default) or FALSE. When TRUE, known miRNAs will be prioritized and known miRNA names must be in the format “miR-”, “let-”, “bantam-”, “iab-”.); <strong>exclude</strong>: names of small RNAs to remove, default is NULL, can be set to character vector to specify; must match names in knownMiRNAs file. Finally, processed transcript read sequences that contained a small RNA sequence are remapped to the genome using <a href="../reference/bowtie_align.html">bowtie_align</a> in “genome_map” mode; genome index is set with <strong>genomeIndex</strong>: path to genome index. Bams are then converted to beds using <a href="../reference/bamtobed.html">bamtobed</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#define the path to your bam files </span>
-<span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"*rm5_rm3.bam$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">bams</span></code></pre></div>
-<pre><code>## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8A_rm5_rm3.bam"
-## [2] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8B_rm5_rm3.bam"</code></pre>
+<code class="sourceCode R"><span><span class="co">#define the path to your bam files </span></span>
+<span><span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"*rm5_rm3.bam$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">bams</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8A_rm5_rm3.bam"</span></span>
+<span><span class="co">## [2] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8B_rm5_rm3.bam"</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#path to aegypti miRNAs</span>
-<span class="va">miRNAs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"*miRNAs*"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">miRNAs</span></code></pre></div>
-<pre><code>## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/aae_miRNAs_mature.fa"</code></pre>
+<code class="sourceCode R"><span><span class="co">#path to aegypti miRNAs</span></span>
+<span><span class="va">miRNAs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"*miRNAs*"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">miRNAs</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/aae_miRNAs_mature.fa"</span></span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">myIndex</span> <span class="op">&lt;-</span> <span class="st">"/Users/kathryn/Bowtie_indices/AaegL5/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5"</span>
-<span class="va">myIndex</span></code></pre></div>
-<pre><code>## [1] "/Users/kathryn/Bowtie_indices/AaegL5/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5"</code></pre>
+<code class="sourceCode R"><span><span class="va">myIndex</span> <span class="op">&lt;-</span> <span class="st">"/Users/kathryn/Bowtie_indices/AaegL5/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5"</span></span>
+<span><span class="va">myIndex</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/kathryn/Bowtie_indices/AaegL5/Aedes-aegypti-LVP_AGWG_CHROMOSOMES_AaegL5"</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">chimera_beds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">bams</span>, <span class="va">chimera_Process</span>, knownMiRNAs <span class="op">=</span> <span class="va">miRNAs</span>, genomeIndex <span class="op">=</span> <span class="va">myIndex</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, fastas<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
-<pre><code>## Extracting unmapped reads to FASTA...done
-## Creating indices from FASTA files...done
-## Mapping miRNAs to unmapped reads...done
-## Converting BAMs to BEDs...done
-## Checking read names...read names ok
-## Merging reads with mapped small RNAs to read sequences...done
-## Writing merged output files...done
-## Extracting read sequences up- and downstream of small RNA sequences &amp; writing output files...done
-## Writing downstream sequences as fastas...done
-## Remapping downstream sequences to genome...done
-## Converting remapped BAMs to BEDs...done
-## Extracting unmapped reads to FASTA...done
-## Creating indices from FASTA files...done
-## Mapping miRNAs to unmapped reads...done
-## Converting BAMs to BEDs...done
-## Checking read names...read names ok
-## Merging reads with mapped small RNAs to read sequences...done
-## Writing merged output files...done
-## Extracting read sequences up- and downstream of small RNA sequences &amp; writing output files...done
-## Writing downstream sequences as fastas...done
-## Remapping downstream sequences to genome...done
-## Converting remapped BAMs to BEDs...done</code></pre>
+<code class="sourceCode R"><span><span class="va">chimera_beds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">bams</span>, <span class="va">chimera_Process</span>, knownMiRNAs <span class="op">=</span> <span class="va">miRNAs</span>, genomeIndex <span class="op">=</span> <span class="va">myIndex</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span>, fastas<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Extracting unmapped reads to FASTA...done</span></span>
+<span><span class="co">## Creating indices from FASTA files...done</span></span>
+<span><span class="co">## Mapping miRNAs to unmapped reads...done</span></span>
+<span><span class="co">## Converting BAMs to BEDs...done</span></span>
+<span><span class="co">## Checking read names...read names ok</span></span>
+<span><span class="co">## Merging reads with mapped small RNAs to read sequences...done</span></span>
+<span><span class="co">## Writing merged output files...done</span></span>
+<span><span class="co">## Extracting read sequences up- and downstream of small RNA sequences &amp; writing output files...done</span></span>
+<span><span class="co">## Writing downstream sequences as fastas...done</span></span>
+<span><span class="co">## Remapping downstream sequences to genome...done</span></span>
+<span><span class="co">## Converting remapped BAMs to BEDs...done</span></span>
+<span><span class="co">## Extracting unmapped reads to FASTA...done</span></span>
+<span><span class="co">## Creating indices from FASTA files...done</span></span>
+<span><span class="co">## Mapping miRNAs to unmapped reads...done</span></span>
+<span><span class="co">## Converting BAMs to BEDs...done</span></span>
+<span><span class="co">## Checking read names...read names ok</span></span>
+<span><span class="co">## Merging reads with mapped small RNAs to read sequences...done</span></span>
+<span><span class="co">## Writing merged output files...done</span></span>
+<span><span class="co">## Extracting read sequences up- and downstream of small RNA sequences &amp; writing output files...done</span></span>
+<span><span class="co">## Writing downstream sequences as fastas...done</span></span>
+<span><span class="co">## Remapping downstream sequences to genome...done</span></span>
+<span><span class="co">## Converting remapped BAMs to BEDs...done</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">chimera_beds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">chimera_beds</span><span class="op">)</span>
-<span class="va">chimera_beds</span> </code></pre></div>
-<pre><code>## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped_chimera.txt.bed"
-## [2] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped_chimera.txt.bed"</code></pre>
+<code class="sourceCode R"><span><span class="va">chimera_beds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">chimera_beds</span><span class="op">)</span></span>
+<span><span class="va">chimera_beds</span> </span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped_chimera.txt.bed"</span></span>
+<span><span class="co">## [2] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped_chimera.txt.bed"</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="va">chimera_beds</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, header <span class="op">=</span> <span class="cn">F</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></code></pre></div>
-<pre><code>##   V1     V2     V3                                                   V4 V5
-## 1  2  58305  58331  5853555-1#CAAAAGAGGGAGGACGATGCGGAAATA;aae-miR-12-5p  0
-## 2  2  58767  58792 7970082-1#CAAAAGAGGGAGGACGATGCGGCGCGA;aae-miR-305-5p  0
-## 3  2 317871 317893 5049561-1#CAAAAAAGGGAGGACGATGCGGTTACG;aae-miR-92b-3p  0
-## 4  2 339105 339132  1163777-1#CAAAAGAGGGAGGACGATGCGGCAAGG;aae-miR-71-3p  0
-## 5  2 364900 364927    5192115-1#CAAAAGAGGGAGGACGATGCGGTCAGT;aae-miR-184  0
-## 6  2 406290 406318    6971802-1#CAAAAGAGGGAGGACGATGCGGTAGGT;aae-miR-996  0
-##   V6
-## 1  +
-## 2  +
-## 3  +
-## 4  +
-## 5  +
-## 6  +</code></pre>
+<code class="sourceCode R"><span><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="va">chimera_beds</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, header <span class="op">=</span> <span class="cn">F</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   V1     V2     V3                                                   V4 V5</span></span>
+<span><span class="co">## 1  2  58305  58331  5853555-1#CAAAAGAGGGAGGACGATGCGGAAATA;aae-miR-12-5p  0</span></span>
+<span><span class="co">## 2  2  58767  58792 7970082-1#CAAAAGAGGGAGGACGATGCGGCGCGA;aae-miR-305-5p  0</span></span>
+<span><span class="co">## 3  2 317871 317893 5049561-1#CAAAAAAGGGAGGACGATGCGGTTACG;aae-miR-92b-3p  0</span></span>
+<span><span class="co">## 4  2 339105 339132  1163777-1#CAAAAGAGGGAGGACGATGCGGCAAGG;aae-miR-71-3p  0</span></span>
+<span><span class="co">## 5  2 364900 364927    5192115-1#CAAAAGAGGGAGGACGATGCGGTCAGT;aae-miR-184  0</span></span>
+<span><span class="co">## 6  2 406290 406318    6971802-1#CAAAAGAGGGAGGACGATGCGGTAGGT;aae-miR-996  0</span></span>
+<span><span class="co">##   V6</span></span>
+<span><span class="co">## 1  +</span></span>
+<span><span class="co">## 2  +</span></span>
+<span><span class="co">## 3  +</span></span>
+<span><span class="co">## 4  +</span></span>
+<span><span class="co">## 5  +</span></span>
+<span><span class="co">## 6  +</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 6678</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 6678</span></span></code></pre>
 <p>We can exclude certain miRNAs from analysis setting the <strong>exclude</strong> to a character vector containing names of miRNAs to be exlcuded, and/or keep multiple miRNAs mapping to the same read by setting <strong>removedups</strong> to FALSE. If we want to redo our analysis, first we need to remove the bedfiles we generated previously, as they cannot be overwritten.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">allbeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"*.bed$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="co">#we have two beds generated for each input file, a bed of the reverse mapped small RNAs to reads, and a bed of the remapped downstream sequences</span>
-<span class="va">allbeds</span></code></pre></div>
-<pre><code>## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped_chimera.txt.bed"
-## [2] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.bed"            
-## [3] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped_chimera.txt.bed"
-## [4] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.bed"</code></pre>
+<code class="sourceCode R"><span><span class="va">allbeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"*.bed$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#we have two beds generated for each input file, a bed of the reverse mapped small RNAs to reads, and a bed of the remapped downstream sequences</span></span>
+<span><span class="va">allbeds</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped_chimera.txt.bed"</span></span>
+<span><span class="co">## [2] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.bed"            </span></span>
+<span><span class="co">## [3] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped_chimera.txt.bed"</span></span>
+<span><span class="co">## [4] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.bed"</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="va">allbeds</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] TRUE TRUE TRUE TRUE</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">allbeds</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] TRUE TRUE TRUE TRUE</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#now we can rerun our analysis, changing the exclude and removedups parameters</span>
-<span class="va">exclude_miR14</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">bams</span>, <span class="va">chimera_Process</span>, knownMiRNAs <span class="op">=</span> <span class="va">miRNAs</span>, genomeIndex <span class="op">=</span> <span class="va">myIndex</span>, exclude<span class="op">=</span><span class="st">"aae-miR-14, aae-let"</span>, removedups<span class="op">=</span><span class="cn">FALSE</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## Extracting unmapped reads to FASTA...done
-## Creating indices from FASTA files...</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".1.bt2"),
-## "bt2Index", overwrite): For argument `bt2Index`, file exist:/
-## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.1.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".2.bt2"),
-## "bt2Index", overwrite): For argument `bt2Index`, file exist:/
-## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.2.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".3.bt2"),
-## "bt2Index", overwrite): For argument `bt2Index`, file exist:/
-## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.3.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".4.bt2"),
-## "bt2Index", overwrite): For argument `bt2Index`, file exist:/
-## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.4.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".rev.1.bt2"),
-## "bt2Index", : For argument `bt2Index`, file exist:/Users/
-## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.rev.1.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".rev.2.bt2"),
-## "bt2Index", : For argument `bt2Index`, file exist:/Users/
-## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.rev.2.bt2. It will be overwrited</code></pre>
-<pre><code>## done
-## Mapping miRNAs to unmapped reads...</code></pre>
-<pre><code>## Warning in checkFileCreatable(samOutput, "samOutput",
-## overwrite): For argument `samOutput`, file exist:/Users/
-## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.sam. It will be overwrited</code></pre>
-<pre><code>## done
-## Converting BAMs to BEDs...done
-## Checking read names...read names ok
-## Merging reads with mapped small RNAs to read sequences...done
-## Writing merged output files...done
-## Extracting read sequences up- and downstream of small RNA sequences &amp; writing output files...done
-## Writing downstream sequences as fastas...done
-## Remapping downstream sequences to genome...</code></pre>
-<pre><code>## Warning in checkFileCreatable(samOutput, "samOutput",
-## overwrite): For argument `samOutput`, file exist:/Users/
-## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped_chimera.txt.sam. It will be
-## overwrited</code></pre>
-<pre><code>## done
-## Converting remapped BAMs to BEDs...done
-## Extracting unmapped reads to FASTA...done
-## Creating indices from FASTA files...</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".1.bt2"),
-## "bt2Index", overwrite): For argument `bt2Index`, file exist:/
-## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.1.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".2.bt2"),
-## "bt2Index", overwrite): For argument `bt2Index`, file exist:/
-## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.2.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".3.bt2"),
-## "bt2Index", overwrite): For argument `bt2Index`, file exist:/
-## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.3.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".4.bt2"),
-## "bt2Index", overwrite): For argument `bt2Index`, file exist:/
-## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.4.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".rev.1.bt2"),
-## "bt2Index", : For argument `bt2Index`, file exist:/Users/
-## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.rev.1.bt2. It will be overwrited</code></pre>
-<pre><code>## Warning in checkFileCreatable(paste0(bt2Index, ".rev.2.bt2"),
-## "bt2Index", : For argument `bt2Index`, file exist:/Users/
-## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.rev.2.bt2. It will be overwrited</code></pre>
-<pre><code>## done
-## Mapping miRNAs to unmapped reads...</code></pre>
-<pre><code>## Warning in checkFileCreatable(samOutput, "samOutput",
-## overwrite): For argument `samOutput`, file exist:/Users/
-## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.sam. It will be overwrited</code></pre>
-<pre><code>## done
-## Converting BAMs to BEDs...done
-## Checking read names...read names ok
-## Merging reads with mapped small RNAs to read sequences...done
-## Writing merged output files...done
-## Extracting read sequences up- and downstream of small RNA sequences &amp; writing output files...done
-## Writing downstream sequences as fastas...done
-## Remapping downstream sequences to genome...</code></pre>
-<pre><code>## Warning in checkFileCreatable(samOutput, "samOutput",
-## overwrite): For argument `samOutput`, file exist:/Users/
-## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/
-## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped_chimera.txt.sam. It will be
-## overwrited</code></pre>
-<pre><code>## done
-## Converting remapped BAMs to BEDs...done</code></pre>
+<code class="sourceCode R"><span><span class="co">#now we can rerun our analysis, changing the exclude and removedups parameters</span></span>
+<span><span class="va">exclude_miR14</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">bams</span>, <span class="va">chimera_Process</span>, knownMiRNAs <span class="op">=</span> <span class="va">miRNAs</span>, genomeIndex <span class="op">=</span> <span class="va">myIndex</span>, exclude<span class="op">=</span><span class="st">"aae-miR-14, aae-let"</span>, removedups<span class="op">=</span><span class="cn">FALSE</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Extracting unmapped reads to FASTA...done</span></span>
+<span><span class="co">## Creating indices from FASTA files...</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".1.bt2"),</span></span>
+<span><span class="co">## "bt2Index", overwrite): For argument `bt2Index`, file exist:/</span></span>
+<span><span class="co">## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.1.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".2.bt2"),</span></span>
+<span><span class="co">## "bt2Index", overwrite): For argument `bt2Index`, file exist:/</span></span>
+<span><span class="co">## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.2.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".3.bt2"),</span></span>
+<span><span class="co">## "bt2Index", overwrite): For argument `bt2Index`, file exist:/</span></span>
+<span><span class="co">## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.3.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".4.bt2"),</span></span>
+<span><span class="co">## "bt2Index", overwrite): For argument `bt2Index`, file exist:/</span></span>
+<span><span class="co">## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.4.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".rev.1.bt2"),</span></span>
+<span><span class="co">## "bt2Index", : For argument `bt2Index`, file exist:/Users/</span></span>
+<span><span class="co">## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.rev.1.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".rev.2.bt2"),</span></span>
+<span><span class="co">## "bt2Index", : For argument `bt2Index`, file exist:/Users/</span></span>
+<span><span class="co">## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.rev.2.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## done</span></span>
+<span><span class="co">## Mapping miRNAs to unmapped reads...</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(samOutput, "samOutput",</span></span>
+<span><span class="co">## overwrite): For argument `samOutput`, file exist:/Users/</span></span>
+<span><span class="co">## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped.sam. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## done</span></span>
+<span><span class="co">## Converting BAMs to BEDs...done</span></span>
+<span><span class="co">## Checking read names...read names ok</span></span>
+<span><span class="co">## Merging reads with mapped small RNAs to read sequences...done</span></span>
+<span><span class="co">## Writing merged output files...done</span></span>
+<span><span class="co">## Extracting read sequences up- and downstream of small RNA sequences &amp; writing output files...done</span></span>
+<span><span class="co">## Writing downstream sequences as fastas...done</span></span>
+<span><span class="co">## Remapping downstream sequences to genome...</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(samOutput, "samOutput",</span></span>
+<span><span class="co">## overwrite): For argument `samOutput`, file exist:/Users/</span></span>
+<span><span class="co">## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8A_rm5_rm3_unmapped_chimera.txt.sam. It will be</span></span>
+<span><span class="co">## overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## done</span></span>
+<span><span class="co">## Converting remapped BAMs to BEDs...done</span></span>
+<span><span class="co">## Extracting unmapped reads to FASTA...done</span></span>
+<span><span class="co">## Creating indices from FASTA files...</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".1.bt2"),</span></span>
+<span><span class="co">## "bt2Index", overwrite): For argument `bt2Index`, file exist:/</span></span>
+<span><span class="co">## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.1.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".2.bt2"),</span></span>
+<span><span class="co">## "bt2Index", overwrite): For argument `bt2Index`, file exist:/</span></span>
+<span><span class="co">## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.2.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".3.bt2"),</span></span>
+<span><span class="co">## "bt2Index", overwrite): For argument `bt2Index`, file exist:/</span></span>
+<span><span class="co">## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.3.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".4.bt2"),</span></span>
+<span><span class="co">## "bt2Index", overwrite): For argument `bt2Index`, file exist:/</span></span>
+<span><span class="co">## Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.4.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".rev.1.bt2"),</span></span>
+<span><span class="co">## "bt2Index", : For argument `bt2Index`, file exist:/Users/</span></span>
+<span><span class="co">## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.rev.1.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(paste0(bt2Index, ".rev.2.bt2"),</span></span>
+<span><span class="co">## "bt2Index", : For argument `bt2Index`, file exist:/Users/</span></span>
+<span><span class="co">## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.rev.2.bt2. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## done</span></span>
+<span><span class="co">## Mapping miRNAs to unmapped reads...</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(samOutput, "samOutput",</span></span>
+<span><span class="co">## overwrite): For argument `samOutput`, file exist:/Users/</span></span>
+<span><span class="co">## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped.sam. It will be overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## done</span></span>
+<span><span class="co">## Converting BAMs to BEDs...done</span></span>
+<span><span class="co">## Checking read names...read names ok</span></span>
+<span><span class="co">## Merging reads with mapped small RNAs to read sequences...done</span></span>
+<span><span class="co">## Writing merged output files...done</span></span>
+<span><span class="co">## Extracting read sequences up- and downstream of small RNA sequences &amp; writing output files...done</span></span>
+<span><span class="co">## Writing downstream sequences as fastas...done</span></span>
+<span><span class="co">## Remapping downstream sequences to genome...</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in checkFileCreatable(samOutput, "samOutput",</span></span>
+<span><span class="co">## overwrite): For argument `samOutput`, file exist:/Users/</span></span>
+<span><span class="co">## kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/</span></span>
+<span><span class="co">## KRG102219_Aag2_Ago1_Exp8B_rm5_rm3_unmapped_chimera.txt.sam. It will be</span></span>
+<span><span class="co">## overwrited</span></span></code></pre>
+<pre><code><span><span class="co">## done</span></span>
+<span><span class="co">## Converting remapped BAMs to BEDs...done</span></span></code></pre>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html">unlist</a></span><span class="op">(</span><span class="va">exclude_miR14</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, header <span class="op">=</span> <span class="cn">F</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></code></pre></div>
-<pre><code>##   V1     V2     V3                                                   V4 V5
-## 1  2  58305  58331  5853555-1#CAAAAGAGGGAGGACGATGCGGAAATA;aae-miR-12-5p  0
-## 2  2  58767  58792 7970082-1#CAAAAGAGGGAGGACGATGCGGCGCGA;aae-miR-305-5p  0
-## 3  2 317871 317893 5049561-1#CAAAAAAGGGAGGACGATGCGGTTACG;aae-miR-92b-3p  0
-## 4  2 339105 339132  1163777-1#CAAAAGAGGGAGGACGATGCGGCAAGG;aae-miR-71-3p  0
-## 5  2 364900 364927    5192115-1#CAAAAGAGGGAGGACGATGCGGTCAGT;aae-miR-184  0
-## 6  2 406290 406318    6971802-1#CAAAAGAGGGAGGACGATGCGGTAGGT;aae-miR-996  0
-##   V6
-## 1  +
-## 2  +
-## 3  +
-## 4  +
-## 5  +
-## 6  +</code></pre>
+<code class="sourceCode R"><span><span class="va">example</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">exclude_miR14</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, header <span class="op">=</span> <span class="cn">F</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   V1     V2     V3                                                   V4 V5</span></span>
+<span><span class="co">## 1  2  58305  58331  5853555-1#CAAAAGAGGGAGGACGATGCGGAAATA;aae-miR-12-5p  0</span></span>
+<span><span class="co">## 2  2  58767  58792 7970082-1#CAAAAGAGGGAGGACGATGCGGCGCGA;aae-miR-305-5p  0</span></span>
+<span><span class="co">## 3  2 317871 317893 5049561-1#CAAAAAAGGGAGGACGATGCGGTTACG;aae-miR-92b-3p  0</span></span>
+<span><span class="co">## 4  2 339105 339132  1163777-1#CAAAAGAGGGAGGACGATGCGGCAAGG;aae-miR-71-3p  0</span></span>
+<span><span class="co">## 5  2 364900 364927    5192115-1#CAAAAGAGGGAGGACGATGCGGTCAGT;aae-miR-184  0</span></span>
+<span><span class="co">## 6  2 406290 406318    6971802-1#CAAAAGAGGGAGGACGATGCGGTAGGT;aae-miR-996  0</span></span>
+<span><span class="co">##   V6</span></span>
+<span><span class="co">## 1  +</span></span>
+<span><span class="co">## 2  +</span></span>
+<span><span class="co">## 3  +</span></span>
+<span><span class="co">## 4  +</span></span>
+<span><span class="co">## 5  +</span></span>
+<span><span class="co">## 6  +</span></span></code></pre>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 6912</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 6912</span></span></code></pre>
 </div>
-<div id="chimera-processing-starting-from-fastas" class="section level3">
-<h3 class="hasAnchor">
-<a href="#chimera-processing-starting-from-fastas" class="anchor"></a>Chimera processing starting from fastas</h3>
+<div class="section level3">
+<h3 id="chimera-processing-starting-from-fastas">Chimera processing starting from fastas<a class="anchor" aria-label="anchor" href="#chimera-processing-starting-from-fastas"></a>
+</h3>
 <p>If you have mapped your reads to your genome allowing soft-clipping, you should perform your chimera analysis on reads prior to mapping, by setting <strong>bams</strong> = NULL and and setting <strong>fastas</strong> to your fasta file path(s). Please note this is not recommended, and may artificially increase the number of chimeras detected.</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#define the path to your fastas files prior to mapping</span>
-<span class="va">fastas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"rm5_rm3.fa$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="va">fastas</span></code></pre></div>
-<pre><code>## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_aegypti_Ago1_Exp8A_rm5_rm3.fa"
-## [2] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_aegypti_Ago1_Exp8B_rm5_rm3.fa"</code></pre>
+<code class="sourceCode R"><span><span class="co">#define the path to your fastas files prior to mapping</span></span>
+<span><span class="va">fastas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"rm5_rm3.fa$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">fastas</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_aegypti_Ago1_Exp8A_rm5_rm3.fa"</span></span>
+<span><span class="co">## [2] "/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette/KRG102219_aegypti_Ago1_Exp8B_rm5_rm3.fa"</span></span></code></pre>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#chimera process</span>
-<span class="va">fasta_chimera</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">fastas</span>, <span class="va">chimera_Process</span>, knownMiRNAs <span class="op">=</span> <span class="va">miRNAs</span>, genomeIndex <span class="op">=</span> <span class="va">myIndex</span>, exclude<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"aae-miR-14, aae-let-7"</span><span class="op">)</span>, removedups<span class="op">=</span><span class="cn">FALSE</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose<span class="op">=</span><span class="cn">FALSE</span>, bams<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#chimera process</span></span>
+<span><span class="va">fasta_chimera</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">fastas</span>, <span class="va">chimera_Process</span>, knownMiRNAs <span class="op">=</span> <span class="va">miRNAs</span>, genomeIndex <span class="op">=</span> <span class="va">myIndex</span>, exclude<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"aae-miR-14, aae-let-7"</span><span class="op">)</span>, removedups<span class="op">=</span><span class="cn">FALSE</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose<span class="op">=</span><span class="cn">FALSE</span>, bams<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="comparing-chimera-counts-of-mirnas-with-other-mirna-counting-methods" class="section level2">
-<h2 class="hasAnchor">
-<a href="#comparing-chimera-counts-of-mirnas-with-other-mirna-counting-methods" class="anchor"></a>Comparing chimera counts of miRNAs with other miRNA counting methods</h2>
+<div class="section level2">
+<h2 id="comparing-chimera-counts-of-mirnas-with-other-mirna-counting-methods">Comparing chimera counts of miRNAs with other miRNA counting methods<a class="anchor" aria-label="anchor" href="#comparing-chimera-counts-of-mirnas-with-other-mirna-counting-methods"></a>
+</h2>
 <p>Now that we have remapped bona-fide targeting events by confirming chimeric miRNA-target reads, we can use these to count and compare with counts of short reads containing miRNAs. Here we use reverse mapping to short reads; additionally, for alternative counting methods see: <a href="../reference/ranges_count.html">ranges_count</a> or <a href="../reference/annotatePeaksWithPatterns.html">annotatePeaksWithPatterns</a></p>
-<div id="select-short-reads-and-reverse-map-mirna-sequences" class="section level3">
-<h3 class="hasAnchor">
-<a href="#select-short-reads-and-reverse-map-mirna-sequences" class="anchor"></a>Select short reads and reverse map miRNA sequences</h3>
+<div class="section level3">
+<h3 id="select-short-reads-and-reverse-map-mirna-sequences">Select short reads and reverse map miRNA sequences<a class="anchor" aria-label="anchor" href="#select-short-reads-and-reverse-map-mirna-sequences"></a>
+</h3>
 <p>Use <a href="../reference/revmap_count.html">revmap_count</a> to count short reads containing miRNA sequences.<br><strong>fastas</strong>: path to FASTA files to reverse map; <strong>knownMiRNAs</strong>: path to FASTA file containing annotated miRNA or other small RNA sequences; <strong>linkers</strong>: contaminating sequences to remove, default is NULL, set to character string to specify; <strong>length_min</strong>: minimum length required during fasta processing, default is NULL, set to integer to specify; <strong>length_max</strong>: maximum length required during fasta processing, default is NULL, set to integer to specify; <strong>removedups</strong>: remove multiple miRNAs or small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format “miR-”, “let-”, “bantam-”, “iab-”.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">revmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">fastas</span>, <span class="va">revmap_count</span>, <span class="va">miRNAs</span>, linkers<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GGACGATGC"</span>, <span class="st">"AAAAAAAAA"</span><span class="op">)</span>, length_min<span class="op">=</span><span class="fl">18</span>, length_max<span class="op">=</span><span class="fl">30</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## Processing fastas..removing linkers... GGACGATGCAAAAAAAAA
-## getting sequences shorter than 30 nt
-## getting sequences longer than 18 nt
-## Creating indices from FASTA files..done
-## Mapping miRNAs to processed reads..done
-## Converting BAMs to BEDs..deduplicating...
-## done
-## Processing fastas..removing linkers... GGACGATGCAAAAAAAAA
-## getting sequences shorter than 30 nt
-## getting sequences longer than 18 nt
-## Creating indices from FASTA files..done
-## Mapping miRNAs to processed reads..done
-## Converting BAMs to BEDs..deduplicating...
-## done</code></pre>
+<code class="sourceCode R"><span><span class="va">revmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">fastas</span>, <span class="va">revmap_count</span>, <span class="va">miRNAs</span>, linkers<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GGACGATGC"</span>, <span class="st">"AAAAAAAAA"</span><span class="op">)</span>, length_min<span class="op">=</span><span class="fl">18</span>, length_max<span class="op">=</span><span class="fl">30</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Processing fastas..removing linkers... GGACGATGCAAAAAAAAA</span></span>
+<span><span class="co">## getting sequences shorter than 30 nt</span></span>
+<span><span class="co">## getting sequences longer than 18 nt</span></span>
+<span><span class="co">## Creating indices from FASTA files..done</span></span>
+<span><span class="co">## Mapping miRNAs to processed reads..done</span></span>
+<span><span class="co">## Converting BAMs to BEDs..deduplicating...</span></span>
+<span><span class="co">## done</span></span>
+<span><span class="co">## Processing fastas..removing linkers... GGACGATGCAAAAAAAAA</span></span>
+<span><span class="co">## getting sequences shorter than 30 nt</span></span>
+<span><span class="co">## getting sequences longer than 18 nt</span></span>
+<span><span class="co">## Creating indices from FASTA files..done</span></span>
+<span><span class="co">## Mapping miRNAs to processed reads..done</span></span>
+<span><span class="co">## Converting BAMs to BEDs..deduplicating...</span></span>
+<span><span class="co">## done</span></span></code></pre>
 <div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#now we can count chimeras:</span>
-<span class="va">chimera_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="va">chimera_beds</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> , header <span class="op">=</span> <span class="cn">F</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
-<span class="va">chimera_counts</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html">str_split_fixed</a></span><span class="op">(</span><span class="va">chimera_files</span><span class="op">$</span><span class="va">V4</span>, <span class="st">";"</span>, <span class="fl">2</span><span class="op">)</span>
-<span class="va">chimera_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">chimera_counts</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span>
-<span class="va">chimera_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">chimera_counts</span>, nm <span class="op">=</span> <span class="st">"miRNA"</span><span class="op">)</span>
-<span class="va">chimera_counts</span> <span class="op">&lt;-</span> <span class="va">chimera_counts</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">miRNA</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op">(</span>count<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="va">col.names1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"miRNA"</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"\\.txt.bed"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">chimera_beds</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="va">chimera_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">chimera_counts</span>, <span class="va">col.names1</span><span class="op">)</span>
-
-<span class="co">#and merge these with our reverse mapped counts</span>
-<span class="va">revmap_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.delim</a></span><span class="op">(</span><span class="va">revmap</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,  header <span class="op">=</span> <span class="cn">T</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span>
-<span class="va">col.names2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"miRNA"</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span><span class="op">(</span><span class="st">"\\.txt"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">revmap</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> 
-<span class="va">revmap_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html">setNames</a></span><span class="op">(</span><span class="va">revmap_counts</span>, <span class="va">col.names2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#now we can count chimeras:</span></span>
+<span><span class="va">chimera_files</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="va">chimera_beds</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> , header <span class="op">=</span> <span class="cn">F</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
+<span><span class="va">chimera_counts</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_split.html" class="external-link">str_split_fixed</a></span><span class="op">(</span><span class="va">chimera_files</span><span class="op">$</span><span class="va">V4</span>, <span class="st">";"</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">chimera_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">chimera_counts</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">chimera_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">chimera_counts</span>, nm <span class="op">=</span> <span class="st">"miRNA"</span><span class="op">)</span></span>
+<span><span class="va">chimera_counts</span> <span class="op">&lt;-</span> <span class="va">chimera_counts</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">miRNA</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarize</a></span><span class="op">(</span>count<span class="op">=</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">col.names1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"miRNA"</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"\\.txt.bed"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/path.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">chimera_beds</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">chimera_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">chimera_counts</span>, <span class="va">col.names1</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#and merge these with our reverse mapped counts</span></span>
+<span><span class="va">revmap_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.delim</a></span><span class="op">(</span><span class="va">revmap</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,  header <span class="op">=</span> <span class="cn">T</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
+<span><span class="va">col.names2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"miRNA"</span>, <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">"\\.txt"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/path.html" class="external-link">basename</a></span><span class="op">(</span><span class="va">revmap</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">revmap_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></span><span class="op">(</span><span class="va">revmap_counts</span>, <span class="va">col.names2</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="merge-count-tables-and-plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#merge-count-tables-and-plot" class="anchor"></a>Merge count tables and plot</h2>
+<div class="section level2">
+<h2 id="merge-count-tables-and-plot">Merge count tables and plot<a class="anchor" aria-label="anchor" href="#merge-count-tables-and-plot"></a>
+</h2>
 <div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">merged_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">chimera_counts</span>, <span class="va">revmap_counts</span>, by<span class="op">=</span><span class="st">"miRNA"</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">KRG102219_aegypti_Ago1_Exp8A_rm5_rm3_unmapped_chimera</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log2</a></span><span class="op">(</span><span class="va">KRG102219_aegypti_Ago1_Exp8A_rm5_rm3_revmap_counts</span><span class="op">)</span><span class="op">)</span>, data<span class="op">=</span><span class="va">merged_counts</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">xlim</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">15</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.window.html">ylim</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">15</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">"lm"</span>,se<span class="op">=</span><span class="cn">FALSE</span>, colour<span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">coord_equal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">merged_counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">chimera_counts</span>, <span class="va">revmap_counts</span>, by<span class="op">=</span><span class="st">"miRNA"</span>, all<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">KRG102219_aegypti_Ago1_Exp8A_rm5_rm3_unmapped_chimera</span><span class="op">)</span>,y<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log2</a></span><span class="op">(</span><span class="va">KRG102219_aegypti_Ago1_Exp8A_rm5_rm3_revmap_counts</span><span class="op">)</span><span class="op">)</span>, data<span class="op">=</span><span class="va">merged_counts</span><span class="op">)</span> <span class="op">+</span> <span class="fu">xlim</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">15</span><span class="op">)</span> <span class="op">+</span> <span class="fu">ylim</span><span class="op">(</span><span class="fl">0</span>,<span class="fl">15</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_smooth</span><span class="op">(</span>method<span class="op">=</span><span class="st">"lm"</span>,se<span class="op">=</span><span class="cn">FALSE</span>, colour<span class="op">=</span> <span class="st">"black"</span><span class="op">)</span> <span class="op">+</span> <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">coord_equal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu">theme_bw</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><img src="miRNA_counts.png"></p>
 </div>
   </div>
@@ -397,11 +393,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
+  <p></p>
+<p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -409,6 +407,8 @@
 
   
 
+
+  
 
   </body>
 </html>

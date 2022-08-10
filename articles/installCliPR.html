@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">CLIPflexR</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.20</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.20</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -70,7 +66,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/kathrynrozengagnon/CLIPflexR/">
+  <a href="https://github.com/kathrynrozengagnon/CLIPflexR/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -89,118 +85,118 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Using and installing the CTK pipeline using CLIPflexR</h1>
-                        <h4 class="author">Kathryn Rozen-Gagnon, Ji-Dung Luo and Thomas Carroll</h4>
+                        <h4 data-toc-skip class="author">Kathryn Rozen-Gagnon, Ji-Dung Luo and Thomas Carroll</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/kathrynrozengagnon/CLIPflexR/blob/master/vignettes/installCliPR.Rmd"><code>vignettes/installCliPR.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/kathrynrozengagnon/CLIPflexR/blob/HEAD/vignettes/installCliPR.Rmd" class="external-link"><code>vignettes/installCliPR.Rmd</code></a></small>
       <div class="hidden name"><code>installCliPR.Rmd</code></div>
 
     </div>
 
     
     
-<div id="clipflexr" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clipflexr" class="anchor"></a>CLIPflexR</h2>
+<div class="section level2">
+<h2 id="clipflexr">CLIPflexR<a class="anchor" aria-label="anchor" href="#clipflexr"></a>
+</h2>
 <p>The CLIPflexR package provides a set of its functions for the processing and analysis of differing forms of ClIP data for use within the R framework.</p>
 <p>For more information on the processing of data using CLIPflexR you can see our <a href="StandardandBrdU_Processing_CTK.html">CTK</a> and <a href="Processing_to_matrix.html">CLIPflexR</a> vignettes</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div id="installing-clipflexr" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-clipflexr" class="anchor"></a>Installing CLIPflexR</h3>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="section level3">
+<h3 id="installing-clipflexr">Installing CLIPflexR<a class="anchor" aria-label="anchor" href="#installing-clipflexr"></a>
+</h3>
 <p>We can install CLIPflexR package from Github using the devtools package:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"kathrynrozengagnon/CLIPflexR"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"kathrynrozengagnon/CLIPflexR"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="installing-rfastp" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-rfastp" class="anchor"></a>Installing Rfastp</h3>
+<div class="section level3">
+<h3 id="installing-rfastp">Installing Rfastp<a class="anchor" aria-label="anchor" href="#installing-rfastp"></a>
+</h3>
 <p>We also can install the Rfastp package which may use to pre-process FastQ/FastA and de-duplicate BAM files as an alternative to the standard CTK/FASTX workflow.</p>
-<p>If you are running &gt;= R version 4.0, you can install the <a href="https://bioconductor.org/packages/Rfastp/">Bioconductor development Rfastp package</a>:</p>
+<p>If you are running &gt;= R version 4.0, you can install the <a href="https://bioconductor.org/packages/Rfastp/" class="external-link">Bioconductor development Rfastp package</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span>
-
-<span class="co"># The following initializes usage of Bioc devel</span>
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span>version<span class="op">=</span><span class="st">'devel'</span><span class="op">)</span>
-
-<span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span><span class="op">(</span><span class="st">"Rfastp"</span><span class="op">)</span></code></pre></div>
-<p>If you are running &lt; R version 4.0, use the following lines to install the <a href="https://github.com/RockefellerUniversity/Rfastp">Github Rfastp package</a>:</p>
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># The following initializes usage of Bioc devel</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span>version<span class="op">=</span><span class="st">'devel'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"Rfastp"</span><span class="op">)</span></span></code></pre></div>
+<p>If you are running &lt; R version 4.0, use the following lines to install the <a href="https://github.com/RockefellerUniversity/Rfastp" class="external-link">Github Rfastp package</a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/rfastp"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/rfastp"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="installing-ctk-software-requirements" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-ctk-software-requirements" class="anchor"></a>Installing CTK software requirements</h3>
+<div class="section level3">
+<h3 id="installing-ctk-software-requirements">Installing CTK software requirements<a class="anchor" aria-label="anchor" href="#installing-ctk-software-requirements"></a>
+</h3>
 <p>The CTK toolkit requires many external softwares to be available on the system path for use within their pipeline scripts.</p>
 <p>One solution to the meet these system requirements is to create a Conda environment containing all the required software.</p>
 <p>The CondaSysReq package provides a simple workflow to install self-contained Conda environments associated to packages using the Reticulate library.</p>
 <p>This approach also allows us to capture the current Conda environment using the same tools we capture R library versions by means of the Renv package.</p>
-<p>First we need to install the <a href="https://github.com/RockefellerUniversity/Herper">Herper package</a>.</p>
+<p>First we need to install the <a href="https://github.com/RockefellerUniversity/Herper" class="external-link">Herper package</a>.</p>
 </div>
-<div id="installing-herper" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-herper" class="anchor"></a>Installing Herper</h3>
+<div class="section level3">
+<h3 id="installing-herper">Installing Herper<a class="anchor" aria-label="anchor" href="#installing-herper"></a>
+</h3>
 <p>If you are running &gt;= R version 4.0:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
-<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/Herper"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/Herper"</span><span class="op">)</span></span></code></pre></div>
 <p>If you are running &lt; R version 4.0:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
-<span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/Herper@3.5"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"RockefellerUniversity/Herper@3.5"</span><span class="op">)</span></span></code></pre></div>
 <p>We can now use the Herper package to create the required Conda environment and requirments for the CLIPflexR package.</p>
 <p>The below code will install the required external software to a Conda environment within the default location (same path as the Reticulate package’s Conda environments).</p>
 <p>The path to the Conda executable and the name of the Conda environment:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RockefellerUniversity/Herper">Herper</a></span><span class="op">)</span>
-<span class="va">CondaInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Herper/man/install_CondaSysReqs.html">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"CLIPflexR"</span><span class="op">)</span>
-<span class="va">CondaInfo</span><span class="op">$</span><span class="va">pathToConda</span>
-<span class="va">CondaInfo</span><span class="op">$</span><span class="va">environment</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RockefellerUniversity/Herper" class="external-link">Herper</a></span><span class="op">)</span></span>
+<span><span class="va">CondaInfo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Herper/man/install_CondaSysReqs.html" class="external-link">install_CondaSysReqs</a></span><span class="op">(</span><span class="st">"CLIPflexR"</span><span class="op">)</span></span>
+<span><span class="va">CondaInfo</span><span class="op">$</span><span class="va">pathToConda</span></span>
+<span><span class="va">CondaInfo</span><span class="op">$</span><span class="va">environment</span></span></code></pre></div>
 <p>The installed Conda environment may be accessed out of R just as with a standard environment.</p>
 <p>Executables can be found the environment’s bin directory. Here we check the directory contains the fastx and homer executable.</p>
 </div>
-<div id="installing-ctk-software" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installing-ctk-software" class="anchor"></a>Installing CTK software</h3>
-<p>The <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation"><strong>ctk toolkit</strong></a> is installed as part of the <strong>CLIPflexR</strong> <strong>install_ctk()</strong> function.</p>
+<div class="section level3">
+<h3 id="installing-ctk-software">Installing CTK software<a class="anchor" aria-label="anchor" href="#installing-ctk-software"></a>
+</h3>
+<p>The <a href="https://zhanglab.c2b2.columbia.edu/index.php/CTK_Documentation" class="external-link"><strong>ctk toolkit</strong></a> is installed as part of the <strong>CLIPflexR</strong> <strong>install_ctk()</strong> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">CLIPflexR</span><span class="fu">::</span><span class="fu"><a href="../reference/install_ctk.html">install_ctk</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">CLIPflexR</span><span class="fu">::</span><span class="fu"><a href="../reference/install_ctk.html">install_ctk</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>This function installs CTK and it’s perl library dependencies to a user specified directory or if a Conda environment has been created with Herper to within the same Conda Environment associated to the package.</p>
 </div>
-<div id="using-the-ctk-pipeline-in-clipflexr" class="section level3">
-<h3 class="hasAnchor">
-<a href="#using-the-ctk-pipeline-in-clipflexr" class="anchor"></a>Using the CTK pipeline in CLIPflexR</h3>
+<div class="section level3">
+<h3 id="using-the-ctk-pipeline-in-clipflexr">Using the CTK pipeline in CLIPflexR<a class="anchor" aria-label="anchor" href="#using-the-ctk-pipeline-in-clipflexr"></a>
+</h3>
 <p>Once we have installed the requirements for CTK we can make use of the tools within CLIPflexR very easily.</p>
 <p>First we load the CLIPflexR package and review the loading messages informing us of any established conda paths.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR">CLIPflexR</a></span><span class="op">)</span></code></pre></div>
-<pre><code>## CLIPflexR_0.1.20 conda env found at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20</code></pre>
-<pre><code>## ctk found  at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk</code></pre>
-<pre><code>## czplib found  at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/lib/czplib</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR" class="external-link">CLIPflexR</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## CLIPflexR_0.1.20 conda env found at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20</span></span></code></pre>
+<pre><code><span><span class="co">## ctk found  at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk</span></span></code></pre>
+<pre><code><span><span class="co">## czplib found  at /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/lib/czplib</span></span></code></pre>
 <p>We can also list the important paths from the environmental options set by CLIPflexR.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.condaEnv"</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20"</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.condaEnv"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20"</span></span></code></pre>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.ctk"</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk"</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.ctk"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk"</span></span></code></pre>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.czplib"</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/lib/czplib"</code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">getOption</a></span><span class="op">(</span><span class="st">"CLIPflexR.czplib"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] "/Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/lib/czplib"</span></span></code></pre>
 <p>Now that these are installed, all functions with the CLIPflexR package will use these by default without further configuration of paths or environmental variables.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR">CLIPflexR</a></span><span class="op">)</span>
-<span class="va">Fox3_Std</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">"extdata/Fox3_Std_small.fq.gz"</span>,package<span class="op">=</span><span class="st">"CLIPflexR"</span><span class="op">)</span>
-<span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_fastqFilter.html">ctk_fastqFilter</a></span><span class="op">(</span><span class="va">Fox3_Std</span>,
-                                     outFile <span class="op">=</span> <span class="st">"SRR1107535_Test.fastq"</span>,
-                                     qsFilter<span class="op">=</span><span class="st">"mean:0-29:20"</span>,verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl</code></pre>
-<pre><code>## fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Users/runner/work/_temp/Library/CLIPflexR/extdata/Fox3_Std_small.fq.gz  SRR1107535_Test.fastq</code></pre>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR" class="external-link">CLIPflexR</a></span><span class="op">)</span></span>
+<span><span class="va">Fox3_Std</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata/Fox3_Std_small.fq.gz"</span>,package<span class="op">=</span><span class="st">"CLIPflexR"</span><span class="op">)</span></span>
+<span><span class="va">Fox3_Std_filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ctk_fastqFilter.html">ctk_fastqFilter</a></span><span class="op">(</span><span class="va">Fox3_Std</span>,</span>
+<span>                                     outFile <span class="op">=</span> <span class="st">"SRR1107535_Test.fastq"</span>,</span>
+<span>                                     qsFilter<span class="op">=</span><span class="st">"mean:0-29:20"</span>,verbose<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## fastq_filter.pl command is /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl</span></span></code></pre>
+<pre><code><span><span class="co">## fastq_filter.pl arguments are /Users/runner/Library/r-miniconda/envs/CLIPflexR_0.1.20/bin/ctk/fastq_filter.pl  -if sanger  -of fastq  -f mean:0-29:20  /Users/runner/work/_temp/Library/CLIPflexR/extdata/Fox3_Std_small.fq.gz  SRR1107535_Test.fastq</span></span></code></pre>
 </div>
 </div>
   </div>
@@ -216,11 +212,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
+  <p></p>
+<p>Developed by Kathryn Rozen-Gagnon, Thomas Carroll, Ji-Dung Luo, Wei Wang, Troels Scheel.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -228,6 +226,8 @@
 
   
 
+
+  
 
   </body>
 </html>
