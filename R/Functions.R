@@ -312,12 +312,12 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
   if(verbose) message("...done")
   
   if(verbose) message("Retrieving patterns to search for....",appendLF = FALSE)
-  if(class(patterns) == "DNAStringSet"){
+  if(is(patterns,"DNAStringSet")){
     pattern <- as.character(patterns)
   }else if(grepl(".fa", patterns)){
     motifSeq <- readDNAStringSet(patterns)
     pattern <- as.character(motifSeq)
-  } else if (class(patterns) == "character"){
+  } else if (is(patterns, "character")){
     pattern <- patterns }
   if(verbose) message("...done")
   if(verbose) message("Read in ",length(pattern)," patterns")
