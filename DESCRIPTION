@@ -3,7 +3,7 @@ Type: Package
 Title: CLIP tools and wrappers in R
 URL: https://github.com/kathrynrozengagnon/CLIPflexR
 BugReports: https://github.com/kathrynrozengagnon/CLIPflexR/issues
-Version: 0.1.20
+Version: 0.1.21
 Author: Kathryn, TomC and JD
 Authors@R: c(
     person("Kathryn", "Rozen-Gagnon", , "krozen@rockefeller.edu", role = c("aut", "cre"),
