@@ -434,7 +434,7 @@ fastx_barcode_splitter <- function(fileTofxc,bcFile,mismatches=0,
 #' @param fileTofqs path to file to process (fastq or fasta).
 #' @param outFile output file path.
 #' @param fqc path to fastx_clipper from FastX toolkit.
-#' @param length miminum sequence length, default is 18 (set to .
+#' @param length minimum sequence length, default is 18 (set to integer).
 #' @param adapter adapter to remove (default is "GTGTCAGTCACTTCCAGCGG", specify a string to change adapter sequence).
 #' @param qEncoding quality encoding, set to either 33 (Sanger Phred+33 encoding/Illumina fastq) or NULL (Phred+64 fastq or fasta; default).
 #' @param stderr path to stderr file.
