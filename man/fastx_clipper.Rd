@@ -29,7 +29,7 @@ fastx_clipper(
 
 \item{fqc}{path to fastx_clipper from FastX toolkit.}
 
-\item{length}{miminum sequence length, default is 18 (set to .}
+\item{length}{minimum sequence length, default is 18 (set to integer).}
 
 \item{adapter}{adapter to remove (default is "GTGTCAGTCACTTCCAGCGG", specify a string to change adapter sequence).}
 

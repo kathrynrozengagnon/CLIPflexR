@@ -425,7 +425,7 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
 #' @return Path to index 
 #' @export
 bowtie2_index <- function(genomeFasta,
-                          outIndex=gsub("\\.fa","",genomeFasta),
+                          outIndex=gsub("\\.fa|\\.fasta|\\.fna","",genomeFasta),
                           overwrite=F,threads=1) {
   bowtieArgs <- paste0("--threads ",threads)
     suppressMessages(
@@ -863,7 +863,7 @@ revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min
     fa2 <- fa2@NAMES
     fa <- fa[!names(fa) %in% fa2]  }
   outname = paste(fastas, sep = "")
-  outname = gsub(".fa$", "_processed.fa", outname)
+  outname = gsub("\\.fa$|\\.fasta$|\\.fna$", "_processed.fa", outname)
   writeXStringSet(fa, outname)
   return(outname)
 }
@@ -889,6 +889,7 @@ revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min
 #' @param verbose print messages, TRUE or FALSE (default).
 #' @param bpparam TRUE or FALSE (default).
 #' @param overwrite overwrite existing output files, TRUE or FALSE (default).  
+#' @param make_index make bowtie2 index of reads, TRUE (default) or FALSE. If set to FALSE, indices should be in the same directory as reads.
 #' @return path to BEDs where small RNAs mapped to reads. 
 #' @examples 
 #' testFastq <- system.file("extdata/SRR1742056.fastq.gz",package="CLIPflexR")
@@ -902,7 +903,7 @@ revmap_process <- function(fastas, linkers = NULL, length_max = NULL, length_min
 #' @importFrom magrittr "%>%"
 #' @importFrom rtracklayer import
 #' @export
-revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=FALSE, linkers = NULL, length_max = NULL, length_min = NULL, removedups =TRUE, overwrite = FALSE){
+revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=FALSE, linkers = NULL, length_max = NULL, length_min = NULL, removedups =TRUE, overwrite = FALSE, make_index=TRUE){
   if(is.null(bpparam)) bpparam <- BiocParallel::SerialParam()
   pro_fastas <- vector("list",length = length(fastas)) 
   if(!is.null(linkers) | !is.null(length_max) | !is.null(length_min)) { 
@@ -915,9 +916,13 @@ revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=FALSE, linker
     }} else {
       pro_fastas <-  fastas
     }
-  if(verbose) message("Creating indices from FASTA files..",appendLF = FALSE)
-  indicies <- bplapply(pro_fastas,bowtie2_index,overwrite=overwrite, BPPARAM=bpparam)
-  if(verbose) message("done")
+  if(verbose & make_index) message("Creating indices from FASTA files..",appendLF = FALSE)
+  if(make_index) {
+  indicies <- bplapply(pro_fastas,bowtie2_index,overwrite=overwrite, BPPARAM=bpparam) 
+  if(verbose) message("done")}
+  else {
+    indicies <- gsub("\\.fa|\\.fasta|\\.fna", "", pro_fastas)
+  }
   if(verbose) message("Mapping miRNAs to processed reads..",appendLF = FALSE)
   revBams <- bplapply(indicies,
                       function(x,knownMiRNAs){
