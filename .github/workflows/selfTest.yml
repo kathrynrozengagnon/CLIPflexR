@@ -39,7 +39,7 @@ jobs:
         shell: Rscript {0}
       - name: Install CondaSys dependencies
         run: |
-          BiocManager::install("Herper")
+          devtools::install_github("RockefellerUniversity/Herper",  update = "never")
           devtools::install_github("kathrynrozengagnon/CLIPflexR")
           Herper::install_CondaSysReqs("CLIPflexR")
           CLIPflexR::install_ctk()
