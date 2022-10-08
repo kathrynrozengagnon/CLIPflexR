@@ -251,7 +251,7 @@ fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=
 #' @param peaks CLIP peaks to process; accepts path to peak files (BED file or BED-formatted tab-delimited text files) or R objects (GRanges or BED-formatted data.frame); peak locations must be unique.
 #' @param fasta path to genome file (fasta).
 #' @param patterns patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences.
-#' @param resize size of window in bp for resizing around peak center.
+#' @param resize size of window in bp for resizing around peak center, default is 64 (set by specifying integer; can be set to NULL to keep original peak ranges).
 #' @param add5 bp to add to 5' of resized peak, default is 0 (set by specifying integer).
 #' @param add3 bp to add to 3' of resized peak, default is 0 (set by specifying integer).
 #' @param verbose print messages, TRUE or FALSE (default).
@@ -285,8 +285,12 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
   
   if(verbose) message("Removing invalid peaks which are outside contig boundaries...",appendLF = FALSE)
   Boundaries <- GRanges(seqlevels(peaks),IRanges(1,seqlengths(peaks)))
-  resizePeaks <- resize(peaks, resize, fix="center", use.names=TRUE)
-  resizePeaks <- trim(resizePeaks)
+  if (!is.null(resize)) {
+    resizePeaks <- resize(peaks, resize, fix = "center", use.names = TRUE)}
+  else {
+    resizePeaks <- peaks
+  }
+  resizePeaks <- GenomicRanges::trim(resizePeaks)
   names(resizePeaks) <- paste0(seqnames(peaks),":",start(peaks),"_",end(peaks), "_", strand(peaks)) #rename accoridng to original (not extended) peakID to be able
   temp <- findOverlaps(resizePeaks,Boundaries,type=c("within"))
   validPeaks <- resizePeaks[temp@from]
