@@ -937,6 +937,9 @@ revmap_count <- function(fastas, knownMiRNAs, bpparam=NULL,verbose=FALSE, linker
   bedpath <- bplapply(revBams, bamtobed,BPPARAM=bpparam)
   dedup<- lapply(bedpath ,read.delim,  header = F, sep = "\t")
   names(dedup) <- bedpath
+  for (i in seq_along(dedup)) {
+    write.table(dedup[i],names(dedup)[i], col.names =  FALSE, row.names= FALSE, sep = "\t", quote = F)
+  } 
   if (removedups &  verbose) message("deduplicating...") 
   if (removedups) {
    for (i in 1:length(dedup)) {
