@@ -14,7 +14,8 @@ revmap_count(
   length_max = NULL,
   length_min = NULL,
   removedups = TRUE,
-  overwrite = FALSE
+  overwrite = FALSE,
+  make_index = TRUE
 )
 }
 \arguments{
@@ -35,6 +36,8 @@ revmap_count(
 \item{removedups}{remove multiple miRNAs or small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format "miR-", "let-", "bantam-", "iab-".}
 
 \item{overwrite}{overwrite existing output files, TRUE or FALSE (default).}
+
+\item{make_index}{make bowtie2 index of reads, TRUE (default) or FALSE. If set to FALSE, indices should be in the same directory as reads.}
 }
 \value{
 path to BEDs where small RNAs mapped to reads.

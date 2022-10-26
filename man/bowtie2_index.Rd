@@ -7,7 +7,7 @@
 \usage{
 bowtie2_index(
   genomeFasta,
-  outIndex = gsub("\\\\.fa", "", genomeFasta),
+  outIndex = gsub("\\\\.fa|\\\\.fasta|\\\\.fna", "", genomeFasta),
   overwrite = F,
   threads = 1
 )

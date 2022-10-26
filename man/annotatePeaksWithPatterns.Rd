@@ -25,7 +25,7 @@ annotatePeaksWithPatterns(
 
 \item{patterns}{patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences.}
 
-\item{resize}{size of window in bp for resizing around peak center.}
+\item{resize}{size of window in bp for resizing around peak center, default is 64 (set by specifying integer; can be set to NULL to keep original peak ranges).}
 
 \item{add5}{bp to add to 5' of resized peak, default is 0 (set by specifying integer).}
 
