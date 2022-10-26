@@ -318,7 +318,7 @@ jobs:
           r-version: ${{ needs.R-CMD-check-bioc.outputs.rversion }}
 
       - name: Setup pandoc from r-lib
-        uses: r-lib/actions/setup-pandoc@master
+        uses: r-lib/actions/setup-pandoc@v2
 
       - name: Query dependencies
         run: |
