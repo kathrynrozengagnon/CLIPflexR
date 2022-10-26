@@ -81,11 +81,12 @@
 
       
 
-      </header><script src="chimera_vignette_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Chimera processing</h1>
-                        <h4 data-toc-skip class="author">Kathryn Rozen-Gagnon, Troels Scheel</h4>
+                        <h4 data-toc-skip class="author">Kathryn
+Rozen-Gagnon, Troels Scheel</h4>
             
             <h4 data-toc-skip class="date">7/25/2021</h4>
       
@@ -100,27 +101,64 @@
 <code class="sourceCode R"><span><span class="va">baseDir</span> <span class="op">&lt;-</span> <span class="st">"/Users/kathryn/Reprocess_all_paper_datasets/test_chimera_vignette"</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/kathrynrozengagnon/CLIPflexR" class="external-link">CLIPflexR</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org" class="external-link">stringr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting">Process AGO-CLIP reads to find small RNAs directing AGO targeting<a class="anchor" aria-label="anchor" href="#process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting"></a>
+<h2 id="process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting">Process AGO-CLIP reads to find small RNAs directing AGO
+targeting<a class="anchor" aria-label="anchor" href="#process-ago-clip-reads-to-find-small-rnas-directing-ago-targeting"></a>
 </h2>
-<p>This vignette demonstrates how chimeric reads can be detected. Chimeras are reads containing a both a small RNA sequence and its transcript target sequence, indicating that the small RNA was targeting AGO to the transcript. This analysis could be applied to other RBPs if applicable…</p>
+<p>This vignette demonstrates how chimeric reads can be detected.
+Chimeras are reads containing a both a small RNA sequence and its
+transcript target sequence, indicating that the small RNA was targeting
+AGO to the transcript. This analysis could be applied to other RBPs if
+applicable…</p>
 <p><img src="chimera.png"></p>
-<p>Modified from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4826034/" class="external-link">Scheel et al., <em>Cell Host Microbe</em>, 2016</a></p>
+<p>Modified from <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4826034/" class="external-link">Scheel et
+al., <em>Cell Host Microbe</em>, 2016</a></p>
 </div>
 <div class="section level2">
 <h2 id="chimera-processing">Chimera processing<a class="anchor" aria-label="anchor" href="#chimera-processing"></a>
 </h2>
-<p>Returns BED file for each sample containing the genomic coordinates of the transcript target, name of the read and of the small RNA found in that read, score (0; meaningless in this context), and strand of genomic target</p>
+<p>Returns BED file for each sample containing the genomic coordinates
+of the transcript target, name of the read and of the small RNA found in
+that read, score (0; meaningless in this context), and strand of genomic
+target</p>
 <div class="section level3">
 <h3 id="chimera-processing-starting-from-bams">Chimera processing starting from bams<a class="anchor" aria-label="anchor" href="#chimera-processing-starting-from-bams"></a>
 </h3>
-<p>This is the standard, recommended pipeline for chimera processing using <a href="../reference/chimera_Process.html">chimera_Process</a>.</p>
-<p>Follow this pipeline if you have mapped your reads to your genome using CLIPflexR <strong>bowtie_align</strong> “genome_map” mode (see <a href="../reference/bowtie_align.html">bowtie_align documentation</a>) or another aligner that disallows soft clipping. When soft clipping is not allowed, chimeric reads should not map to your genome.</p>
-<p>Please note, if you have mapped your reads to your genome allowing soft-clipping, you should perform your chimera analysis on all reads prior to mapping, by setting chimera_Process <strong>bams</strong> = NULL and setting <strong>fastas</strong> to your fasta file path(s); see <strong>chimera processing starting from fastas</strong>.</p>
-<p>We will use 2 bams generated in the CLIPflexR <a href="../articles/Processing_to_matrix.html"><em>Processing reads, mapping, and building a count matrix vignette</em></a>, with AGO1-CLIP reads from mosquitoes mapped to the AaegL5 genome assembly.</p>
-<p>First, chimera_Process extracts unmapped reads from bams mapped to the genome using <a href="../reference/extract_unmapped.html">extract_unmapped</a>. Then, chimera_Process makes indices of unmapped reads and aligns known small RNA sequences to reads using <a href="../reference/bowtie2_index.html">bowtie2_index</a> and <a href="../reference/bowtie_align.html">bowtie_align</a> in “reverse_map” mode . These bams are converted to beds with the reads that contained small RNAs and the positions of the small RNAs in the read sequence using <a href="../reference/bamtobed.html">bamtobed</a> and then the read sequences are merged with the read names. This modified BED is then chimera processed to obtain fastas of transcript target sequences downstream of the small RNA. Options are <strong>remove_dups</strong>: remove multiple small RNAs mapping to the same read, TRUE (default) or FALSE. When TRUE, known miRNAs will be prioritized and known miRNA names must be in the format “miR-”, “let-”, “bantam-”, “iab-”.); <strong>exclude</strong>: names of small RNAs to remove, default is NULL, can be set to character vector to specify; must match names in knownMiRNAs file. Finally, processed transcript read sequences that contained a small RNA sequence are remapped to the genome using <a href="../reference/bowtie_align.html">bowtie_align</a> in “genome_map” mode; genome index is set with <strong>genomeIndex</strong>: path to genome index. Bams are then converted to beds using <a href="../reference/bamtobed.html">bamtobed</a>.</p>
+<p>This is the standard, recommended pipeline for chimera processing
+using <a href="../reference/chimera_Process.html">chimera_Process</a>.</p>
+<p>Follow this pipeline if you have mapped your reads to your genome
+using CLIPflexR <strong>bowtie_align</strong> “genome_map” mode (see <a href="../reference/bowtie_align.html">bowtie_align documentation</a>) or
+another aligner that disallows soft clipping. When soft clipping is not
+allowed, chimeric reads should not map to your genome.</p>
+<p>Please note, if you have mapped your reads to your genome allowing
+soft-clipping, you should perform your chimera analysis on all reads
+prior to mapping, by setting chimera_Process <strong>bams</strong> =
+NULL and setting <strong>fastas</strong> to your fasta file path(s); see
+<strong>chimera processing starting from fastas</strong>.</p>
+<p>We will use 2 bams generated in the CLIPflexR <a href="../articles/Processing_to_matrix.html"><em>Processing reads,
+mapping, and building a count matrix vignette</em></a>, with AGO1-CLIP
+reads from mosquitoes mapped to the AaegL5 genome assembly.</p>
+<p>First, chimera_Process extracts unmapped reads from bams mapped to
+the genome using <a href="../reference/extract_unmapped.html">extract_unmapped</a>. Then,
+chimera_Process makes indices of unmapped reads and aligns known small
+RNA sequences to reads using <a href="../reference/bowtie2_index.html">bowtie2_index</a> and <a href="../reference/bowtie_align.html">bowtie_align</a> in “reverse_map”
+mode . These bams are converted to beds with the reads that contained
+small RNAs and the positions of the small RNAs in the read sequence
+using <a href="../reference/bamtobed.html">bamtobed</a> and then the
+read sequences are merged with the read names. This modified BED is then
+chimera processed to obtain fastas of transcript target sequences
+downstream of the small RNA. Options are <strong>remove_dups</strong>:
+remove multiple small RNAs mapping to the same read, TRUE (default) or
+FALSE. When TRUE, known miRNAs will be prioritized and known miRNA names
+must be in the format “miR-”, “let-”, “bantam-”, “iab-”.);
+<strong>exclude</strong>: names of small RNAs to remove, default is
+NULL, can be set to character vector to specify; must match names in
+knownMiRNAs file. Finally, processed transcript read sequences that
+contained a small RNA sequence are remapped to the genome using <a href="../reference/bowtie_align.html">bowtie_align</a> in “genome_map”
+mode; genome index is set with <strong>genomeIndex</strong>: path to
+genome index. Bams are then converted to beds using <a href="../reference/bamtobed.html">bamtobed</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#define the path to your bam files </span></span>
 <span><span class="va">bams</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"*rm5_rm3.bam$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -185,7 +223,12 @@
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">example</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 6678</span></span></code></pre>
-<p>We can exclude certain miRNAs from analysis setting the <strong>exclude</strong> to a character vector containing names of miRNAs to be exlcuded, and/or keep multiple miRNAs mapping to the same read by setting <strong>removedups</strong> to FALSE. If we want to redo our analysis, first we need to remove the bedfiles we generated previously, as they cannot be overwritten.</p>
+<p>We can exclude certain miRNAs from analysis setting the
+<strong>exclude</strong> to a character vector containing names of
+miRNAs to be exlcuded, and/or keep multiple miRNAs mapping to the same
+read by setting <strong>removedups</strong> to FALSE. If we want to redo
+our analysis, first we need to remove the bedfiles we generated
+previously, as they cannot be overwritten.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">allbeds</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"*.bed$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -319,7 +362,12 @@
 <div class="section level3">
 <h3 id="chimera-processing-starting-from-fastas">Chimera processing starting from fastas<a class="anchor" aria-label="anchor" href="#chimera-processing-starting-from-fastas"></a>
 </h3>
-<p>If you have mapped your reads to your genome allowing soft-clipping, you should perform your chimera analysis on reads prior to mapping, by setting <strong>bams</strong> = NULL and and setting <strong>fastas</strong> to your fasta file path(s). Please note this is not recommended, and may artificially increase the number of chimeras detected.</p>
+<p>If you have mapped your reads to your genome allowing soft-clipping,
+you should perform your chimera analysis on reads prior to mapping, by
+setting <strong>bams</strong> = NULL and and setting
+<strong>fastas</strong> to your fasta file path(s). Please note this is
+not recommended, and may artificially increase the number of chimeras
+detected.</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#define the path to your fastas files prior to mapping</span></span>
 <span><span class="va">fastas</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">dir</a></span><span class="op">(</span><span class="va">baseDir</span>, pattern <span class="op">=</span> <span class="st">"rm5_rm3.fa$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -332,13 +380,29 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="comparing-chimera-counts-of-mirnas-with-other-mirna-counting-methods">Comparing chimera counts of miRNAs with other miRNA counting methods<a class="anchor" aria-label="anchor" href="#comparing-chimera-counts-of-mirnas-with-other-mirna-counting-methods"></a>
+<h2 id="comparing-chimera-counts-of-mirnas-with-other-mirna-counting-methods">Comparing chimera counts of miRNAs with other miRNA counting
+methods<a class="anchor" aria-label="anchor" href="#comparing-chimera-counts-of-mirnas-with-other-mirna-counting-methods"></a>
 </h2>
-<p>Now that we have remapped bona-fide targeting events by confirming chimeric miRNA-target reads, we can use these to count and compare with counts of short reads containing miRNAs. Here we use reverse mapping to short reads; additionally, for alternative counting methods see: <a href="../reference/ranges_count.html">ranges_count</a> or <a href="../reference/annotatePeaksWithPatterns.html">annotatePeaksWithPatterns</a></p>
+<p>Now that we have remapped bona-fide targeting events by confirming
+chimeric miRNA-target reads, we can use these to count and compare with
+counts of short reads containing miRNAs. Here we use reverse mapping to
+short reads; additionally, for alternative counting methods see: <a href="../reference/ranges_count.html">ranges_count</a> or <a href="../reference/annotatePeaksWithPatterns.html">annotatePeaksWithPatterns</a></p>
 <div class="section level3">
 <h3 id="select-short-reads-and-reverse-map-mirna-sequences">Select short reads and reverse map miRNA sequences<a class="anchor" aria-label="anchor" href="#select-short-reads-and-reverse-map-mirna-sequences"></a>
 </h3>
-<p>Use <a href="../reference/revmap_count.html">revmap_count</a> to count short reads containing miRNA sequences.<br><strong>fastas</strong>: path to FASTA files to reverse map; <strong>knownMiRNAs</strong>: path to FASTA file containing annotated miRNA or other small RNA sequences; <strong>linkers</strong>: contaminating sequences to remove, default is NULL, set to character string to specify; <strong>length_min</strong>: minimum length required during fasta processing, default is NULL, set to integer to specify; <strong>length_max</strong>: maximum length required during fasta processing, default is NULL, set to integer to specify; <strong>removedups</strong>: remove multiple miRNAs or small RNAs mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs will be prioritized and known miRNA names must be in the format “miR-”, “let-”, “bantam-”, “iab-”.</p>
+<p>Use <a href="../reference/revmap_count.html">revmap_count</a> to
+count short reads containing miRNA sequences.<br><strong>fastas</strong>: path to FASTA files to reverse map;
+<strong>knownMiRNAs</strong>: path to FASTA file containing annotated
+miRNA or other small RNA sequences; <strong>linkers</strong>:
+contaminating sequences to remove, default is NULL, set to character
+string to specify; <strong>length_min</strong>: minimum length required
+during fasta processing, default is NULL, set to integer to specify;
+<strong>length_max</strong>: maximum length required during fasta
+processing, default is NULL, set to integer to specify;
+<strong>removedups</strong>: remove multiple miRNAs or small RNAs
+mapping to the same read, TRUE (default) or FALSE. If TRUE, known miRNAs
+will be prioritized and known miRNA names must be in the format “miR-”,
+“let-”, “bantam-”, “iab-”.</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">revmap</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">fastas</span>, <span class="va">revmap_count</span>, <span class="va">miRNAs</span>, linkers<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GGACGATGC"</span>, <span class="st">"AAAAAAAAA"</span><span class="op">)</span>, length_min<span class="op">=</span><span class="fl">18</span>, length_max<span class="op">=</span><span class="fl">30</span>, overwrite<span class="op">=</span><span class="cn">TRUE</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Processing fastas..removing linkers... GGACGATGCAAAAAAAAA</span></span>

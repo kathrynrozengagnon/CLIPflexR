@@ -78,7 +78,8 @@
 <span>  length_max <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  length_min <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  removedups <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  overwrite <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  make_index <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -118,6 +119,10 @@
 
 <dt>overwrite</dt>
 <dd><p>overwrite existing output files, TRUE or FALSE (default).</p></dd>
+
+
+<dt>make_index</dt>
+<dd><p>make bowtie2 index of reads, TRUE (default) or FALSE. If set to FALSE, indices should be in the same directory as reads.</p></dd>
 
 </dl></div>
     <div id="value">
