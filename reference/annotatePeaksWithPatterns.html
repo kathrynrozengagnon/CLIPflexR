@@ -77,7 +77,7 @@
 <span>  add5 <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  add3 <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  checkReverse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  exact <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  bedHeader <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  bedSep <span class="op">=</span> <span class="st">"\t"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -94,7 +94,7 @@
 
 
 <dt>patterns</dt>
-<dd><p>patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences.</p></dd>
+<dd><p>patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences and setting *exact* as FALSE.</p></dd>
 
 
 <dt>resize</dt>
@@ -113,8 +113,8 @@
 <dd><p>print messages, TRUE or FALSE (default).</p></dd>
 
 
-<dt>checkReverse</dt>
-<dd><p>check the reverse strand for pattern.</p></dd>
+<dt>exact</dt>
+<dd><p>whether to search for exact matches or allow ambiguous matching, TRUE (default) or FALSE</p></dd>
 
 
 <dt>bedHeader</dt>
