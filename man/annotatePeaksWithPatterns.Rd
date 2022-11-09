@@ -13,7 +13,7 @@ annotatePeaksWithPatterns(
   add5 = 0,
   add3 = 0,
   verbose = FALSE,
-  checkReverse = TRUE,
+  exact = TRUE,
   bedHeader = TRUE,
   bedSep = "\\t"
 )
@@ -23,7 +23,7 @@ annotatePeaksWithPatterns(
 
 \item{fasta}{path to genome file (fasta).}
 
-\item{patterns}{patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences.}
+\item{patterns}{patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences and setting *exact* as FALSE.}
 
 \item{resize}{size of window in bp for resizing around peak center, default is 64 (set by specifying integer; can be set to NULL to keep original peak ranges).}
 
@@ -33,7 +33,7 @@ annotatePeaksWithPatterns(
 
 \item{verbose}{print messages, TRUE or FALSE (default).}
 
-\item{checkReverse}{check the reverse strand for pattern.}
+\item{exact}{whether to search for exact matches or allow ambiguous matching, TRUE (default) or FALSE}
 
 \item{bedHeader}{if peak file contains column headers, TRUE (default) or FALSE; if TRUE, column names must be "seqnames" (chromosome), "start" (peak start), "end" (peak end), "strand" (peak strand).}
 

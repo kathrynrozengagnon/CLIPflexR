@@ -250,12 +250,12 @@ fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=
 #' @author Kathryn Rozen-Gagnon
 #' @param peaks CLIP peaks to process; accepts path to peak files (BED file or BED-formatted tab-delimited text files) or R objects (GRanges or BED-formatted data.frame); peak locations must be unique.
 #' @param fasta path to genome file (fasta).
-#' @param patterns patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences.
+#' @param patterns patterns to scan in CLIP peaks (character vector, DNAStringSet, or file path to a fasta sequence). Ambiguous bases can be searched by using IUPAC code in the pattern sequences and setting *exact* as FALSE.
 #' @param resize size of window in bp for resizing around peak center, default is 64 (set by specifying integer; can be set to NULL to keep original peak ranges).
 #' @param add5 bp to add to 5' of resized peak, default is 0 (set by specifying integer).
 #' @param add3 bp to add to 3' of resized peak, default is 0 (set by specifying integer).
 #' @param verbose print messages, TRUE or FALSE (default).
-#' @param checkReverse check the reverse strand for pattern.
+#' @param exact whether to search for exact matches or allow ambiguous matching, TRUE (default) or FALSE
 #' @param bedHeader if peak file contains column headers, TRUE (default) or FALSE; if TRUE, column names must be "seqnames" (chromosome), "start" (peak start), "end" (peak end), "strand" (peak strand).
 #' @param bedSep separator in BED file.
 #' @examples
@@ -266,7 +266,7 @@ fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=
 #' @importFrom Biostrings DNAStringSet readDNAStringSet
 #' @importMethodsFrom Biostrings as.data.frame coverage duplicated end getSeq match reverseComplement start strsplit substring vmatchPattern
 #' @export
-annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add3=0,verbose=FALSE,checkReverse=TRUE,bedHeader=TRUE,bedSep="\t"){
+annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add3=0,verbose=FALSE,exact = TRUE, bedHeader=TRUE,bedSep="\t"){
   
   peaks <- readinpeaks(peaks,verbose=verbose,header = bedHeader,sep=bedSep)
   
@@ -318,24 +318,21 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
   if(verbose) message("Retrieving patterns to search for....",appendLF = FALSE)
   if(is(patterns,"DNAStringSet")){
     pattern <- as.character(patterns)}
-  else if (is(patterns, "character")){
-    pattern <- patterns }
-  else if(grepl(".fa", patterns)){
+  else if(file.exists(patterns)){
     motifSeq <- readDNAStringSet(patterns)
     pattern <- as.character(motifSeq)} 
+  else if (is(patterns, "character")){
+    pattern <- patterns }
+  
   if(verbose) message("...done")
   if(verbose) message("Read in ",length(pattern)," patterns")
   
-
-  
-  
-  # rm(fixedInRegion)
   if(verbose) message("Searching for ",length(pattern)," patterns in peaks....")
   mergePeaksAndSites <- patternCallList <- list()
   for(i in 1:length(pattern)){
     if(verbose) message("Search for ",pattern[i])
     peaks_Sites <- validPeaks
-    fixedInRegion <- vmatchPattern(pattern=pattern[i],subject=myRes, fixed=FALSE) %>% unlist()
+    fixedInRegion <- vmatchPattern(pattern=pattern[i],subject=myRes, fixed=exact) %>% unlist()
     if(!isEmpty(fixedInRegion)) {
       
       startOfPmatch <- resize(fixedInRegion,width=1,fix="start") %>% unname %>% as.character
