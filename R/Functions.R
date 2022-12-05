@@ -255,7 +255,7 @@ fetchSequencesForCLIP <- function(peaks,resize=NULL,fasta,add5=0,add3=0,verbose=
 #' @param add5 bp to add to 5' of resized peak, default is 0 (set by specifying integer).
 #' @param add3 bp to add to 3' of resized peak, default is 0 (set by specifying integer).
 #' @param verbose print messages, TRUE or FALSE (default).
-#' @param exact whether to search for exact matches or allow ambiguous matching, TRUE (default) or FALSE
+#' @param exact whether to search for exact matches or allow ambiguous matching, TRUE (default) or FALSE. If your genome is masked, your search will return masked targets (i.e. "NNNNNN").
 #' @param bedHeader if peak file contains column headers, TRUE (default) or FALSE; if TRUE, column names must be "seqnames" (chromosome), "start" (peak start), "end" (peak end), "strand" (peak strand).
 #' @param bedSep separator in BED file.
 #' @examples
@@ -318,11 +318,19 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
   if(verbose) message("Retrieving patterns to search for....",appendLF = FALSE)
   if(is(patterns,"DNAStringSet")){
     pattern <- as.character(patterns)}
-  else if(file.exists(patterns)){
-    motifSeq <- readDNAStringSet(patterns)
-    pattern <- as.character(motifSeq)} 
-  else if (is(patterns, "character")){
-    pattern <- patterns }
+  else if (is(patterns, "character")) {
+    if(unique(grepl("fa|fasta", patterns))) {
+      if(file.exists(patterns)) {
+        motifSeq <- readDNAStringSet(patterns)
+        pattern <- as.character(motifSeq)}
+      else if(verbose) {
+        message("input fasta file with patterns to search is not found, are you sure this file exists at that location?")}}
+    if(!file.exists(patterns)){
+      stop()
+    }
+    else {
+      pattern <- patterns}
+  }
   
   if(verbose) message("...done")
   if(verbose) message("Read in ",length(pattern)," patterns")
