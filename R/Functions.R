@@ -315,19 +315,19 @@ annotatePeaksWithPatterns  <- function(peaks,fasta,patterns,resize=64,add5=0,add
   validPeaks$seqUnderExtendedPeak <- myRes
   if(verbose) message("...done")
   
-  if(verbose) message("Retrieving patterns to search for....",appendLF = FALSE)
-  if(is(patterns,"DNAStringSet")){
-    pattern <- as.character(patterns)}
+  if (verbose) message("Retrieving patterns to search for....", appendLF = FALSE)
+  if (is(patterns, "DNAStringSet")) {
+    pattern <- as.character(patterns)
+  }
   else if (is(patterns, "character")) {
-    if(unique(grepl("fa|fasta", patterns))) {
-      if(file.exists(patterns)) {
+    if (unique(grepl("fa|fasta", patterns))) {
+      if (file.exists(patterns)) {
         motifSeq <- readDNAStringSet(patterns)
         pattern <- as.character(motifSeq)}
-      else if(verbose) {
-        message("input fasta file with patterns to search is not found, are you sure this file exists at that location?")}}
-    if(!file.exists(patterns)){
-      stop()
-    }
+      else if (verbose) {
+        message("input fasta file with patterns to search is not found, are you sure this file exists at that location?")}
+      if (!file.exists(patterns)) {
+        stop()}}
     else {
       pattern <- patterns}
   }
